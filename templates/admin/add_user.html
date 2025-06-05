@@ -1,52 +1,109 @@
 {% extends 'base.html' %} {% block content %}
-<div class="container mt-4">
-  <h2>Add New User</h2>
-  <hr />
-  <form method="POST" action="{{ url_for('add_user') }}">
-    <div class="mb-3">
-      <label for="full_name" class="form-label">Full Name</label>
-      <input
-        type="text"
-        class="form-control"
-        id="full_name"
-        name="full_name"
-        required
-      />
-    </div>
+<div class="container mt-5 d-flex justify-content-center">
+  <div class="card shadow-lg border-0 p-4 rounded-4 custom-form-card">
+    <h2 class="text-center mb-4 text-gradient fw-bold">➕ Add New User</h2>
+    <form method="POST" action="{{ url_for('add_user') }}">
+      <div class="mb-3">
+        <label for="full_name" class="form-label fw-semibold">Full Name</label>
+        <input
+          type="text"
+          class="form-control rounded-pill shadow-sm"
+          id="full_name"
+          name="full_name"
+          placeholder="Enter full name"
+          required
+        />
+      </div>
 
-    <div class="mb-3">
-      <label for="email" class="form-label">Email</label>
-      <input
-        type="email"
-        class="form-control"
-        id="email"
-        name="email"
-        required
-      />
-    </div>
+      <div class="mb-3">
+        <label for="email" class="form-label fw-semibold">Email</label>
+        <input
+          type="email"
+          class="form-control rounded-pill shadow-sm"
+          id="email"
+          name="email"
+          placeholder="Enter email address"
+          required
+        />
+      </div>
 
-    <div class="mb-3">
-      <label for="role" class="form-label">Role</label>
-      <select class="form-select" id="role" name="role" required>
-        <option value="User">User</option>
-      </select>
-    </div>
+      <div class="mb-3">
+        <label for="role" class="form-label fw-semibold">Role</label>
+        <select
+          class="form-select rounded-pill shadow-sm"
+          id="role"
+          name="role"
+          required
+        >
+          <option value="User">User</option>
+        </select>
+      </div>
 
-    <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
-      <input
-        type="password"
-        class="form-control"
-        id="password"
-        name="password"
-        required
-      />
-    </div>
+      <div class="mb-4">
+        <label for="password" class="form-label fw-semibold">Password</label>
+        <input
+          type="password"
+          class="form-control rounded-pill shadow-sm"
+          id="password"
+          name="password"
+          placeholder="Enter a secure password"
+          required
+        />
+      </div>
 
-    <button type="submit" class="btn btn-success">Add User</button>
-    <a href="{{ url_for('manage_users') }}" class="btn btn-secondary ms-2"
-      >Cancel</a
-    >
-  </form>
+      <div class="d-flex justify-content-between">
+        <button
+          type="submit"
+          class="btn btn-primary px-4 py-2 rounded-pill shadow custom-btn-hover"
+        >
+          ✅ Add User
+        </button>
+        <a
+          href="{{ url_for('manage_users') }}"
+          class="btn btn-outline-secondary px-4 py-2 rounded-pill shadow"
+        >
+          ❌ Cancel
+        </a>
+      </div>
+    </form>
+  </div>
 </div>
+
+<!-- Custom CSS -->
+<style>
+  .custom-form-card {
+    width: 100%;
+    max-width: 550px;
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+  }
+
+  .text-gradient {
+    background: linear-gradient(90deg, #0f2027, #203a43, #2c5364, #4a90e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .custom-btn-hover:hover {
+    background-color: #004085 !important;
+    color: #ffc107 !important;
+    transition: 0.3s ease;
+    transform: scale(1.05);
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+  }
+
+  label.form-label {
+    color: #343a40;
+  }
+
+  input::placeholder {
+    color: #adb5bd;
+    font-style: italic;
+  }
+</style>
 {% endblock %}

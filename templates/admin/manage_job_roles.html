@@ -1,77 +1,129 @@
 {% extends 'base.html' %} {% block content %}
-<div class="container mt-5">
-  <h2 class="mb-4">Manage Job Roles</h2>
+<div class="container mt-5 mb-5">
+  <div class="card shadow-lg border-0 p-4 rounded-4">
+    <h2 class="text-gradient fw-bold mb-4 text-center">⚙️ Manage Job Roles</h2>
 
-  <!-- Add Job Role Form -->
-  <form method="POST" class="mb-4">
-    <div class="input-group">
-      <input
-        type="text"
-        class="form-control"
-        name="role_name"
-        placeholder="Enter new job role"
-        required
-      />
-      <button type="submit" name="add_role" class="btn btn-success">
-        Add Role
-      </button>
+    <!-- Back Button -->
+    <div class="d-flex justify-content-start mb-3">
+      <a
+        href="{{ url_for('admin_dashboard') }}"
+        class="btn btn-outline-secondary rounded-pill fw-semibold shadow-sm"
+      >
+        ⬅️ Back
+      </a>
     </div>
-  </form>
 
-  <!-- List Existing Job Roles -->
-  <table class="table table-bordered table-striped">
-    <thead class="table-dark">
-      <tr>
-        <th>ID</th>
-        <th>Role Name</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for role in job_roles %}
-      <tr>
-        <td>{{ role[0] }}</td>
-        <td>{{ role[1] }}</td>
-        <td>
-          <!-- Edit Role Form -->
-          <form method="POST" class="d-inline">
-            <input type="hidden" name="role_id" value="{{ role[0] }}" />
-            <input
-              type="text"
-              name="updated_name"
-              value="{{ role[1] }}"
-              required
-              class="form-control d-inline w-auto"
-            />
-            <button
-              type="submit"
-              name="edit_role"
-              class="btn btn-primary btn-sm ms-2"
-            >
-              Edit
-            </button>
-          </form>
+    <!-- Add Job Role Form -->
+    <form method="POST" class="mb-4">
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control rounded-start-pill shadow-sm"
+          name="role_name"
+          placeholder="Enter new job role"
+          required
+        />
+        <button
+          type="submit"
+          name="add_role"
+          class="btn btn-dark px-4 rounded-end-pill custom-btn-hover"
+        >
+          ➕ Add Role
+        </button>
+      </div>
+    </form>
 
-          <!-- Delete Role Form -->
-          <form method="POST" class="d-inline ms-2">
-            <input type="hidden" name="role_id" value="{{ role[0] }}" />
-            <button
-              type="submit"
-              name="delete_role"
-              class="btn btn-danger btn-sm"
-              onclick="return confirm('Are you sure you want to delete this role?');"
-            >
-              Delete
-            </button>
-          </form>
-        </td>
-      </tr>
-      {% else %}
-      <tr>
-        <td colspan="3" class="text-center">No job roles found.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    <!-- List Existing Job Roles -->
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered align-middle mb-0">
+        <thead class="table-primary text-center text-uppercase fw-semibold">
+          <tr>
+            <th style="width: 10%">ID</th>
+            <th style="width: 50%">Role Name</th>
+            <th style="width: 40%">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for role in job_roles %}
+          <tr class="text-center">
+            <td class="text-center fw-bold text-primary">{{ role[0] }}</td>
+            <td>{{ role[1] }}</td>
+            <td>
+              <!-- Edit Role Form -->
+              <form method="POST" class="d-inline-flex align-items-center">
+                <input type="hidden" name="role_id" value="{{ role[0] }}" />
+                <input
+                  type="text"
+                  name="updated_name"
+                  value="{{ role[1] }}"
+                  required
+                  class="form-control w-50 me-2 rounded-pill shadow-sm"
+                />
+                <button
+                  type="submit"
+                  name="edit_role"
+                  class="btn btn-primary btn-sm px-3 rounded-pill custom-btn-hover"
+                >
+                  ✏️ Edit
+                </button>
+              </form>
+
+              <!-- Delete Role Form -->
+              <form method="POST" class="d-inline ms-2">
+                <input type="hidden" name="role_id" value="{{ role[0] }}" />
+                <button
+                  type="submit"
+                  name="delete_role"
+                  class="btn btn-danger btn-sm px-3 rounded-pill"
+                  onclick="return confirm('Are you sure you want to delete this role?');"
+                >
+                  🗑️ Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="3" class="text-center text-muted">
+              No job roles found.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
+
+<!-- Custom CSS -->
+<style>
+  .text-gradient {
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364, #4a90e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .custom-btn-hover:hover {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+    transition: 0.3s ease-in-out;
+    transform: scale(1.05);
+  }
+
+  .form-control:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+  }
+
+  .table td,
+  .table th {
+    vertical-align: middle;
+  }
+
+  .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: #fff;
+    transition: 0.3s ease-in-out;
+  }
+</style>
 {% endblock %}

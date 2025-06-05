@@ -1,16 +1,20 @@
 {% extends 'base.html' %} {% block content %}
 <style>
+  /* Reset to normal flow */
   .page-wrapper {
     background: #f8f9fa;
     font-family: "Poppins", sans-serif;
     color: #333;
-    min-height: 100vh;
+    /* Remove min-height 100vh and flex */
+    /* min-height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; */
+    padding-bottom: 80px; /* space for footer */
   }
 
   .container-fluid {
-    flex: 1;
+    /* Remove flex */
+    /* flex: 1; */
     padding: 4rem 2rem;
     max-width: 1200px;
     margin: auto;

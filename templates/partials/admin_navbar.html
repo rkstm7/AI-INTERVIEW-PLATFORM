@@ -1,9 +1,20 @@
+<!-- Admin Navbar -->
 <nav
-  class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top"
-  style="background: linear-gradient(90deg, #1a1a1a, #333333)"
+  class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top admin-navbar"
 >
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="/">AI Interview (Admin)</a>
+  <div class="container py-10 custom-container">
+    <a class="navbar-brand d-flex gap-2 me-auto" href="/admin_dashboard">
+      <img
+        src="{{ url_for('static', filename='images/logo.png') }}"
+        alt="Logo"
+        class="logo-img"
+      />
+      <div class="d-flex flex-column">
+        <span class="fw-bold text-white">AI Interview Platform</span>
+        <small class="d-none d-md-inline text-light">(Admin Panel)</small>
+      </div>
+    </a>
+
     <button
       class="navbar-toggler"
       type="button"
@@ -15,98 +26,234 @@
     >
       <span class="navbar-toggler-icon" style="filter: invert(100%)"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarAdmin">
       <ul class="navbar-nav ms-auto align-items-center">
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('admin_dashboard') }}"
-            >Dashboard</a
+          <a
+            class="nav-link d-flex align-items-center"
+            href="{{ url_for('admin_dashboard') }}"
           >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('manage_users') }}"
-            >Manage Users</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('manage_job_roles') }}"
-            >Job Roles</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('monitor_activity') }}"
-            >User Activity</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('view_feedback') }}"
-            >User Feedback</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('manage_resources') }}"
-            >Learning Resources</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('manage_questions') }}"
-            >Manage Question</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('view_feedback') }}"
-            >View AI Feedback</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('admin_feedback') }}"
-            >Manual Feedback</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('scorecard') }}"
-            >View Scorecard</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('manage_notice') }}">
-            Manage Notices
+            <i data-lucide="home" class="me-2"></i> Dashboard
           </a>
         </li>
+
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+          <a
+            class="nav-link d-flex align-items-center"
+            href="{{ url_for('manage_users') }}"
+          >
+            <i data-lucide="users" class="me-2"></i> Manage Users
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a
+            class="nav-link d-flex align-items-center"
+            href="{{ url_for('manage_job_roles') }}"
+          >
+            <i data-lucide="briefcase" class="me-2"></i> Job Roles
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a
+            class="nav-link d-flex align-items-center"
+            href="{{ url_for('monitor_activity') }}"
+          >
+            <i data-lucide="activity" class="me-2"></i> User Activity
+          </a>
+        </li>
+
+        <!-- User History Dropdown -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle d-flex align-items-center"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i data-lucide="file-text" class="me-2"></i> User History
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark">
+            <li>
+              <a class="dropdown-item" href="{{ url_for('admin_feedback') }}">
+                <i data-lucide="pencil-line" class="me-2"></i> Manual Feedback
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('view_feedback') }}">
+                <i data-lucide="message-circle" class="me-2"></i> User Feedback
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('admin_view_score') }}">
+                <i data-lucide="bar-chart-2" class="me-2"></i> View Scorecard
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- User Services Dropdown -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle d-flex align-items-center"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i data-lucide="server-cog" class="me-2"></i> User Services
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark">
+            <li>
+              <a class="dropdown-item" href="{{ url_for('manage_questions') }}">
+                <i data-lucide="list-checks" class="me-2"></i> Manage Questions
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('manage_resources') }}">
+                <i data-lucide="book-open" class="me-2"></i> Learning Resources
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('manage_notice') }}">
+                <i data-lucide="megaphone" class="me-2"></i> Manage Notices
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a
+            class="nav-link d-flex align-items-center"
+            href="{{ url_for('logout') }}"
+          >
+            <i data-lucide="log-out" class="me-2"></i> Logout
+          </a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
 
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  lucide.createIcons();
+</script>
+
 <style>
-  /* Navbar link styles consistent with main navbar */
+  :root {
+    --shadow-cyan: rgba(0, 255, 255, 0.3);
+  }
+
+  /* Custom container */
+  .custom-container {
+    max-width: 1400px;
+    width: 100%;
+  }
+
+  /* Navbar background and height */
+  .admin-navbar {
+    background-color: #1a1a2e;
+    min-height: 110px;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    background-color: #1a1a2e;
+    border-bottom: 3px solid #00bcd4;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 2px 10px var(--shadow-cyan);
+  }
+
+  /* Navbar link styling */
   .navbar-nav .nav-link {
-    color: #eee !important;
+    color: #e0e0e0 !important;
     font-weight: 600;
     position: relative;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    font-size: 0.999rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
+
+  .navbar-nav .nav-link:hover {
+    color: rgb(237, 152, 25) !important;
+  }
+
+  /* Underline animation on hover */
   .navbar-nav .nav-link::after {
     content: "";
     position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 0;
+    bottom: -3px;
     left: 0;
-    background-color: #ffd700;
-    transition: width 0.3s ease;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(90deg, rgb(237, 152, 25), #ffcc70);
+    transition: width 0.4s ease-in-out;
+    border-radius: 2px;
   }
-  .navbar-nav .nav-link:hover {
-    color: #ffd700 !important;
-  }
+
   .navbar-nav .nav-link:hover::after {
     width: 100%;
   }
 
-  /* Add spacing for nav items */
-  .navbar-nav .nav-item {
-    margin-left: 1rem;
+  /* Dropdown menu */
+  .dropdown-menu-dark {
+    background-color: #222;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 0;
+  }
+
+  .dropdown-menu-dark .dropdown-item {
+    color: #ccc;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .dropdown-menu-dark .dropdown-item:hover {
+    background-color: #333;
+    color: rgb(230, 162, 27);
+  }
+  .navbar-nav {
+    display: flex;
+    gap: 1.25rem; /* or use 1rem for smaller gap */
+  }
+
+  @media (max-width: 991.98px) {
+    .navbar-nav {
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+  }
+
+  .navbar-brand img {
+    object-fit: contain;
+    height: 80px;
+    margin-left: -130px;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 991.98px) {
+    .navbar-nav .nav-link {
+      padding-left: 1rem;
+    }
+
+    .navbar-nav .dropdown-menu {
+      margin-left: 1rem;
+    }
+  }
+  /* Collapsible navbar menu background color for small screens */
+  .navbar-collapse {
+    background-color: #1a1a2e;
+  }
+
+  /* Optional: Dropdown menus ke andar background maintain kare */
+  .dropdown-menu-dark {
+    background-color: #222;
   }
 </style>

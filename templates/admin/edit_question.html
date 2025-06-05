@@ -1,55 +1,108 @@
 {% extends 'base.html' %}
 {% block title %}Edit Question{% endblock %}
 {% block content %}
-<div class="container mt-4">
-  <h2>Edit Question ID {{ question['id'] }}</h2>
 
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      {% for category, message in messages %}
-        <div class="alert alert-{{ category }}">{{ message }}</div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
+<style>
+  .text-gradient {
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364, #4a90e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 
-  <form method="POST" action="{{ url_for('edit_question', id=question['id']) }}">
-    <div class="mb-3">
-      <label for="job_role_id" class="form-label">Job Role</label>
-      <select class="form-select" id="job_role_id" name="job_role_id" required>
-        <option value="">Select Job Role</option>
-        {% for role in job_roles %}
-          <option value="{{ role.id }}" {% if role.id == question['job_role_id'] %}selected{% endif %}>
-            {{ role.name }}
-          </option>
+  .form-container {
+    max-width: 720px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.08);
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .btn-primary, .btn-secondary {
+    min-width: 120px;
+    font-weight: 600;
+  }
+
+  .alert {
+    font-weight: 500;
+  }
+
+  .back-btn {
+    margin-bottom: 1rem;
+  }
+</style>
+
+<div class="container mt-4 mb-5">
+  <!-- Back Button -->
+  <div class="text-start back-btn">
+    <a href="javascript:history.back()" class="btn btn-outline-primary">← Back</a>
+  </div>
+
+  <div class="form-container">
+    <h2 class="mb-4 fw-bold text-center text-gradient">Edit Question #{{ question['id'] }}</h2>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
         {% endfor %}
-      </select>
-    </div>
+      {% endif %}
+    {% endwith %}
 
-    <div class="mb-3">
-      <label for="content" class="form-label">Question Content</label>
-      <textarea class="form-control" id="content" name="content" rows="3" required>{{ question['content'] }}</textarea>
-    </div>
+    <!-- Form Starts -->
+    <form method="POST" action="{{ url_for('edit_question', id=question['id']) }}">
+      <!-- Job Role -->
+      <div class="mb-3">
+        <label for="job_role_id" class="form-label">Job Role</label>
+        <select class="form-select" id="job_role_id" name="job_role_id" required>
+          <option value="">Select Job Role</option>
+          {% for role in job_roles %}
+            <option value="{{ role.id }}" {% if role.id == question['job_role_id'] %}selected{% endif %}>
+              {{ role.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
 
-    <div class="mb-3">
-      <label class="form-label">Options</label>
-      <input type="text" class="form-control mb-1" name="option_a" value="{{ question['option_a'] }}" required>
-      <input type="text" class="form-control mb-1" name="option_b" value="{{ question['option_b'] }}" required>
-      <input type="text" class="form-control mb-1" name="option_c" value="{{ question['option_c'] }}" required>
-      <input type="text" class="form-control" name="option_d" value="{{ question['option_d'] }}" required>
-    </div>
+      <!-- Question Content -->
+      <div class="mb-3">
+        <label for="content" class="form-label">Question Content</label>
+        <textarea class="form-control" id="content" name="content" rows="4" required>{{ question['content'] }}</textarea>
+      </div>
 
-    <div class="mb-3">
-      <label for="correct_option" class="form-label">Correct Option</label>
-      <select class="form-select" id="correct_option" name="correct_option" required>
-        <option value="A" {% if question['correct_option'] == 'A' %}selected{% endif %}>A</option>
-        <option value="B" {% if question['correct_option'] == 'B' %}selected{% endif %}>B</option>
-        <option value="C" {% if question['correct_option'] == 'C' %}selected{% endif %}>C</option>
-        <option value="D" {% if question['correct_option'] == 'D' %}selected{% endif %}>D</option>
-      </select>
-    </div>
+      <!-- Options -->
+      <div class="mb-3">
+        <label class="form-label">Options</label>
+        <input type="text" class="form-control mb-2" name="option_a" value="{{ question['option_a'] }}" required>
+        <input type="text" class="form-control mb-2" name="option_b" value="{{ question['option_b'] }}" required>
+        <input type="text" class="form-control mb-2" name="option_c" value="{{ question['option_c'] }}" required>
+        <input type="text" class="form-control" name="option_d" value="{{ question['option_d'] }}" required>
+      </div>
 
-    <button type="submit" class="btn btn-primary">Update Question</button>
-    <a href="{{ url_for('manage_questions') }}" class="btn btn-secondary">Cancel</a>
-  </form>
+      <!-- Correct Option -->
+      <div class="mb-4">
+        <label for="correct_option" class="form-label">Correct Option</label>
+        <select class="form-select" id="correct_option" name="correct_option" required>
+          <option value="A" {% if question['correct_option'] == 'A' %}selected{% endif %}>A</option>
+          <option value="B" {% if question['correct_option'] == 'B' %}selected{% endif %}>B</option>
+          <option value="C" {% if question['correct_option'] == 'C' %}selected{% endif %}>C</option>
+          <option value="D" {% if question['correct_option'] == 'D' %}selected{% endif %}>D</option>
+        </select>
+      </div>
+
+      <!-- Buttons -->
+      <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary">Update Question</button>
+        <a href="{{ url_for('manage_questions') }}" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
 </div>
+
 {% endblock %}

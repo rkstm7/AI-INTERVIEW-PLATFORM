@@ -48,10 +48,7 @@ def log_user_activity(user_id, activity, ip_address, user_agent):
         INSERT INTO user_activity (user_id, activity, timestamp, ip_address, user_agent)
         VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?)
     """, (user_id, activity, ip_address, user_agent))
-    conn.commit()
-    conn.close()  # ✅ Always close the connection to avoid leaks
-
-
+    conn.commit() # ✅ Always close the connection to avoid leaks
 
 
 #getting rolles from database
@@ -447,15 +444,7 @@ def dashboard():
 
 #interview section-----------------------
 
-def log_user_activity(user_id, activity, ip_address, user_agent):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("""
-        INSERT INTO user_activity (user_id, activity, timestamp, ip_address, user_agent)
-        VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?)
-    """, (user_id, activity, ip_address, user_agent))
-    conn.commit()
-    conn.close()
+
     
 # ---- DB Connection ----
 def get_db():
@@ -565,6 +554,15 @@ def evaluate_answers(question_text, user_answer, correct_answer=None):
 # def home():
 #     return render_template("home.html")
 
+
+def log_user_activity(user_id, activity, ip_address, user_agent):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO user_activity (user_id, activity, timestamp, ip_address, user_agent)
+        VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?)
+    """, (user_id, activity, ip_address, user_agent))
+    conn.commit()
 
 @app.route('/job_roles')
 def job_roles():
@@ -1011,10 +1009,17 @@ def manage_users():
 @app.route('/admin/users/add', methods=['GET', 'POST'])
 @login_required
 def add_user():
-    log_user_activity(current_user.id, "new user add by admin")
     if current_user.role != 'Admin':
         flash('Access denied. Admins only.')
         return redirect(url_for('index'))
+
+    # Log activity after verifying access
+    log_user_activity(
+        current_user.id,
+        "New user added by admin",
+        request.remote_addr,
+        request.user_agent.string
+    )
 
     if request.method == 'POST':
         name = request.form.get('full_name')
@@ -1034,19 +1039,20 @@ def add_user():
             flash('Email already registered.')
             return redirect(url_for('add_user'))
 
-        # Insert new user with default 'User' role
+        # Insert new user
         hashed_password = generate_password_hash(password)
         cursor.execute(
-    "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
-    (name, email, hashed_password, role)
-)
-
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            (name, email, hashed_password, role)
+        )
         conn.commit()
 
         flash('User added successfully.')
         return redirect(url_for('manage_users'))
 
     return render_template('admin/add_user.html')
+
+
 
 #editing existing users route
 @app.route('/admin/users/edit/<int:user_id>', methods=['GET', 'POST'])
@@ -1694,7 +1700,7 @@ def admin_view_score():
         ORDER BY s.start_time DESC
     """).fetchall()
 
-    return render_template('admin/view_score.html', scores=scores)     #ageeeeeeeeeeeeeee
+    return render_template('admin/admin_view_score.html', scores=scores)     #ageeeeeeeeeeeeeee
 
 
 @app.route('/admin/feedback')

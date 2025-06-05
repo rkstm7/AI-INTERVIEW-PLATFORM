@@ -1,33 +1,101 @@
-{% extends "base.html" %} {% block content %}
-<h2 class="mb-4">User Feedback</h2>
+{% extends "base.html" %} {% block title %}User Feedback{% endblock %} {% block
+content %}
+<div class="container mt-5">
+  <div class="card shadow-lg border-0 p-4 rounded-4">
+    <h2 class="text-gradient fw-bold text-center mb-4">
+      📋 User Feedback Summary
+    </h2>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Message</th>
-      <th>Ratings (Q1 - Q10)</th>
-      <th>Submitted At</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for fb in feedbacks %}
-    <tr>
-      <td>{{ fb.name }}</td>
-      <td>{{ fb.email }}</td>
-      <td style="max-width: 300px">{{ fb.message }}</td>
-      <td>
-        {{ fb.q1 }}, {{ fb.q2 }}, {{ fb.q3 }}, {{ fb.q4 }}, {{ fb.q5 }},<br />
-        {{ fb.q6 }}, {{ fb.q7 }}, {{ fb.q8 }}, {{ fb.q9 }}, {{ fb.q10 }}
-      </td>
-      <td>{{ fb.submitted_at }}</td>
-    </tr>
+    <!-- Back Button -->
+    <div class="mb-3 text-start">
+      <a href="javascript:history.back()" class="btn btn-outline-primary">
+        ← Back
+      </a>
+    </div>
+
+    {% if feedbacks %}
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle">
+        <thead class="table-primary text-center text-uppercase fw-semibold">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th style="min-width: 250px">Message</th>
+            <th>Ratings (Q1 - Q10)</th>
+            <th>Submitted At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for fb in feedbacks %}
+          <tr>
+            <td class="fw-semibold text-primary">{{ fb.name }}</td>
+            <td class="text-break">{{ fb.email }}</td>
+            <td class="text-break text-wrap">{{ fb.message }}</td>
+            <td class="text-center">
+              <div class="d-flex flex-wrap justify-content-center gap-1">
+                <span class="badge bg-success">{{ fb.q1 }}</span>
+                <span class="badge bg-success">{{ fb.q2 }}</span>
+                <span class="badge bg-success">{{ fb.q3 }}</span>
+                <span class="badge bg-success">{{ fb.q4 }}</span>
+                <span class="badge bg-success">{{ fb.q5 }}</span>
+                <span class="badge bg-success">{{ fb.q6 }}</span>
+                <span class="badge bg-success">{{ fb.q7 }}</span>
+                <span class="badge bg-success">{{ fb.q8 }}</span>
+                <span class="badge bg-success">{{ fb.q9 }}</span>
+                <span class="badge bg-success">{{ fb.q10 }}</span>
+              </div>
+            </td>
+            <td class="text-muted">{{ fb.submitted_at }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
     {% else %}
-    <tr>
-      <td colspan="5">No feedback yet.</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    <div class="alert alert-info text-center fw-semibold fs-5">
+      No feedback yet.
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Custom Styling -->
+<style>
+  .text-gradient {
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364, #4a90e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .card {
+    background-color: #ffffff;
+    border-radius: 1rem;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.95rem;
+    vertical-align: middle;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    padding: 0.45em 0.7em;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: #f1f9ff;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  @media (max-width: 768px) {
+    .table th,
+    .table td {
+      font-size: 0.8rem;
+    }
+    .badge {
+      font-size: 0.7rem;
+    }
+  }
+</style>
 {% endblock %}

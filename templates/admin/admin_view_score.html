@@ -1,0 +1,75 @@
+{% extends 'base.html' %} {% block title %}Interview Scores{% endblock %} {%
+block content %}
+<div class="container mt-5">
+  <div class="card shadow-lg border-0 p-4 rounded-4">
+    <h2 class="text-gradient fw-bold text-center mb-4">
+      📝 Interview Scorecard
+    </h2>
+
+    {% if scores %}
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered align-middle mb-0">
+        <thead class="table-primary text-uppercase text-center fw-semibold">
+          <tr>
+            <th>Session ID</th>
+            <th>User ID</th>
+            <th>Job Role</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Total Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in scores %}
+          <tr class="text-center">
+            <td class="fw-bold text-primary">{{ s.session_id }}</td>
+            <td>{{ s.user_id }}</td>
+            <td class="text-capitalize">{{ s.job_role or 'N/A' }}</td>
+            <td>{{ s.start_time }}</td>
+            <td>{{ s.end_time }}</td>
+            <td class="fw-semibold text-success">{{ s.total_score }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center fw-semibold fs-5 mt-4">
+      No scores available.
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+  .text-gradient {
+    background: linear-gradient(90deg, #0f2027, #203a43, #2c5364, #4a90e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .card {
+    background-color: #ffffff;
+    border-radius: 1rem;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: #f0f8ff;
+    transition: background-color 0.3s ease;
+  }
+
+  .table td,
+  .table th {
+    vertical-align: middle;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 768px) {
+    td,
+    th {
+      font-size: 0.85rem;
+    }
+  }
+</style>
+{% endblock %}

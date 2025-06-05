@@ -1,96 +1,196 @@
 {% extends 'base.html' %} {% block title %}Manage Notices{% endblock %} {% block
 content %}
-<h2>Manage Notices</h2>
+<style>
+  .container-manage {
+    max-width: 900px;
+    margin: 2rem auto 4rem auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+  }
 
-<!-- Flash messages -->
-{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
-%} {% for category, message in messages %}
-<div class="alert alert-{{ category }}">{{ message }}</div>
-{% endfor %} {% endif %} {% endwith %}
+  h2,
+  h3 {
+    color: #203a43;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(90deg, #0f2027, #203a43, #2c5364, #4a90e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 
-<!-- Notice form -->
-<form method="POST" id="noticeForm">
-  <input type="hidden" name="notice_id" id="notice_id" />
+  form#noticeForm {
+    margin-bottom: 2.5rem;
+  }
 
-  <div class="mb-3">
-    <label for="title" class="form-label">Title</label>
-    <input type="text" class="form-control" name="title" id="title" required />
+  form#noticeForm .form-label {
+    font-weight: 600;
+    color: #2c5364;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  table {
+    border-radius: 0.6rem;
+    overflow: hidden;
+  }
+
+  thead {
+    background: #2c5364;
+    color: white;
+  }
+
+  tbody tr:hover {
+    background-color: #e9f1fa;
+  }
+
+  .btn-sm {
+    min-width: 60px;
+  }
+
+  .alert {
+    max-width: 900px;
+    margin: 1rem auto;
+    border-radius: 0.6rem;
+  }
+</style>
+
+<div class="container-manage">
+  <h2>Manage Notices</h2>
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %}
+  <div
+    class="alert alert-{{ category }} alert-dismissible fade show"
+    role="alert"
+  >
+    {{ message }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
   </div>
+  {% endfor %} {% endif %} {% endwith %}
 
-  <div class="mb-3">
-    <label for="description" class="form-label">Description</label>
-    <textarea
-      class="form-control"
-      name="description"
-      id="description"
-      rows="3"
-      required
-    ></textarea>
+  <!-- Notice form -->
+  <form method="POST" id="noticeForm" novalidate>
+    <input type="hidden" name="notice_id" id="notice_id" />
+
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input
+        type="text"
+        class="form-control"
+        name="title"
+        id="title"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea
+        class="form-control"
+        name="description"
+        id="description"
+        rows="3"
+        required
+      ></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="url" class="form-label">URL (optional)</label>
+      <input type="url" class="form-control" name="url" id="url" />
+    </div>
+
+    <div class="btn-group">
+      <button type="submit" class="btn btn-primary flex-grow-1">
+        Save Notice
+      </button>
+      <button type="button" class="btn btn-warning flex-grow-1" id="clearBtn">
+        Clear
+      </button>
+    </div>
+  </form>
+
+  <hr />
+
+  <!-- List of Notices -->
+  <h3>Existing Notices</h3>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle text-center">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>URL</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for notice in notices %}
+        <tr>
+          <td class="text-start">{{ notice.title }}</td>
+          <td class="text-start">{{ notice.description }}</td>
+          <td>
+            {% if notice.url %}
+            <a
+              href="{{ notice.url }}"
+              target="_blank"
+              class="text-decoration-underline"
+              >Link</a
+            >
+            {% else %} - {% endif %}
+          </td>
+          <td>{{ notice.created_at }}</td>
+          <td>
+            <button
+              class="btn btn-sm btn-info editBtn"
+              data-id="{{ notice.id }}"
+              data-title="{{ notice.title }}"
+              data-description="{{ notice.description }}"
+              data-url="{{ notice.url or '' }}"
+              title="Edit Notice"
+            >
+              Edit
+            </button>
+
+            <form
+              method="POST"
+              action="{{ url_for('delete_notice', notice_id=notice.id) }}"
+              style="display: inline-block"
+              onsubmit="return confirm('Are you sure you want to delete this notice?');"
+            >
+              <button
+                type="submit"
+                class="btn btn-sm btn-danger"
+                title="Delete Notice"
+              >
+                Delete
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5" class="text-center fst-italic">No notices found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
-
-  <div class="mb-3">
-    <label for="url" class="form-label">URL (optional)</label>
-    <input type="url" class="form-control" name="url" id="url" />
-  </div>
-
-  <button type="submit" class="btn btn-primary">Save Notice</button>
-  <button type="button" class="btn btn-secondary" id="clearBtn">Clear</button>
-</form>
-
-<hr />
-
-<!-- List of Notices -->
-<h3>Existing Notices</h3>
-
-<table class="table table-bordered table-striped">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th>URL</th>
-      <th>Created At</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for notice in notices %}
-    <tr>
-      <td>{{ notice.title }}</td>
-      <td>{{ notice.description }}</td>
-      <td>
-        {% if notice.url %}
-        <a href="{{ notice.url }}" target="_blank">Link</a>
-        {% else %} - {% endif %}
-      </td>
-      <td>{{ notice.created_at }}</td>
-      <td>
-        <button
-          class="btn btn-sm btn-info editBtn"
-          data-id="{{ notice.id }}"
-          data-title="{{ notice.title }}"
-          data-description="{{ notice.description }}"
-          data-url="{{ notice.url or '' }}"
-        >
-          Edit
-        </button>
-
-        <form
-          method="POST"
-          action="{{ url_for('delete_notice', notice_id=notice.id) }}"
-          style="display: inline-block"
-          onsubmit="return confirm('Are you sure you want to delete this notice?');"
-        >
-          <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-        </form>
-      </td>
-    </tr>
-    {% else %}
-    <tr>
-      <td colspan="5" class="text-center">No notices found.</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+</div>
 
 <script>
   // Edit button click handler

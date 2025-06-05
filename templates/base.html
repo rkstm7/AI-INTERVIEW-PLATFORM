@@ -64,7 +64,12 @@
         background: #084298;
       }
 
-      
+      /* Center flash alerts with max width */
+      .alert {
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
     </style>
   </head>
   <body>
@@ -75,12 +80,21 @@
     'partials/public_navbar.html' %} {% endif %}
 
     <div class="container mt-4">
-      {% with messages = get_flashed_messages() %} {% if messages %}
-      <div class="alert alert-info" role="alert">
-        {% for message in messages %} {{ message }}<br />
-        {% endfor %}
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div
+        class="alert alert-{{ category }} alert-dismissible fade show mx-auto"
+        role="alert"
+      >
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
       </div>
-      {% endif %} {% endwith %} {% block content %}{% endblock %}
+      {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
     </div>
 
     <!-- Dark/Light mode toggle button -->
@@ -121,6 +135,15 @@
             ? '<i class="bi bi-moon"></i>'
             : '<i class="bi bi-sun"></i>';
       }
+
+      // Auto-dismiss flash alerts after 5 seconds
+      setTimeout(() => {
+        const alerts = document.querySelectorAll(".alert");
+        alerts.forEach((alert) => {
+          const bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        });
+      }, 2000);
     </script>
 
     {% include 'footer.html' %}
