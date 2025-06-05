@@ -1,0 +1,165 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
+
+  .resource-wrapper {
+    max-width: 1080px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+  }
+
+  .resource-title {
+    font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
+    color: #0d6efd;
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+
+  .resource-title::after {
+    content: "";
+    width: 60px;
+    height: 3px;
+    background: #0d6efd;
+    display: block;
+    margin: 0.5rem auto 0;
+    border-radius: 50px;
+  }
+
+  .card {
+    border-radius: 1.25rem;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #ffffff, #f1f3ff);
+    box-shadow: 0 8px 20px rgba(13, 110, 253, 0.1);
+  }
+
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 18px 45px rgba(13, 110, 253, 0.25);
+  }
+
+  .card-body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #6610f2;
+    margin-bottom: 0.8rem;
+  }
+
+  .card-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #444;
+    flex-grow: 1;
+    margin-bottom: 1.2rem;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+    border: none;
+    font-weight: 600;
+    padding: 0.45rem 1.4rem;
+    border-radius: 50px;
+    box-shadow: 0 6px 12px rgba(13, 110, 253, 0.25);
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #6610f2 0%, #0d6efd 100%);
+    box-shadow: 0 10px 24px rgba(102, 16, 242, 0.5);
+  }
+
+  .text-muted {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #6c757d;
+  }
+
+  .btn-secondary {
+    border-radius: 30px;
+    padding: 0.6rem 2rem;
+    font-weight: 700;
+    background-color: #6c757d;
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(108, 117, 125, 0.25);
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+
+  .alert-info {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0d6efd;
+    background-color: #eaf3ff;
+    border-radius: 1rem;
+    padding: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .resource-title {
+      font-size: 1.6rem;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<div class="resource-wrapper">
+  <h3 class="resource-title">
+    Learning Resources for "{{ selected_role_name }}"
+  </h3>
+
+  {% if resources %}
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    {% for r in resources %}
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ r['title'] }}</h5>
+          <p class="card-text">{{ r['description'] }}</p>
+          <div class="mt-auto">
+            <a
+              href="{{ r['url'] }}"
+              class="btn btn-outline-primary btn-sm"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Visit
+            </a>
+            <p class="mt-2 text-muted">Added on: {{ r['created_at'] }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="alert alert-info mt-4 text-center">
+    No resources found for this role.
+  </div>
+  {% endif %}
+
+  <div class="d-flex justify-content-center mt-5">
+    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary px-4">
+      &larr; Back to Dashboard
+    </a>
+  </div>
+</div>
+{% endblock %}

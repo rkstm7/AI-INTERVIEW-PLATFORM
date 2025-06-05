@@ -1,0 +1,336 @@
+{% extends 'base.html' %} {% block title %}Interview Summary & Feedback{%
+endblock %} {% block content %}
+<style>
+  body {
+    background: #f8f9fa;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .summary-container {
+    max-width: 950px;
+    margin: 60px auto 40px auto;
+    background: #ffffff;
+    padding: 40px 50px;
+    border-radius: 18px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  .feedback-form {
+    max-width: 950px;
+    margin: 0 auto 80px auto;
+    background: #ffffff;
+    padding: 50px;
+    border-radius: 18px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .score-summary {
+    margin-bottom: 40px;
+  }
+
+  .score-card {
+    background: linear-gradient(to right, #667eea, #764ba2);
+    padding: 30px 40px;
+    border-radius: 16px;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    transition: transform 0.3s ease;
+  }
+
+  .score-card:hover {
+    transform: scale(1.02);
+  }
+
+  .score-title {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    background: linear-gradient(to right, #ffffff, #e2e2e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .score-details {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+
+  .score-box,
+  .accuracy-box {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+    padding: 25px 35px;
+    min-width: 180px;
+    backdrop-filter: blur(6px);
+    box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+  }
+
+  .score-box h4,
+  .accuracy-box h4 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+
+  .score-box p,
+  .accuracy-box p {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    color: #fff;
+  }
+
+  .message-alert {
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  .btn-group {
+    margin-top: 25px;
+    text-align: center;
+  }
+
+  .btn-warning,
+  .btn-success {
+    font-size: 18px;
+    padding: 10px 28px;
+    border-radius: 30px;
+  }
+
+  .form-title {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 35px;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .input-group {
+    margin-bottom: 25px;
+  }
+
+  .input-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 16px;
+  }
+
+  .input-group .form-control {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+
+  .input-group .form-control:focus {
+    border-color: #764ba2;
+    box-shadow: 0 0 0 0.2rem rgba(118, 75, 162, 0.25);
+    outline: none;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  .question-block {
+    margin-bottom: 30px;
+    padding: 15px 20px;
+    background-color: #f9f9fc;
+    border-radius: 12px;
+    border: 1px solid #e0e0f0;
+  }
+
+  label.rating-label {
+    color: #000;
+    font-size: 17px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .stars {
+    direction: rtl;
+    display: flex;
+    justify-content: start;
+    gap: 5px;
+  }
+
+  .stars input[type="radio"] {
+    display: none;
+  }
+
+  .stars label {
+    font-size: 28px;
+    color: #ccc;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .stars label:hover,
+  .stars label:hover ~ label,
+  .stars input:checked ~ label {
+    color: #ffbb00;
+    transform: scale(1.1);
+  }
+
+  .submit-btn {
+    background: linear-gradient(to right, #667eea, #764ba2);
+    border: none;
+    color: #fff;
+    padding: 12px 30px;
+    font-size: 17px;
+    border-radius: 30px;
+    margin-top: 30px;
+    transition: background 0.3s ease;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .submit-btn:hover {
+    background: linear-gradient(to right, #5a67d8, #6b46c1);
+  }
+</style>
+
+<div class="summary-container">
+  <div class="score-summary">
+    <div class="score-card">
+      <h3 class="score-title">🎯 Your Performance Summary</h3>
+      <div class="score-details">
+        <div class="score-box">
+          <h4>Score</h4>
+          <p>{{ score }} / {{ questions|length * 2 }}</p>
+        </div>
+        <div class="accuracy-box">
+          <h4>Accuracy</h4>
+          <p>{{ accuracy }}%</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="message-alert alert alert-info mt-4">
+      <strong>{{ message }}</strong>
+    </div>
+
+    <div class="btn-group">
+      {% if retake %}
+      <a href="/interview/start" class="btn btn-warning">🔁 Retake Interview</a>
+      {% else %}
+      <a href="/" class="btn btn-success">🏠 Go to Dashboard</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="feedback-form">
+  <h2 class="form-title">Interview Feedback</h2>
+  <form method="POST" action="/feedback">
+    <div class="input-group">
+      <label for="name" class="form-label">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        placeholder="Enter your name"
+        required
+      />
+    </div>
+
+    <div class="input-group">
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        placeholder="Enter your email"
+        required
+      />
+    </div>
+
+    {% set extra_questions = [ "Was the AI's introduction and guidance clear?",
+    "How relevant were the questions to the selected job role?", "Was the voice
+    recognition (Whisper) accurate and smooth?", "Were the AI-generated
+    questions challenging enough?", "Did the AI provide helpful follow-up
+    questions?", "Was the scoring and feedback accurate and understandable?",
+    "Did the platform simulate a real interview experience?", "Was the overall
+    interface user-friendly?", "Would you recommend this AI Interview platform
+    to others?", "How satisfied are you with the overall experience?" ] %} {%
+    for i in range(extra_questions|length) %}
+    <div class="question-block">
+      <label class="rating-label">Q{{ i+1 }}. {{ extra_questions[i] }}</label>
+      <div class="stars" data-question="uxq{{ i+1 }}">
+        {% for star in range(5, 0, -1) %}
+        <input
+          type="radio"
+          id="uxq{{ i+1 }}-star{{ star }}"
+          name="ux_feedback_{{ i+1 }}"
+          value="{{ star }}"
+          required
+        />
+        <label for="uxq{{ i+1 }}-star{{ star }}">★</label>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="input-group">
+      <label for="message">Any suggestions or comments?</label>
+      <textarea
+        class="form-control"
+        id="message"
+        name="message"
+        rows="4"
+        placeholder="Your feedback..."
+        required
+      ></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn">Submit Feedback</button>
+  </form>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const starGroups = document.querySelectorAll(".stars");
+    starGroups.forEach((group) => {
+      const radios = group.querySelectorAll('input[type="radio"]');
+      radios.forEach((radio) => {
+        radio.addEventListener("click", function () {
+          if (this.checked && this.previousChecked) {
+            this.checked = false;
+            this.previousChecked = false;
+          } else {
+            radios.forEach((r) => (r.previousChecked = false));
+            this.previousChecked = true;
+          }
+        });
+      });
+    });
+  });
+</script>
+{% endblock %}

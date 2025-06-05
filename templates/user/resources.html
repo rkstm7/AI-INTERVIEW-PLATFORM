@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  /* Ensure full page uses flex column to keep footer at bottom */
+  html, body {
+    height: 100%;
+    margin: 0;
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* The main wrapper that holds content grows to fill available space */
+  #main-content {
+    min-height: calc(100vh - 70px); /* adjust 70px to footer height */
+    display: flex;
+    flex-direction: column;
+    padding: 3rem 1.5rem 4rem; /* bottom padding so content doesn't touch footer */
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  h2 {
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: #0d6efd;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+  }
+
+  select.form-select {
+    flex: 1 1 300px;
+    min-width: 220px;
+    font-weight: 600;
+    border-radius: 0.8rem;
+    border: 2px solid #ced4da;
+    padding: 0.5rem 1rem;
+    transition: border-color 0.3s ease;
+  }
+
+  select.form-select:focus {
+    outline: none;
+    border-color: #6610f2;
+    box-shadow: 0 0 8px rgba(102, 16, 242, 0.3);
+  }
+
+  button.btn {
+    flex: 0 0 auto;
+    min-width: 140px;
+    font-weight: 700;
+    border-radius: 50px;
+    padding: 0.5rem 1.5rem;
+    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  button.btn-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+    border: none;
+    color: #fff;
+  }
+  button.btn-primary:hover {
+    background: linear-gradient(135deg, #6610f2 0%, #0d6efd 100%);
+    box-shadow: 0 8px 25px rgba(102, 16, 242, 0.5);
+  }
+
+  button.btn-success {
+    background: #198754;
+    border: none;
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+  }
+  button.btn-success:hover {
+    background: #157347;
+    box-shadow: 0 8px 25px rgba(21, 115, 71, 0.5);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px, 1fr));
+    gap: 1.75rem;
+  }
+
+  .card {
+    background: #ffffff;
+    border-radius: 1rem;
+    padding: 1.8rem 1.5rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 45px rgba(13, 110, 253, 0.15);
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #6610f2;
+    margin-bottom: 0.8rem;
+  }
+
+  .card-text {
+    flex-grow: 1;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #444;
+    margin-bottom: 1.2rem;
+    min-height: 80px;
+  }
+
+  .btn-primary.btn-sm {
+    font-weight: 700;
+    padding: 0.35rem 1rem;
+    border-radius: 30px;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+  }
+
+  .btn-primary.btn-sm:hover {
+    box-shadow: 0 8px 24px rgba(102, 16, 242, 0.5);
+  }
+
+  .text-muted {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-top: 0.6rem;
+  }
+
+  .alert-info {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0d6efd;
+    background-color: #e7f1ff;
+    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    text-align: center;
+  }
+
+  .btn-secondary {
+    border-radius: 50px;
+    padding: 0.6rem 2.5rem;
+    font-weight: 700;
+    background-color: #6c757d;
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(108, 117, 125, 0.25);
+    transition: background-color 0.3s ease;
+  }
+  .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+
+  @media (max-width: 576px) {
+    form {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    select.form-select,
+    button.btn {
+      width: 100%;
+      flex: none;
+    }
+  }
+</style>
+
+<div id="main-content">
+  <h2>Select Job/Domain Role to Start Learning</h2>
+
+  <form method="GET" autocomplete="off">
+    <select name="role_id" class="form-select" required>
+      <option value="" disabled selected>Select a job role</option>
+      {% for role in job_roles %}
+        <option value="{{ role[0] }}" {% if role[0] == selected_role_id %}selected{% endif %}>{{ role[1] }}</option>
+      {% endfor %}
+    </select>
+    <div style="margin-top:1rem; display:flex; gap:1rem; flex-wrap: wrap;">
+      <button type="submit" name="action" value="resources" class="btn btn-primary">View Here</button>
+      <button type="submit" name="action" value="qa" class="btn btn-success">Start Learning</button>
+    </div>
+  </form>
+
+  {% if selected_role_id and action == 'resources' %}
+    {% if resources %}
+      <h3 class="text-primary mb-4" style="margin-top: 3rem;">Learning Resources for "{{ selected_role_name }}"</h3>
+      <div class="row">
+        {% for r in resources %}
+        <div class="card">
+          <h5 class="card-title">{{ r['title'] }}</h5>
+          <p class="card-text">{{ r['description'] }}</p>
+          <a href="{{ r['url'] }}" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener">Visit</a>
+          <p class="text-muted">Added on: {{ r['created_at'] }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-info mt-4">
+        No resources found for this role.
+      </div>
+    {% endif %}
+  {% endif %}
+
+  <div class="d-flex justify-content-center mt-5">
+    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary px-4">
+      &larr; Back to Dashboard
+    </a>
+  </div>
+</div>
+{% endblock %}

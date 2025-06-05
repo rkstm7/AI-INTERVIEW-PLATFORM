@@ -1,0 +1,113 @@
+{% extends 'base.html' %} {% block title %}Manage Notices{% endblock %} {% block
+content %}
+<h2>Manage Notices</h2>
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+%} {% for category, message in messages %}
+<div class="alert alert-{{ category }}">{{ message }}</div>
+{% endfor %} {% endif %} {% endwith %}
+
+<!-- Notice form -->
+<form method="POST" id="noticeForm">
+  <input type="hidden" name="notice_id" id="notice_id" />
+
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input type="text" class="form-control" name="title" id="title" required />
+  </div>
+
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <textarea
+      class="form-control"
+      name="description"
+      id="description"
+      rows="3"
+      required
+    ></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label for="url" class="form-label">URL (optional)</label>
+    <input type="url" class="form-control" name="url" id="url" />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Save Notice</button>
+  <button type="button" class="btn btn-secondary" id="clearBtn">Clear</button>
+</form>
+
+<hr />
+
+<!-- List of Notices -->
+<h3>Existing Notices</h3>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>URL</th>
+      <th>Created At</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for notice in notices %}
+    <tr>
+      <td>{{ notice.title }}</td>
+      <td>{{ notice.description }}</td>
+      <td>
+        {% if notice.url %}
+        <a href="{{ notice.url }}" target="_blank">Link</a>
+        {% else %} - {% endif %}
+      </td>
+      <td>{{ notice.created_at }}</td>
+      <td>
+        <button
+          class="btn btn-sm btn-info editBtn"
+          data-id="{{ notice.id }}"
+          data-title="{{ notice.title }}"
+          data-description="{{ notice.description }}"
+          data-url="{{ notice.url or '' }}"
+        >
+          Edit
+        </button>
+
+        <form
+          method="POST"
+          action="{{ url_for('delete_notice', notice_id=notice.id) }}"
+          style="display: inline-block"
+          onsubmit="return confirm('Are you sure you want to delete this notice?');"
+        >
+          <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="5" class="text-center">No notices found.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+  // Edit button click handler
+  document.querySelectorAll(".editBtn").forEach((button) => {
+    button.addEventListener("click", () => {
+      document.getElementById("notice_id").value = button.dataset.id;
+      document.getElementById("title").value = button.dataset.title;
+      document.getElementById("description").value = button.dataset.description;
+      document.getElementById("url").value = button.dataset.url;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+
+  // Clear button resets the form
+  document.getElementById("clearBtn").addEventListener("click", () => {
+    document.getElementById("noticeForm").reset();
+    document.getElementById("notice_id").value = "";
+  });
+</script>
+{% endblock %}

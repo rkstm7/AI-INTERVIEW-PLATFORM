@@ -1,0 +1,187 @@
+<!-- Navbar -->
+<nav
+  class="navbar navbar-expand-lg navbar-dark shadow-lg sticky-top py-3"
+  style="background-color: #1a1a2e; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3)"
+>
+  <div class="container px-4">
+    <!-- MATCHED WITH FOOTER -->
+    <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" href="/">
+      <img
+        src="{{ url_for('static', filename='images/logo.png') }}"
+        alt="Logo"
+        class="logo-img"
+      />
+      AI Interview Platform
+    </a>
+    <button
+      class="navbar-toggler border border-2 border-cyan rounded"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarPublic"
+      aria-controls="navbarPublic"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      style="filter: invert(100%)"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarPublic">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="loginDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Login
+          </a>
+          <ul
+            class="dropdown-menu shadow-lg"
+            aria-labelledby="loginDropdown"
+            style="background-color: #1a1a2e; border: none"
+          >
+            <li>
+              <a
+                class="dropdown-item text-light"
+                href="{{ url_for('user_login') }}?role=User"
+                >User Login</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item text-light"
+                href="{{ url_for('admin_login') }}?role=Admin"
+                >Admin Login</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link register-link" href="{{ url_for('register') }}"
+            >Register</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Styles -->
+<style>
+  :root {
+    --cyan: rgb(128, 239, 239);
+    --gold: #ffd700;
+    --gold-hover: rgb(255, 255, 255);
+  }
+
+  body {
+    background-color: #0f0f1a;
+    color: #ffffff;
+  }
+
+  .logo-img {
+    width: 60px;
+    height: auto;
+    margin-right: 12px;
+    filter: drop-shadow(0 0 4px var(--cyan));
+    transition: transform 0.3s ease, filter 0.3s ease;
+    cursor: pointer;
+    display: block;
+  }
+
+  .logo-img:hover {
+    transform: rotate(10deg) scale(1.15);
+    filter: drop-shadow(0 0 10px var(--cyan));
+  }
+
+  .navbar-nav.ms-auto {
+    margin-right: 30px;
+  }
+
+  .navbar-nav .nav-link {
+    color: rgb(128, 239, 239) !important;
+    font-weight: 600;
+    position: relative;
+    transition: color 0.4s ease, transform 0.3s ease, text-shadow 0.4s ease;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .navbar-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 3px;
+    bottom: -6px;
+    left: 0;
+    background: linear-gradient(90deg, var(--cyan), var(--gold));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .navbar-nav .nav-link:hover,
+  .navbar-nav .nav-link:focus {
+    color: var(--gold-hover) !important;
+    transform: scale(1.07);
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.85);
+  }
+
+  .navbar-nav .nav-link:hover::after,
+  .navbar-nav .nav-link:focus::after {
+    width: 100%;
+  }
+
+  .dropdown-menu .dropdown-item {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: #e0e0e0 !important;
+  }
+
+  .dropdown-menu .dropdown-item:hover,
+  .dropdown-menu .dropdown-item:focus {
+    background: linear-gradient(90deg, var(--cyan), var(--gold));
+    color: #1a1a1a !important;
+    font-weight: 600;
+    border-radius: 5px;
+  }
+
+  .navbar-nav .nav-item {
+    margin-left: 1.5rem;
+  }
+
+  .register-link {
+    background: rgb(4, 74, 64);
+    padding: 8px 20px;
+    border-radius: 30px;
+    color: #fff !important;
+    font-weight: 700;
+    box-shadow: 0 5px 18px rgba(4, 74, 64, 0.7);
+    transition: background 0.4s ease, color 0.4s ease, transform 0.3s ease,
+      box-shadow 0.4s ease;
+  }
+
+  .register-link:hover,
+  .register-link:focus {
+    background: linear-gradient(90deg, var(--gold), var(--cyan));
+    color: #000 !important;
+    transform: scale(1.12);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.8);
+  }
+
+  .navbar-brand {
+    transition: color 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease;
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .navbar-brand:hover,
+  .navbar-brand:focus {
+    color: var(--gold-hover);
+    transform: scale(1.05);
+    text-shadow: 0 0 8px var(--gold);
+  }
+</style>

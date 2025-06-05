@@ -1,0 +1,203 @@
+{% extends "base.html" %} {% block content %}
+<style>
+  body {
+    background: #f8f9fa;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .feedback-form {
+    max-width: 950px;
+    margin: 60px auto;
+    background: #ffffff;
+    padding: 50px;
+    border-radius: 18px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .form-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 35px;
+    text-align: center;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  label.rating-label {
+    color: #000;
+    font-size: 17px;
+    font-weight: 500;
+    margin-top: 25px;
+    display: block;
+  }
+
+  .stars {
+    direction: rtl;
+    display: inline-flex;
+    gap: 5px;
+  }
+
+  .stars input[type="radio"] {
+    display: none;
+  }
+
+  .stars label {
+    font-size: 28px;
+    color: #ccc;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .stars label:hover,
+  .stars label:hover ~ label,
+  .stars input:checked ~ label {
+    color: #ffbb00;
+    transform: scale(1.1);
+  }
+
+  .form-control,
+  textarea {
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  .submit-btn {
+    background: linear-gradient(to right, #667eea, #764ba2);
+    border: none;
+    color: #fff;
+    padding: 12px 30px;
+    font-size: 17px;
+    border-radius: 30px;
+    margin-top: 30px;
+    transition: background 0.3s ease;
+  }
+
+  .submit-btn:hover {
+    background: linear-gradient(to right, #5a67d8, #6b46c1);
+  }
+
+  .question-block {
+    margin-bottom: 30px;
+    padding: 15px 20px;
+    background-color: #f9f9fc;
+    border-radius: 12px;
+    border: 1px solid #e0e0f0;
+  }
+</style>
+
+<div class="container">
+  <div class="feedback-form">
+    <h2 class="form-title">Feedback Section</h2>
+    <form method="POST" action="/send_feedback">
+      <!-- Name and Email -->
+      <div class="mb-4">
+        <label for="name" class="form-label text-black">Your Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          required
+        />
+      </div>
+      <div class="mb-4">
+        <label for="email" class="form-label text-black">Your Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          required
+        />
+      </div>
+
+      <!-- AI Interview Questions -->
+      {% set questions = [ "Was the AI's introduction and guidance clear?", "How
+      relevant were the questions to the selected job role?", "Was the voice
+      recognition (Whisper) accurate and smooth?", "Were the AI-generated
+      questions challenging enough?", "Did the AI provide helpful follow-up
+      questions?", "Was the scoring and feedback accurate and understandable?",
+      "Did the platform simulate a real interview experience?", "Was the overall
+      interface user-friendly?", "Would you recommend this AI Interview platform
+      to others?", "How satisfied are you with the overall experience?" ] %} {%
+      for i in range(questions|length) %}
+      <div class="question-block">
+        <label class="rating-label">Q{{ i+1 }}. {{ questions[i] }}</label>
+        <div class="stars" data-question="q{{ i+1 }}">
+          {% for star in range(5, 0, -1) %}
+          <input
+            type="radio"
+            id="q{{ i+1 }}-star{{ star }}"
+            name="q{{ i+1 }}"
+            value="{{ star }}"
+          />
+          <label for="q{{ i+1 }}-star{{ star }}">★</label>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+
+      <!-- Message -->
+      <div class="mb-4">
+        <label for="message" class="form-label text-black"
+          >Any suggestions or comments?</label
+        >
+        <textarea
+          class="form-control"
+          id="message"
+          name="message"
+          rows="4"
+          required
+        ></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="submit" class="submit-btn">Send Feedback</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toggle Star Selection Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const starGroups = document.querySelectorAll(".stars");
+
+    starGroups.forEach((group) => {
+      const radios = group.querySelectorAll('input[type="radio"]');
+
+      radios.forEach((radio) => {
+        radio.addEventListener("click", function () {
+          if (this.checked && this.previousChecked) {
+            this.checked = false;
+            this.previousChecked = false;
+          } else {
+            radios.forEach((r) => (r.previousChecked = false));
+            this.previousChecked = true;
+          }
+        });
+      });
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block title %}User Activity Monitor{%
+endblock %} {% block content %}
+<div class="container mt-4">
+  <h2>User Activity Log</h2>
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Activity</th>
+        <th>Timestamp</th>
+        <th>IP Address</th>
+        <th>User Agent</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for activity in activities %}
+      <tr>
+        <td>{{ activity[0] }}</td>
+        <td>{{ activity[1] }}</td>
+        <td>{{ activity[2] }}</td>
+        <td>{{ activity[3] }}</td>
+        <td>{{ activity[4] }}</td>
+        <td style="max-width: 300px">{{ activity[5] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

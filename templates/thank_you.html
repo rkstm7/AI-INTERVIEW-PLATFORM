@@ -1,0 +1,89 @@
+{% extends "base.html" %} {% block content %}
+<style>
+  body {
+    background: #f8f9fa;
+    color: #fff;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .thank-you-container {
+    max-width: 700px;
+    margin: 80px auto;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(12px);
+    animation: slideFadeIn 1.2s ease-in-out;
+    text-align: center;
+  }
+
+  .thank-you-container h2 {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    background: linear-gradient(to right,rgb(238, 155, 155),rgb(47, 51, 253));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: popUp 0.8s ease forwards;
+  }
+
+  .thank-you-container p {
+    font-size: 20px;
+    margin-bottom: 30px;
+    animation: fadeIn 1.5s ease-in;
+  }
+
+  .thank-you-container .btn-primary {
+    font-size: 18px;
+    padding: 12px 28px;
+    border-radius: 30px;
+    background: linear-gradient(to right, #43cea2, #185a9d);
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  .thank-you-container .btn-primary:hover {
+    background: linear-gradient(to right, #185a9d, #43cea2);
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  @keyframes slideFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes popUp {
+    0% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+</style>
+
+<div class="thank-you-container">
+  <h2>🎉 Thank You!</h2>
+  <p>Your feedback has been submitted successfully.</p>
+  <a href="/" class="btn btn-outline-primary">🏠 Back to Home</a>
+</div>
+{% endblock %}

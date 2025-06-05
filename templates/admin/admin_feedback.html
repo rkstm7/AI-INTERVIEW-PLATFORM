@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block content %}
+<h2 class="mb-4">User Feedback</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Message</th>
+      <th>Ratings (Q1 - Q10)</th>
+      <th>Submitted At</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for fb in feedbacks %}
+    <tr>
+      <td>{{ fb.name }}</td>
+      <td>{{ fb.email }}</td>
+      <td style="max-width: 300px">{{ fb.message }}</td>
+      <td>
+        {{ fb.q1 }}, {{ fb.q2 }}, {{ fb.q3 }}, {{ fb.q4 }}, {{ fb.q5 }},<br />
+        {{ fb.q6 }}, {{ fb.q7 }}, {{ fb.q8 }}, {{ fb.q9 }}, {{ fb.q10 }}
+      </td>
+      <td>{{ fb.submitted_at }}</td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="5">No feedback yet.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

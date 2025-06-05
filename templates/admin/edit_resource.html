@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Resource{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Edit Learning Resource</h2>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="alert alert-success">
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <form method="POST" action="{{ url_for('edit_resource', id=resource['id']) }}">
+    <div class="mb-3">
+      <label for="job_role" class="form-label">Job Role</label>
+      <select class="form-select" id="job_role" name="job_role" required>
+        {% for role in job_roles %}
+        <option value="{{ role['id'] }}" {% if role['id'] == resource['job_role_id'] %}selected{% endif %}>{{ role['name'] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="title" class="form-label">Resource Title</label>
+      <input type="text" class="form-control" id="title" name="title" value="{{ resource['title'] }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description (Optional)</label>
+      <textarea class="form-control" id="description" name="description" rows="3">{{ resource['description'] }}</textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="url" class="form-label">Resource URL</label>
+      <input type="url" class="form-control" id="url" name="url" value="{{ resource['url'] }}" required>
+    </div>
+
+    <button type="submit" class="btn btn-success">Update Resource</button>
+    <a href="{{ url_for('manage_resources') }}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

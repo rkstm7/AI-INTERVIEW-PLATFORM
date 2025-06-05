@@ -1,0 +1,221 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-5">
+  <h1 class="mb-4 text-primary fw-bold">Admin Dashboard</h1>
+  <p class="lead text-secondary mb-5">
+    Welcome, <span class="fw-semibold">{{ user.name }}</span>! Use the
+    navigation below to manage and monitor the platform efficiently.
+  </p>
+
+  <!-- Summary Cards -->
+  <div class="row mb-5">
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card shadow-sm border-primary h-100">
+        <div class="card-body text-center bg-primary text-white rounded">
+          <h5 class="card-title">Total Users</h5>
+          <p class="display-4 fw-bold">{{ total_users }}</p>
+          <i class="bi bi-people-fill fs-1"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card shadow-sm border-success h-100">
+        <div class="card-body text-center bg-success text-white rounded">
+          <h5 class="card-title">Active Sessions</h5>
+          <p class="display-4 fw-bold">{{ active_sessions }}</p>
+          <i class="bi bi-clock-history fs-1"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card shadow-sm border-info h-100">
+        <div class="card-body text-center bg-info text-white rounded">
+          <h5 class="card-title">Active Users</h5>
+          <p class="display-4 fw-bold">{{ active_users }}</p>
+          <i class="bi bi-person-check-fill fs-1"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card shadow-sm border-danger h-100">
+        <div class="card-body text-center bg-danger text-white rounded">
+          <h5 class="card-title">Offline Users</h5>
+          <p class="display-4 fw-bold">{{ offline_users }}</p>
+          <i class="bi bi-person-dash-fill fs-1"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Functional Sections -->
+  <div class="row gy-4">
+    <!-- Manage Job Roles -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Manage Job Roles</h4>
+        </div>
+        <div class="card-body">
+          <a
+            href="{{ url_for('manage_job_roles') }}"
+            class="btn btn-outline-primary mb-3 w-100"
+          >
+            <i class="bi bi-briefcase-fill me-2"></i> Go to Job Role Manager
+          </a>
+          {% if job_roles %}
+          <ul class="list-group list-group-flush">
+            {% for role in job_roles %}
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+            >
+              <span class="fw-semibold">{{ role['name'] }}</span>
+              <small class="text-muted fst-italic"
+                >{{ role['description'] }}</small
+              >
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Monitor User Activity -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">Monitor User Activity</h4>
+        </div>
+        <div class="card-body">
+          <a
+            href="{{ url_for('monitor_activity') }}"
+            class="btn btn-outline-success mb-3 w-100"
+          >
+            <i class="bi bi-activity me-2"></i> Go to Activity Monitor
+          </a>
+          {% if user_activities %}
+          <ul
+            class="list-group list-group-flush activity-list"
+            style="max-height: 300px; overflow-y: auto"
+          >
+            {% for activity in user_activities %}
+            <li class="list-group-item small">
+              <span class="text-muted">{{ activity['timestamp'] }}</span> -
+              <strong>{{ activity['email'] }}</strong>: {{ activity['action'] }}
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- User Feedback -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark">
+          <h4 class="mb-0">Manual Feedback</h4>
+        </div>
+        <div class="card-body">
+          <a
+            href="{{ url_for('admin_feedback') }}"
+            class="btn btn-outline-warning mb-3 w-100"
+          >
+            <i class="bi bi-chat-dots-fill me-2"></i> Go to Feedback Viewer
+          </a>
+          {% if feedbacks %}
+          <ul
+            class="list-group list-group-flush feedback-list"
+            style="max-height: 300px; overflow-y: auto"
+          >
+            {% for feedback in feedbacks %}
+            <li class="list-group-item">
+              <strong>{{ feedback['email'] }}</strong>:
+              <q>{{ feedback['feedback_text'] }}</q>
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Learning Resources -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+          <h4 class="mb-0">Learning Resources</h4>
+        </div>
+        <div class="card-body">
+          <a
+            href="{{ url_for('manage_resources') }}"
+            class="btn btn-outline-info mb-3 w-100"
+          >
+            <i class="bi bi-journal-bookmark-fill me-2"></i> Go to Resources
+            Manager
+          </a>
+          {% if learning_resources %}
+          <ul class="list-group list-group-flush">
+            {% for resource in learning_resources %}
+            <li class="list-group-item">
+              <a
+                href="{{ resource['link'] }}"
+                target="_blank"
+                class="text-decoration-none"
+              >
+                {{ resource['title'] }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Manage Questions -->
+    <div class="col-lg-12">
+      <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
+          <h4 class="mb-0">Manage Questions</h4>
+        </div>
+        <div class="card-body">
+          <a
+            href="{{ url_for('manage_users') }}"
+            class="btn btn-outline-secondary mb-3 w-100"
+          >
+            <i class="bi bi-question-circle-fill me-2"></i> Go to Question
+            Manager
+          </a>
+          {% if questions %}
+          <ul class="list-group list-group-flush">
+            {% for question in questions %}
+            <li class="list-group-item">
+              <span class="badge bg-primary me-2"
+                >{{ question['job_role'] }}</span
+              >
+              {{ question['question_text'] }}
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .activity-list::-webkit-scrollbar,
+  .feedback-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  .activity-list::-webkit-scrollbar-thumb,
+  .feedback-list::-webkit-scrollbar-thumb {
+    background-color: #adb5bd;
+    border-radius: 3px;
+  }
+</style>
+{% endblock %}

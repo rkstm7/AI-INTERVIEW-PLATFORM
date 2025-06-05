@@ -1,0 +1,97 @@
+<style>
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #page-content {
+    flex: 1 0 auto;
+  }
+
+  footer.footer {
+    flex-shrink: 0;
+    background-color: #1a1a2e; /* Solid dark blue shade */
+    color: #f8f9fa;
+    border-top: 3px solid #00bcd4;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in-out;
+  }
+
+  footer.footer a {
+    color: #00d1ff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  footer.footer a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+
+  footer .social-icons a {
+    margin-right: 1rem;
+  }
+
+  @media (max-width: 576px) {
+    footer .container {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    footer .social-icons {
+      margin-top: 1rem;
+    }
+  }
+</style>
+
+<!-- Stylish Footer -->
+<footer class="footer mt-auto py-4 text-light">
+  <div
+    class="container px-4 d-flex justify-content-between align-items-center flex-wrap"
+  >
+    <!-- Left Side -->
+    <div class="mb-2 mb-md-0">
+      <p class="mb-1">
+        &copy; {{ current_year }} AI Interview Platform. All rights reserved.
+      </p>
+      <p class="mb-0">
+        <a href="{{ url_for('contact') }}">Contact Us</a> |
+        <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a> |
+        <a href="{{ url_for('terms_of_service') }}">Terms of Service</a>
+      </p>
+    </div>
+
+    <!-- Right Side: Social Icons -->
+    <div class="social-icons">
+      <a
+        href="https://www.facebook.com/yourprofile"
+        target="_blank"
+        title="Facebook"
+      >
+        <i class="fab fa-facebook fs-4"></i>
+      </a>
+      <a href="mailto:youremail@example.com" title="Email">
+        <i class="fas fa-envelope fs-4"></i>
+      </a>
+      <a href="https://twitter.com/yourprofile" target="_blank" title="Twitter">
+        <i class="fab fa-twitter fs-4"></i>
+      </a>
+      <a
+        href="https://www.linkedin.com/in/yourprofile"
+        target="_blank"
+        title="LinkedIn"
+      >
+        <i class="fab fa-linkedin fs-4"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- Font Awesome -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>

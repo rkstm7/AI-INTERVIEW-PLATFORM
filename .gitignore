@@ -1,0 +1,6 @@
+env/
+venv/
+.venv/
+myenv/
+.env/.env
+.env

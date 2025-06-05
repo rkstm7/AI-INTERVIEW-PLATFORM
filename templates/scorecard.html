@@ -1,0 +1,185 @@
+{% extends "base.html" %} {% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+  body {
+    background-color: #f8f9fa;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+
+  h2 {
+    text-align: center;
+    margin: 2rem 0 1.5rem;
+    color: rgb(209, 99, 31);
+    font-weight: 700;
+    font-size: 2.5rem;
+  }
+
+  .scorecard-table {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 3rem;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+  }
+
+  .scorecard-table thead tr th {
+    background-color: rgb(209, 99, 31);
+    color: white;
+    font-weight: 600;
+    padding: 12px 15px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .scorecard-table tbody tr {
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .scorecard-table tbody tr:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(13, 110, 253, 0.4);
+  }
+
+  .scorecard-table tbody tr td {
+    padding: 15px 15px;
+    text-align: center;
+    font-weight: 500;
+    color: #555;
+  }
+
+  .no-sessions {
+    text-align: center;
+    font-size: 1.25rem;
+    margin-top: 3rem;
+    color: #888;
+  }
+
+  /* Chart container */
+  #chart-container {
+    max-width: 900px;
+    margin: 0 auto 4rem;
+    padding: 1rem 1rem 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(13, 110, 253, 0.25);
+  }
+</style>
+
+<h2>Your Interview Scorecard</h2>
+
+{% if sessions %}
+<table class="scorecard-table" aria-label="Interview Scorecard Table">
+  <thead>
+    <tr>
+      <th>Session ID</th>
+      <th>Job Role</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Total Questions</th>
+      <th>Total Score</th>
+      <th>Percentage</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for session in sessions %}
+    <tr>
+      <td>{{ session['session_id'] }}</td>
+      <td>{{ session['job_role'] }}</td>
+      <td>{{ session['start_time'] }}</td>
+      <td>{{ session['end_time'] }}</td>
+      <td>{{ session['total_questions'] }}</td>
+      <td>{{ session['total_score'] }}</td>
+      <td>
+        {% if session['total_questions'] %} {{
+        "%.2f"|format((session['total_score'] / (session['total_questions'] *
+        2)) * 100) }}% {% else %} 0% {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div id="chart-container">
+  <canvas
+    id="scoreChart"
+    aria-label="Interview scores bar chart"
+    role="img"
+  ></canvas>
+</div>
+
+<script>
+  // Manually build labels and data arrays from template variables
+  const labels = [
+    {% for session in sessions %}
+      "Session {{ session['session_id'] }} ({{ session['job_role'] }})"{% if not loop.last %}, {% endif %}
+    {% endfor %}
+  ];
+
+  const percentages = [
+    {% for session in sessions %}
+      {% if session['total_questions'] %}
+        {{ ((session['total_score'] / (session['total_questions'] * 2)) * 100) | round(2) }}
+      {% else %}
+        0
+      {% endif %}
+      {% if not loop.last %}, {% endif %}
+    {% endfor %}
+  ];
+
+  const ctx = document.getElementById('scoreChart').getContext('2d');
+  const scoreChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Score Percentage (%)',
+        data: percentages,
+        backgroundColor: 'rgb(209, 99, 31)',
+        borderColor: 'rgba(13, 110, 253, 1)',
+        borderWidth: 1,
+        borderRadius: 6,
+        maxBarThickness: 50,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          ticks: {
+            callback: (value) => value + '%'
+          },
+          title: {
+            display: true,
+            text: 'Percentage Score',
+            font: { size: 14, weight: '600' }
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Interview Sessions',
+            font: { size: 14, weight: '600' }
+          }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: context => context.parsed.y + '%'
+          }
+        }
+      }
+    }
+  });
+</script>
+
+{% else %}
+<p class="no-sessions">No interview sessions found.</p>
+{% endif %} {% endblock %}

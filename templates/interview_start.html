@@ -1,0 +1,170 @@
+{% extends 'base.html' %} {% block title %}Start Interview{% endblock %} {%
+block content %}
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
+
+  .interview-wrapper {
+    padding: 3rem 1rem;
+  }
+
+  .card-style {
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  .interview-image {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .instructions {
+    padding: 1.8rem;
+  }
+
+  .instructions h5 {
+    font-weight: 700;
+    color: #0d6efd;
+    font-size: 1.25rem;
+  }
+
+  .instructions ul {
+    margin-top: 1rem;
+    padding-left: 1.25rem;
+    line-height: 1.7;
+    color: #555;
+    font-size: 0.95rem;
+  }
+
+  .form-section {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+  }
+
+  .form-section h4 {
+    font-weight: 700;
+  }
+
+  .btn-primary {
+    border-radius: 30px;
+    padding: 10px 30px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    border: none;
+    box-shadow: 0 6px 16px rgba(13, 110, 253, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #6610f2, #0d6efd);
+    box-shadow: 0 10px 24px rgba(102, 16, 242, 0.4);
+  }
+
+  .btn-secondary {
+    border-radius: 30px;
+    padding: 10px 26px;
+    font-weight: 600;
+    background-color: #6c757d;
+    color: #fff;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.2);
+  }
+
+  .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+</style>
+
+<div class="container interview-wrapper">
+  <div class="row">
+    <!-- Unified Image + Instructions Card -->
+    <div class="col-md-6 mb-4">
+      <div class="card-style">
+        <img
+          src="{{ url_for('static', filename='images/image6.webp') }}"
+          alt="Interview Visual"
+          class="interview-image"
+        />
+
+        <div class="instructions">
+          <h5>📋 Interview Instructions</h5>
+          <ul>
+            <li>Please sit in a quiet environment before starting.</li>
+            <li>Choose your desired job role from the dropdown.</li>
+            <li>Select the source of questions: AI or Manual.</li>
+            <li>Click "Start" to begin your mock interview.</li>
+            <li>Your responses will be recorded and evaluated.</li>
+            <li>
+              Ensure microphone access is granted for voice input (if required).
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interview Form -->
+    <div class="col-md-6">
+      <div class="form-section">
+        <h4 class="mb-4 text-primary">Start Interview</h4>
+        <form method="POST" action="/interview/start">
+          <div class="mb-3">
+            <label for="job_role" class="form-label">Select Job Role</label>
+            <select class="form-select" id="job_role" name="job_role" required>
+              <option value="" selected disabled>Select a job role</option>
+              {% for role in roles %}
+              <option value="{{ role.id }}">{{ role.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Select Question Source</label>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="mode"
+                id="mode_ai"
+                value="ai"
+                checked
+              />
+              <label class="form-check-label" for="mode_ai">
+                AI Generated Questions
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="mode"
+                id="mode_manual"
+                value="manual"
+              />
+              <label class="form-check-label" for="mode_manual">
+                Manual Questions
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">
+            Start Interview
+          </button>
+          <a
+            href="{{ url_for('dashboard') }}"
+            class="btn text-white btn-primary mt-3 ms-2"
+          >
+            Back to Home
+          </a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

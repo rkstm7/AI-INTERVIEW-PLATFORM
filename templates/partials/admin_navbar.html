@@ -1,0 +1,112 @@
+<nav
+  class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top"
+  style="background: linear-gradient(90deg, #1a1a1a, #333333)"
+>
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">AI Interview (Admin)</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarAdmin"
+      aria-controls="navbarAdmin"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon" style="filter: invert(100%)"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarAdmin">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('admin_dashboard') }}"
+            >Dashboard</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('manage_users') }}"
+            >Manage Users</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('manage_job_roles') }}"
+            >Job Roles</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('monitor_activity') }}"
+            >User Activity</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('view_feedback') }}"
+            >User Feedback</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('manage_resources') }}"
+            >Learning Resources</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('manage_questions') }}"
+            >Manage Question</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('view_feedback') }}"
+            >View AI Feedback</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('admin_feedback') }}"
+            >Manual Feedback</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('scorecard') }}"
+            >View Scorecard</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('manage_notice') }}">
+            Manage Notices
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<style>
+  /* Navbar link styles consistent with main navbar */
+  .navbar-nav .nav-link {
+    color: #eee !important;
+    font-weight: 600;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  .navbar-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #ffd700;
+    transition: width 0.3s ease;
+  }
+  .navbar-nav .nav-link:hover {
+    color: #ffd700 !important;
+  }
+  .navbar-nav .nav-link:hover::after {
+    width: 100%;
+  }
+
+  /* Add spacing for nav items */
+  .navbar-nav .nav-item {
+    margin-left: 1rem;
+  }
+</style>

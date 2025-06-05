@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block title %}Interview Scores{% endblock %}
+{% block content %}
+<h2>Interview Scores</h2>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Session ID</th>
+      <th>User ID</th>
+      <th>Job Role</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Total Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in scores %}
+    <tr>
+      <td>{{ s.session_id }}</td>
+      <td>{{ s.user_id }}</td>
+      <td>{{ s.job_role or 'N/A' }}</td>
+      <td>{{ s.start_time }}</td>
+      <td>{{ s.end_time }}</td>
+      <td>{{ s.total_score }}</td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="7">No scores available.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

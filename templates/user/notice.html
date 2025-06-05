@@ -1,0 +1,143 @@
+{% extends 'base.html' %} {% block title %}Notices{% endblock %} {% block
+content %}
+
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
+
+  .notice-container {
+    max-width: 960px;
+    margin: 3rem auto 4rem;
+    padding: 0 1.25rem;
+  }
+
+  .back-btn {
+    margin-bottom: 2rem;
+    font-weight: 600;
+    border-radius: 50px;
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .back-btn:hover {
+    background-color: #0d6efd;
+    color: white;
+    box-shadow: 0 6px 15px rgba(13, 110, 253, 0.4);
+  }
+
+  h2 {
+    font-weight: 800;
+    font-size: 2.8rem;
+    color: #0d6efd;
+    text-align: center;
+    margin-bottom: 3rem;
+    letter-spacing: 0.03em;
+  }
+
+  .row.g-4 {
+    gap: 1.75rem 2rem;
+  }
+
+  .notice-card {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.35s ease, transform 0.35s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .notice-card:hover {
+    box-shadow: 0 18px 40px rgba(13, 110, 253, 0.35);
+    transform: translateY(-8px);
+  }
+
+  .card-body {
+    flex-grow: 1;
+    padding: 1.8rem 2rem;
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 1rem;
+  }
+
+  .card-text {
+    font-size: 1.05rem;
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+
+  .more-info-link {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #0d6efd;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .more-info-link:hover {
+    text-decoration: underline;
+    color: #0a58ca;
+  }
+
+  .card-footer {
+    padding: 0.75rem 2rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-align: right;
+    border-top: none;
+    font-style: italic;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 575.98px) {
+    .notice-container {
+      margin: 2rem 1rem 3rem;
+    }
+    h2 {
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+    }
+  }
+</style>
+
+<div class="notice-container">
+  <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary back-btn">
+    &larr; Back to Dashboard
+  </a>
+
+  <h2>📢 Notices</h2>
+
+  {% if notices %}
+  <div class="row g-4">
+    {% for notice in notices %}
+    <div class="col-md-6 col-sm-12">
+      <div class="card notice-card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ notice.title }}</h5>
+          <p class="card-text">{{ notice.description }}</p>
+          {% if notice.url %}
+          <a href="{{ notice.url }}" target="_blank" class="more-info-link">
+            More Info &rarr;
+          </a>
+          {% endif %}
+        </div>
+        <div class="card-footer">
+          Posted on: {{ notice.created_at.strftime('%b %d, %Y') if
+          notice.created_at else '' }}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-center text-muted fs-5 mt-5">No notices to display.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

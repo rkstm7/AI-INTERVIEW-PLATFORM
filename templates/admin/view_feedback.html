@@ -1,0 +1,50 @@
+{% extends 'base.html' %} {% block title %}User Feedback{% endblock %} {%
+block content %}
+<h2>User Feedback</h2>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>User ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Q1</th>
+      <th>Q2</th>
+      <th>Q3</th>
+      <th>Q4</th>
+      <th>Q5</th>
+      <th>Q6</th>
+      <th>Q7</th>
+      <th>Q8</th>
+      <th>Q9</th>
+      <th>Q10</th>
+      <th>Message</th>
+      <th>Submitted At</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for f in feedbacks %}
+    <tr>
+      <td>{{ f.user_id }}</td>
+      <td>{{ f.name }}</td>
+      <td>{{ f.email }}</td>
+      <td>{{ f.q1 }}</td>
+      <td>{{ f.q2 }}</td>
+      <td>{{ f.q3 }}</td>
+      <td>{{ f.q4 }}</td>
+      <td>{{ f.q5 }}</td>
+      <td>{{ f.q6 }}</td>
+      <td>{{ f.q7 }}</td>
+      <td>{{ f.q8 }}</td>
+      <td>{{ f.q9 }}</td>
+      <td>{{ f.q10 }}</td>
+      <td>{{ f.message }}</td>
+      <td>{{ f.submitted_at }}</td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="16">No feedback available.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

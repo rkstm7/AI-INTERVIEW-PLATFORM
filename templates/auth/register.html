@@ -1,0 +1,213 @@
+{% extends 'base.html' %} {% block title %}Register - My Flask App{% endblock %}
+{% block content %}
+<style>
+  body {
+    background: #f8f9fa;
+    font-family: "Poppins", sans-serif;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .login-wrapper {
+    max-width: 900px;
+    margin: 5rem auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 3rem 2.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+    animation: fadeIn 0.6s ease forwards;
+  }
+
+  .login-wrapper:hover {
+    box-shadow: 0 8px 35px rgba(0, 0, 0, 0.1);
+  }
+
+  h2 {
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #0d6efd;
+    letter-spacing: 0.03em;
+    transition: color 0.3s ease;
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: #343a40;
+    transition: color 0.3s ease;
+  }
+
+  .form-control {
+    border-radius: 0.5rem;
+    border: 1.5px solid #ced4da;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease,
+      background-color 0.3s ease;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.4);
+    background-color: #fff;
+  }
+
+  .btn-primary {
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease,
+      transform 0.2s ease;
+    background-color: #0d6efd;
+    border: none;
+    color: #fff;
+    padding: 0.75rem 1.25rem;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover,
+  .btn-primary:focus {
+    background-color: #0841c4;
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.6);
+    transform: translateY(-2px);
+    outline: none;
+  }
+
+  .text-danger {
+    font-size: 0.9rem;
+  }
+
+  /* Instructions styling */
+  .instructions h4 {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #0d6efd;
+    letter-spacing: 0.02em;
+    transition: color 0.3s ease;
+  }
+
+  .instructions ul {
+    padding-left: 1.5rem;
+    list-style: none; /* Remove default bullets */
+  }
+
+  .instructions li {
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+    color: #495057;
+    position: relative;
+    padding-left: 1.8rem;
+    transition: color 0.3s ease;
+  }
+
+  /* Add check icon before each list item */
+  .instructions li::before {
+    content: "\2713"; /* checkmark */
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #0d6efd;
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  /* Email link styling */
+  .instructions a {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+
+  .instructions a:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 767.98px) {
+    .login-wrapper {
+      margin: 2rem 1rem;
+      padding: 2rem 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+    }
+
+    .instructions li {
+      font-size: 0.95rem;
+      padding-left: 1.5rem;
+    }
+
+    .instructions li::before {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<div class="container login-wrapper">
+  <div class="row g-4">
+    <!-- Instructions -->
+    <div
+      class="col-md-6 instructions d-flex flex-column justify-content-center"
+    >
+      <h4>Register Instructions</h4>
+      <ul class="mb-0">
+        <li>Fill out all fields with accurate information.</li>
+        <li>Use a valid email address for account verification.</li>
+        <li>Choose a strong password for account security.</li>
+        <li>Keep your login credentials confidential.</li>
+      </ul>
+    </div>
+
+    <!-- Register Form -->
+    <div class="col-md-6">
+      <h2>Create Your Account</h2>
+      <form method="POST" action="{{ url_for('register') }}" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="mb-4">
+          {{ form.name.label(class="form-label") }} {{
+          form.name(class="form-control", placeholder="Enter your full name") }}
+          {% if form.name.errors %}
+          <div class="text-danger">{{ form.name.errors[0] }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-4">
+          {{ form.email.label(class="form-label") }} {{
+          form.email(class="form-control", placeholder="Enter your email address
+          ") }} {% if form.email.errors %}
+          <div class="text-danger">{{ form.email.errors[0] }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-4">
+          {{ form.password.label(class="form-label") }} {{
+          form.password(class="form-control", placeholder="Choose a strong password
+            ") }} {% if form.password.errors %}
+          <div class="text-danger">{{ form.password.errors[0] }}</div>
+          {% endif %}
+        </div>
+
+        {{ form.submit(class="btn btn-primary") }}
+
+        <div class="mt-3 text-center">
+          Already have an account?
+          <a href="{{ url_for('user_login') }}">Login here</a>.
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

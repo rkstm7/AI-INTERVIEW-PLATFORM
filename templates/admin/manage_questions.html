@@ -1,0 +1,129 @@
+{% extends 'base.html' %} {% block title %}Manage Questions{% endblock %} {%
+block content %}
+
+<div class="container mt-4">
+  <h2>Manage Questions</h2>
+  <a href="{{ url_for('add_question') }}" class="btn btn-primary mb-3"
+    >Add New Question</a
+  >
+
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %}
+  <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %} {% endif %} {% endwith %}
+
+  <!-- Manual Questions Section -->
+  <h4 class="mt-4">📝 Manually Added Questions</h4>
+  <form
+    action="{{ url_for('delete_all_questions', source_type='manual') }}"
+    method="POST"
+    onsubmit="return confirm('Are you sure you want to delete ALL manual questions?');"
+  >
+    <button type="submit" class="btn btn-danger mb-2">
+      Delete All Manual Questions
+    </button>
+  </form>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Job Role ID</th>
+        <th>Question</th>
+        <th>Options</th>
+        <th>Correct Option</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for q in manual_questions %}
+      <tr>
+        <td>{{ q['id'] }}</td>
+        <td>{{ q['job_role_id'] }}</td>
+        <td>{{ q['content'] }}</td>
+        <td>
+          A: {{ q['option_a'] }}<br />
+          B: {{ q['option_b'] }}<br />
+          C: {{ q['option_c'] }}<br />
+          D: {{ q['option_d'] }}
+        </td>
+        <td>{{ q['correct_option'] }}</td>
+        <td>
+          <a
+            href="{{ url_for('edit_question', id=q['id']) }}"
+            class="btn btn-sm btn-warning"
+            >Edit</a
+          >
+          <form
+            action="{{ url_for('delete_question', id=q['id']) }}"
+            method="post"
+            style="display: inline"
+            onsubmit="return confirm('Delete this question?');"
+          >
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="6">No manual questions found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- AI Questions Section -->
+  <h4 class="mt-5">🤖 AI Generated Questions</h4>
+  <form
+    action="{{ url_for('delete_all_questions', source_type='ai') }}"
+    method="POST"
+    onsubmit="return confirm('Are you sure you want to delete ALL AI questions?');"
+  >
+    <button type="submit" class="btn btn-danger mb-2">
+      Delete All AI Questions
+    </button>
+  </form>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Job Role ID</th>
+        <th>Question</th>
+        <th>Options</th>
+        <th>Correct Option</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for q in ai_questions %}
+      <tr>
+        <td>{{ q['id'] }}</td>
+        <td>{{ q['job_role_id'] }}</td>
+        <td>{{ q['content'] }}</td>
+        <td>
+          A: {{ q['option_a'] }}<br />
+          B: {{ q['option_b'] }}<br />
+          C: {{ q['option_c'] }}<br />
+          D: {{ q['option_d'] }}
+        </td>
+        <td>{{ q['correct_option'] }}</td>
+        <td>
+          <form
+            action="{{ url_for('delete_question', id=q['id']) }}"
+            method="post"
+            style="display: inline"
+            onsubmit="return confirm('Delete this question?');"
+          >
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="6">No AI questions found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

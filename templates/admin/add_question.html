@@ -1,0 +1,87 @@
+{% extends 'base.html' %} {% block title %}Add Question{% endblock %} {% block
+content %}
+<div class="container mt-4">
+  <h2>Add New Question</h2>
+
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %}
+  <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %} {% endif %} {% endwith %}
+
+  <form method="POST" action="{{ url_for('add_question') }}">
+    <div class="mb-3">
+      <label for="job_role_id" class="form-label">Job Role</label>
+      <select class="form-select" id="job_role_id" name="job_role_id" required>
+        <option value="">Select Job Role</option>
+        {% for role in job_roles %}
+        <option value="{{ role.id }}">{{ role.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="content" class="form-label">Question Content</label>
+      <textarea
+        class="form-control"
+        id="content"
+        name="content"
+        rows="3"
+        required
+      ></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Options</label>
+      <input
+        type="text"
+        class="form-control mb-1"
+        name="option_a"
+        placeholder="Option A"
+        required
+      />
+      <input
+        type="text"
+        class="form-control mb-1"
+        name="option_b"
+        placeholder="Option B"
+        required
+      />
+      <input
+        type="text"
+        class="form-control mb-1"
+        name="option_c"
+        placeholder="Option C"
+        required
+      />
+      <input
+        type="text"
+        class="form-control"
+        name="option_d"
+        placeholder="Option D"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="correct_option" class="form-label">Correct Option</label>
+      <select
+        class="form-select"
+        id="correct_option"
+        name="correct_option"
+        required
+      >
+        <option value="">Select correct option</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Add Question</button>
+    <a href="{{ url_for('manage_questions') }}" class="btn btn-secondary"
+      >Cancel</a
+    >
+  </form>
+</div>
+{% endblock %}

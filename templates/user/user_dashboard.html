@@ -1,0 +1,307 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  :root {
+    --primary-color:rgb(232, 91, 35);
+    --secondary-text: #6c757d;
+    --notice-bg: #f1fdf6;
+    --notice-border: #198754;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --profile-bg: rgba(26, 26, 26, 0.95);
+    --profile-accent:rgb(200, 13, 13);
+    --glass-blur: blur(14px);
+  }
+
+  .dashboard-wrapper {
+    max-width: 1200px;
+    margin: auto;
+    padding: 2rem;
+    background-color: #f9f9fa;
+    margin-left: 320px;
+    animation: fadeInUp 0.6s ease-in-out;
+  }
+
+  .profile-header {
+    margin-left: -158px;
+    font-size: 2.5rem;
+    text-align: center;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+  }
+
+  .profile-desc {
+    margin-left: -142px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--secondary-text);
+    margin-bottom: 2rem;
+  }
+
+  .container-row {
+    margin-left: -134px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: space-between;
+  }
+
+  .glass-box {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    flex: 1 1 calc(50% - 1rem);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .glass-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .glass-box h5 {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .notice-bar {
+    background-color: var(--notice-bg);
+    border-left: 4px solid var(--notice-border);
+    border-radius: 1rem;
+    padding: 1rem;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .notice-list {
+    max-height: 160px;
+    overflow-y: auto;
+  }
+
+  .notice-item {
+    font-size: 0.95rem;
+    color: #0c4128;
+    margin: 0.4rem 0;
+    padding-left: 0.5rem;
+    border-left: 3px solid #6c757d30;
+  }
+
+  .fade-slide-up {
+    animation: fadeInUp 0.6s ease-in-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .btn {
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .btn:hover {
+    opacity: 0.9;
+  }
+
+  /* Profile container (sidebar) */
+.profile-container {
+    margin-left: -20px;
+    margin-top: -10px;
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    width: 280px;
+    background: #1a1a2e;
+    color: rgb(239, 180, 118);
+    border-radius: 0rem;
+    box-shadow: 0 4px 20px rgba(0, 255, 255, 0.2);
+    backdrop-filter: var(--glass-blur);
+    padding: 5.9rem;
+    z-index: 1000;
+}
+
+  .profile-container .info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .profile-container .info i {
+    margin-right: 8px;
+  }
+  .profile-container h5 {
+  color: #fff;
+  font-weight: bold;
+}
+
+.profile-container .info div {
+  line-height: 1.6;
+}
+
+  .profile-container .logout {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+
+  .profile-container .logout a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    color: white;
+    border: 2px solid var(--profile-accent);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .profile-container .logout a:hover {
+    background-color: var(--profile-accent);
+    color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-wrapper {
+      margin-left: 0;
+      padding: 1rem;
+    }
+
+    .profile-container {
+      position: relative;
+      width: 100%;
+      margin-bottom: 1rem;
+      top: unset;
+      left: unset;
+    }
+
+    .container-row {
+      flex-direction: column;
+    }
+
+    .glass-box {
+      flex: 1 1 100%;
+    }
+  }
+</style>
+
+
+<!-- Profile Info Sidebar -->
+<div class="profile-container">
+  <h5 class="mb-3 text-light ">Your Profile Details</h5>
+  <div class="info">
+    <div><i class="fas fa-user"></i> <strong>Name:</strong> {{ current_user.name }}</div>
+    <div><i class="fas fa-envelope"></i> <strong>Email:</strong> {{ current_user.email }}</div>
+    <div><i class="fas fa-user-tag"></i> <strong>Role:</strong> {{ current_user.role }}</div>
+  </div>
+  <div class="logout">
+    <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+</div>
+
+
+<div class="dashboard-wrapper fade-slide-up">
+  <h2 class="profile-header">Welcome, {{ user.name | upper }}!</h2>
+  <p class="profile-desc text-dark">
+    Welcome to your AI Interview Dashboard. Explore job roles, prepare smartly, track your progress, and grow your career with confidence.
+  </p>
+
+  <div class="container-row">
+
+    <!-- Box 1: Explore -->
+    <div class="glass-box">
+      <h5>Explore</h5>
+      <form method="GET" action="{{ url_for('ques_ans') }}">
+        <select name="role_id" class="form-select mb-3" required>
+          <option value="" disabled selected>Select a job role</option>
+          {% for role in job_roles %}
+            <option value="{{ role[0] }}" {% if role[0] == selected_role_id %}selected{% endif %}>
+              {{ role[1] }}
+            </option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary w-100">Start Preparation</button>
+      </form>
+      <a href="{{ url_for('view_resources', role_id=user.role) }}" class="btn btn-outline-primary mt-3 w-100">ALL Learning Resources</a>
+      <a href="{{ url_for('start_interview') }}" class="btn btn-outline-primary mt-2 w-100">Interview Preparation</a>
+    </div>
+
+    <!-- Box 2: Progress & Feedback -->
+    <div class="glass-box">
+      <h5>Progress & Feedback</h5>
+      <a href="{{ url_for('scorecard') }}" class="btn btn-outline-primary mb-3 w-100">Scorecard</a>
+      <a href="{{ url_for('manual_feedback') }}" class="btn btn-outline-primary w-100">Feedback</a>
+    </div>
+
+    <!-- Box 3: Resume & Support -->
+    <div class="glass-box">
+      <h5>Resume & Support</h5>
+      <form method="POST" action="{{ url_for('upload_resume') }}" enctype="multipart/form-data">
+        <input type="file" name="resume_pdf" class="form-control" accept="application/pdf" required />
+        <button type="submit" class="btn btn-outline-primary mt-3 mb-3 w-100">Upload Resume</button>
+      </form>
+      {% if upload_success %}
+        <div class="alert alert-outline ">{{ upload_success }}</div>
+      {% elif upload_error %}
+        <div class="alert alert-danger">{{ upload_error }}</div>
+      {% endif %}
+      <a href="{{ url_for('contact') }}" class="btn btn btn-outline-primary w-100">Support</a>
+    </div>
+
+    <!-- Box 4: Notices -->
+    <div class="glass-box notice-bar">
+      <h5>📢 Notices</h5>
+      <div class="notice-list mt-2">
+        {% if notices and notices|length > 0 %}
+          {% for notice in notices %}
+            <p>🚨 {{ notice.title }}</p>
+          {% endfor %}
+        {% else %}
+          <p>No new notices at this time.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% if selected_role_id %}
+    <div class="container mt-5 fade-slide-up">
+      <h3 class="mb-4 text-primary">Resources for "{{ selected_role_name }}"</h3>
+
+      {% if resources %}
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          {% for r in resources %}
+            <div class="col">
+              <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                  <h5 class="card-title">{{ r['title'] }}</h5>
+                  <p class="card-text">{{ r['description'] }}</p>
+                  <p>
+                    <small class="text-muted">Added on: {{ r['created_at'] }}</small>
+                  </p>
+                  <a href="{{ r['url'] }}" class="btn btn-sm btn-primary" target="_blank">Visit Resource</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="alert alert-info mt-4">No questions or resources available for this role.</div>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}
