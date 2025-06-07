@@ -43,15 +43,59 @@
 .profile-container h5 {
   color: #fff;
   font-weight: bold;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  animation: glowFadeIn 1.2s ease forwards;
+  opacity: 0;
+  text-shadow:
+    0 0 5px #ff6a00,
+    0 0 10px #ee0979,
+    0 0 15px #ff6a00,
+    0 0 20px #ee0979,
+    0 0 30px #ff6a00;
+  text-align: center;
+}
+
+@keyframes glowFadeIn {
+  to {
+    opacity: 1;
+  }
 }
 
 .profile-container .info {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #ff6a00, #ee0979, #ff6a00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
   line-height: 1.6;
+  animation: fadeSlideIn 1s ease forwards;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: text-shadow 0.3s ease;
+  cursor: default;
+}
+
+/* Sharper, clearer glow on hover */
+.profile-container .info:hover {
+  text-shadow:
+    0 0 4px #ff6a00,
+    0 0 8px #ee0979,
+    0 0 12px #ff6a00,
+    0 0 16px #ee0979;
+}
+
+@keyframes fadeSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .profile-container .info i {
@@ -59,7 +103,7 @@
 }
 
 .profile-container .logout {
-  margin-top: 510px;
+  margin-top: 460px;
   margin-left: -5px;
 }
 
@@ -139,12 +183,22 @@
   border-radius: 1rem;
   padding: 1rem;
   max-height: 200px;
-  overflow-y: auto;
+  overflow: hidden;  /* hide scrollbars for animation */
+  position: relative;
 }
 
 .notice-list {
   max-height: 160px;
-  overflow-y: auto;
+  overflow: hidden;
+  position: relative;
+  height: 160px;
+}
+
+/* Wrap notices in an inner container for animation */
+.notice-list > .scroll-container {
+  position: absolute;
+  width: 100%;
+  animation: scrollUp 15s linear infinite;
 }
 
 .notice-item {
@@ -167,6 +221,16 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Animation for scrolling up */
+@keyframes scrollUp {
+  0% {
+    top: 100%;
+  }
+  100% {
+    top: -100%;
   }
 }
 
@@ -226,10 +290,7 @@
     padding: 1rem;
   }
 }
-
-
 </style>
-
 
 <!-- Profile Info Sidebar -->
 <div class="profile-container">
@@ -243,7 +304,6 @@
     <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
   </div>
 </div>
-
 
 <div class="dashboard-wrapper fade-slide-up">
   <h2 class="profile-header">Welcome, {{ user.name | upper }}!</h2>
@@ -298,14 +358,21 @@
       <h5>📢 Notices</h5>
       <div class="notice-list mt-2">
         {% if notices and notices|length > 0 %}
-          {% for notice in notices %}
-            <p>🚨 {{ notice.title }}</p>
-          {% endfor %}
+          <div class="scroll-container">
+            {% for notice in notices %}
+              <p class="notice-item">🚨 {{ notice.title }}</p>
+            {% endfor %}
+            <!-- Duplicate notices to create seamless scroll -->
+            {% for notice in notices %}
+              <p class="notice-item">🚨 {{ notice.title }}</p>
+            {% endfor %}
+          </div>
         {% else %}
           <p>No new notices at this time.</p>
         {% endif %}
       </div>
     </div>
+
   </div>
 
   {% if selected_role_id %}

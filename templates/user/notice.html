@@ -28,15 +28,13 @@ content %}
   h2 {
     font-weight: 800;
     font-size: 2.8rem;
-    color: #0d6efd;
+    color: rgb(232, 91, 35);
     text-align: center;
     margin-bottom: 3rem;
     letter-spacing: 0.03em;
   }
 
-  .row.g-4 {
-    gap: 1.75rem 2rem;
-  }
+  /* Removed .row.g-4 style to avoid conflicts with Bootstrap gutter spacing */
 
   .notice-card {
     background: white;
@@ -114,9 +112,9 @@ content %}
   <h2>📢 Notices</h2>
 
   {% if notices %}
-  <div class="row g-4">
+  <div class="row row-cols-1 row-cols-md-2 g-4">
     {% for notice in notices %}
-    <div class="col-md-6 col-sm-12">
+    <div class="col">
       <div class="card notice-card shadow-sm h-100">
         <div class="card-body">
           <h5 class="card-title">{{ notice.title }}</h5>
@@ -128,8 +126,7 @@ content %}
           {% endif %}
         </div>
         <div class="card-footer">
-          Posted on: {{ notice.created_at.strftime('%b %d, %Y') if
-          notice.created_at else '' }}
+          Posted on: {{ notice.created_at | format_datetime }}
         </div>
       </div>
     </div>

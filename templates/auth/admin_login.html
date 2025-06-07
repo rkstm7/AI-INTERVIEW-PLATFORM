@@ -6,7 +6,6 @@ content %}
     font-family: "Poppins", sans-serif;
   }
 
-  /* Fade-in animation for the whole login wrapper */
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -25,7 +24,6 @@ content %}
     border-radius: 12px;
     padding: 3rem 2.5rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    transition: box-shadow 0.3s ease;
     animation: fadeIn 0.6s ease forwards;
   }
 
@@ -38,39 +36,34 @@ content %}
     margin-bottom: 2rem;
     color: #0d6efd;
     letter-spacing: 0.03em;
-    transition: color 0.3s ease;
   }
 
   .form-label {
     font-weight: 600;
     color: #343a40;
-    transition: color 0.3s ease;
   }
 
   .form-control {
     border-radius: 0.5rem;
     border: 1.5px solid #ced4da;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease,
-      background-color 0.3s ease;
+    transition: 0.3s ease;
   }
 
   .form-control:focus {
     border-color: #0d6efd;
     box-shadow: 0 0 8px rgba(13, 110, 253, 0.4);
-    background-color: #fff;
   }
 
   .btn-primary {
     border-radius: 0.5rem;
     font-weight: 600;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease,
-      transform 0.2s ease;
     background-color: #0d6efd;
     border: none;
     color: #fff;
     padding: 0.75rem 1.25rem;
     box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
     width: 100%;
+    transition: 0.3s ease;
   }
 
   .btn-primary:hover,
@@ -84,18 +77,15 @@ content %}
     font-size: 0.9rem;
   }
 
-  /* Instructions styling */
   .instructions h4 {
     font-weight: 700;
     margin-bottom: 1.5rem;
     color: #0d6efd;
-    letter-spacing: 0.02em;
-    transition: color 0.3s ease;
   }
 
   .instructions ul {
     padding-left: 1.5rem;
-    list-style: none; /* Remove default bullets */
+    list-style: none;
   }
 
   .instructions li {
@@ -104,34 +94,28 @@ content %}
     color: #495057;
     position: relative;
     padding-left: 1.8rem;
-    transition: color 0.3s ease;
   }
 
-  /* Add check icon before each list item */
   .instructions li::before {
-    content: "\2713"; /* checkmark */
+    content: "\2713";
     position: absolute;
     left: 0;
     top: 0;
     color: #0d6efd;
     font-weight: 700;
     font-size: 1.2rem;
-    line-height: 1;
   }
 
-  /* Email link styling */
   .instructions a {
     color: #0d6efd;
     text-decoration: none;
     font-weight: 600;
-    transition: color 0.3s ease;
   }
 
   .instructions a:hover {
     text-decoration: underline;
   }
 
-  /* Responsive tweaks */
   @media (max-width: 767.98px) {
     .login-wrapper {
       margin: 2rem 1rem;
@@ -190,7 +174,7 @@ content %}
           {% endif %}
         </div>
 
-        {{ form.submit(class="btn btn-primary w-100") }}
+        {{ form.submit(class="btn btn-primary") }}
       </form>
     </div>
   </div>

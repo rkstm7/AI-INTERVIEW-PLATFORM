@@ -29,7 +29,7 @@ block content %}
 
   .instructions h5 {
     font-weight: 700;
-    color: #0d6efd;
+    color: rgb(232, 91, 35);
     font-size: 1.25rem;
   }
 
@@ -50,6 +50,7 @@ block content %}
 
   .form-section h4 {
     font-weight: 700;
+    color: rgb(232, 91, 35); /* <-- Added line to set the color */
   }
 
   .btn-primary {
@@ -112,7 +113,7 @@ block content %}
     <!-- Interview Form -->
     <div class="col-md-6">
       <div class="form-section">
-        <h4 class="mb-4 text-primary">Start Interview</h4>
+        <h4 class="mb-4">Start Interview</h4>
         <form method="POST" action="/interview/start">
           <div class="mb-3">
             <label for="job_role" class="form-label">Select Job Role</label>

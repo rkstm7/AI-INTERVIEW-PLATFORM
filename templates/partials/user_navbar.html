@@ -11,12 +11,6 @@
       rel="stylesheet"
     />
 
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-
     <style>
       :root {
         --cyan: #ffffff;
@@ -33,7 +27,6 @@
         padding-top: 90px;
       }
 
-      /* Navbar */
       #topNavbar {
         position: fixed;
         top: 0;
@@ -91,7 +84,6 @@
         text-shadow: 0 0 8px rgba(144, 202, 249, 0.8);
       }
 
-      /* Entrance animation */
       @keyframes fadeSlideIn {
         from {
           opacity: 0;
@@ -107,6 +99,7 @@
         margin-left: auto;
         display: flex;
         gap: 15px;
+        align-items: center;
       }
 
       #navLinks a {
@@ -120,10 +113,6 @@
         text-decoration: none;
         border-bottom: 3px solid transparent;
         transition: all 0.3s ease;
-      }
-
-      #navLinks a i {
-        font-size: 1.2rem;
       }
 
       #navLinks a:hover,
@@ -192,17 +181,68 @@
           display: flex;
         }
       }
+
+      /* Custom Dropdown */
+      .custom-dropdown {
+        position: relative;
+      }
+
+      .custom-dropdown > a {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--cyan);
+        padding: 10px 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+      }
+
+      .custom-dropdown > a:hover {
+        color: var(--gold-hover);
+        border-bottom: 3px solid var(--gold);
+        text-shadow: 0 0 8px var(--gold);
+      }
+
+      .custom-dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 110%;
+        right: 0;
+        background-color: #1a1a2e;
+        border: 1px solid var(--gold);
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        z-index: 1000;
+        min-width: 200px;
+        box-shadow: 0 4px 10px var(--shadow-cyan);
+      }
+
+      .custom-dropdown-menu li a {
+        padding: 10px 20px;
+        display: block;
+        color: white;
+        text-decoration: none;
+        transition: background 0.3s ease;
+      }
+
+      .custom-dropdown-menu li a:hover,
+      .custom-dropdown-menu li a.active {
+        background-color: rgba(255, 215, 0, 0.15);
+        color: var(--gold-hover);
+        text-shadow: 0 0 8px var(--gold);
+      }
     </style>
   </head>
 
   <body>
-    <!-- Top Navbar -->
+    <!-- Navbar -->
     <header id="topNavbar">
-      <a
-        href="{{ url_for('dashboard') }}"
-        class="navbar-brand1"
-        aria-label="Platform Logo and Name"
-      >
+      <a href="{{ url_for('dashboard') }}" class="navbar-brand1">
         <img
           src="{{ url_for('static', filename='images/logo.png') }}"
           alt="AI Interview Logo"
@@ -211,7 +251,7 @@
         <span class="logo-text">AI Interview Platform</span>
       </a>
 
-      <nav id="navLinks" role="navigation">
+      <nav id="navLinks">
         <a
           href="{{ url_for('dashboard') }}"
           class="{% if request.endpoint == 'dashboard' %}active{% endif %}"
@@ -236,19 +276,33 @@
         >
           <i class="fas fa-chart-line"></i> Scorecard
         </a>
-        <a
-          href="{{ url_for('manual_feedback') }}"
-          class="{% if request.endpoint == 'manual_feedback' %}active{% endif %}"
-        >
-          <i class="fas fa-comments"></i> Feedback
-        </a>
 
-        <a
-          href="{{ url_for('notice') }}"
-          class="{% if request.endpoint == 'notice' %}active{% endif %}"
-        >
-          <i class="fas fa-bullhorn"></i> Notices
-        </a>
+        <!-- Custom Dropdown -->
+        <div class="custom-dropdown">
+          <a href="#" id="userFacilityToggle">
+            <i class="fas fa-user-cog"></i> User Facility
+            <i class="fas fa-caret-down"></i>
+          </a>
+          <ul class="custom-dropdown-menu" id="userFacilityMenu">
+            <li>
+              <a
+                href="{{ url_for('manual_feedback') }}"
+                class="{% if request.endpoint == 'manual_feedback' %}active{% endif %}"
+              >
+                <i class="fas fa-comments"></i> Feedback
+              </a>
+            </li>
+            <li>
+              <a
+                href="{{ url_for('notice') }}"
+                class="{% if request.endpoint == 'notice' %}active{% endif %}"
+              >
+                <i class="fas fa-bullhorn"></i> Notices
+              </a>
+            </li>
+          </ul>
+        </div>
+
         <a
           href="{{ url_for('contact') }}"
           class="{% if request.endpoint == 'contact' %}active{% endif %}"
@@ -257,14 +311,13 @@
         </a>
       </nav>
 
-      <!-- Hamburger Menu Button -->
-      <button id="menuToggle" aria-label="Toggle menu">
+      <button id="menuToggle">
         <i class="fas fa-bars"></i>
       </button>
     </header>
 
-    <!-- Mobile Navigation Menu -->
-    <nav id="mobileMenu" aria-label="Mobile navigation menu">
+    <!-- Mobile Nav -->
+    <nav id="mobileMenu">
       <a
         href="{{ url_for('dashboard') }}"
         class="{% if request.endpoint == 'dashboard' %}active{% endif %}"
@@ -290,8 +343,8 @@
         <i class="fas fa-chart-line"></i> Scorecard
       </a>
       <a
-        href="{{ url_for('submit_feedback') }}"
-        class="{% if request.endpoint == 'submit_feedback' %}active{% endif %}"
+        href="{{ url_for('manual_feedback') }}"
+        class="{% if request.endpoint == 'manual_feedback' %}active{% endif %}"
       >
         <i class="fas fa-comments"></i> Feedback
       </a>
@@ -309,11 +362,9 @@
       </a>
     </nav>
 
-    <!-- Bootstrap Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Toggle Mobile Menu -->
+    <!-- Scripts -->
     <script>
+      // Mobile menu toggle
       const menuToggle = document.getElementById("menuToggle");
       const mobileMenu = document.getElementById("mobileMenu");
 
@@ -325,6 +376,25 @@
         link.addEventListener("click", () => {
           mobileMenu.classList.remove("show");
         });
+      });
+
+      // Custom dropdown toggle
+      const userFacilityToggle = document.getElementById("userFacilityToggle");
+      const userFacilityMenu = document.getElementById("userFacilityMenu");
+
+      userFacilityToggle.addEventListener("click", (e) => {
+        e.preventDefault();
+        userFacilityMenu.style.display =
+          userFacilityMenu.style.display === "block" ? "none" : "block";
+      });
+
+      document.addEventListener("click", (e) => {
+        if (
+          !userFacilityToggle.contains(e.target) &&
+          !userFacilityMenu.contains(e.target)
+        ) {
+          userFacilityMenu.style.display = "none";
+        }
       });
     </script>
   </body>

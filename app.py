@@ -10,12 +10,14 @@ from datetime import datetime
 import openai
 import os, g
 openai.api_key = os.getenv("OPENAI_API_KEY")
+FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "default_fallback_key")
 
 from flask import Flask , session
 from flask_session import Session      # Session flask_session से
 
 
 app = Flask(__name__)
+
 
 # Secret key for session security
 app.secret_key = '\x9c\xa4\xa6)\xa89 \xf9(\x0c/!\xd7\x1e\xb2\xfa^\xa9b\x98&0\xcf\x86'  # इसे strong और secret रखो
@@ -34,10 +36,6 @@ login_manager.login_view = 'user_login'  # default login redirect for @login_req
 
 # DB filename
 DB_NAME = 'users.db'
-
-# Hardcoded Admin credentials
-ADMIN_EMAIL = 'admin@gmail.com'
-ADMIN_PASSWORD = 'admin@123'  # You can hash & check if want more security
 
 
 # Logging user activity
@@ -68,15 +66,16 @@ def init_db():
 
     # Users table (merged with resume_filename)
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-            role TEXT NOT NULL,
-            resume_filename TEXT
-        )
-    ''')
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        role TEXT NOT NULL,
+        resume_filename TEXT,
+        last_active TIMESTAMP
+    )
+''')
     
     cursor.execute('''CREATE TABLE IF NOT EXISTS admin (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -147,15 +146,6 @@ def init_db():
         FOREIGN KEY (question_id) REFERENCES questions(id)
     )
     ''')
-
-    # cursor.execute('''
-    # CREATE TABLE IF NOT EXISTS feedbacks (
-    #     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    #     session_id INTEGER,
-    #     feedback TEXT NOT NULL,
-    #     FOREIGN KEY (session_id) REFERENCES interview_sessions(id)
-    # )
-    # ''')
     
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS user_feedback (
@@ -191,7 +181,7 @@ def init_db():
 
     # Insert default admin if not exists
     cursor.execute("INSERT OR IGNORE INTO admin (username, password) VALUES (?, ?)",
-                   ("admin@gmail.com", "admin@123"))
+                   ("", ""))
 
     # Contacts table
     cursor.execute('''
@@ -244,6 +234,24 @@ def init_db():
     conn.close()
 
 
+        
+def add_last_active_column():
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+
+    # Check if 'last_active' column exists
+    cursor.execute("PRAGMA table_info(users)")
+    columns = [col[1] for col in cursor.fetchall()]
+    if "last_active" not in columns:
+        cursor.execute("ALTER TABLE users ADD COLUMN last_active TIMESTAMP")
+        conn.commit()
+        print("Added 'last_active' column to users table.")
+    else:
+        print("'last_active' column already exists.")
+
+    conn.close()
+    
+    
 
 # User class for Flask-Login
 class User(UserMixin):
@@ -270,6 +278,8 @@ class User(UserMixin):
 def load_user(user_id):
     return User.get(user_id)
 
+
+        
 # Forms
 class RegisterForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
@@ -330,6 +340,7 @@ def register():
         return redirect(url_for('user_login'))
 
     return render_template('auth/register.html', form=form)
+
 
 
 @app.route('/user_login', methods=['GET', 'POST'])
@@ -438,12 +449,6 @@ def dashboard():
         upload_success=upload_success,
         upload_error=upload_error
     )
-
-
-
-
-#interview section-----------------------
-
 
     
 # ---- DB Connection ----
@@ -938,6 +943,30 @@ def logout():
 # --------------------------------------------------------------------------------------------------------------
 
 # Admin login route (fixed credentials)
+from flask import Flask, render_template, redirect, url_for, flash, request
+from flask_login import LoginManager, login_user, current_user, logout_user, login_required
+from dotenv import load_dotenv
+import os
+import bcrypt
+
+from forms import SimpleLoginForm
+from models import User
+
+# Load .env
+load_dotenv()
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
+ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH").encode()
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+# Dummy loader for Flask-Login
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id == "0":  # Admin user
+        return User(id_="0", name="Admin", email=ADMIN_EMAIL, role="Admin")
+    return None
+
 @app.route('/admin_login', methods=['GET', 'POST'])
 def admin_login():
     if current_user.is_authenticated:
@@ -951,21 +980,35 @@ def admin_login():
         email = form.email.data
         password = form.password.data
 
-        if email == ADMIN_EMAIL and password == ADMIN_PASSWORD:
-            user_obj = User(id_=0, name="Admin", email=email, role="Admin")
+        if email == ADMIN_EMAIL and bcrypt.checkpw(password.encode(), ADMIN_PASSWORD_HASH):
+            user_obj = User(id_="0", name="Admin", email=email, role="Admin")
             login_user(user_obj)
-            flash("Admin logged in successfully.")
+            flash("Admin logged in successfully", "success")
             return redirect(url_for('admin_dashboard'))
         else:
-            flash("Invalid Admin credentials.")
-            return redirect(url_for('admin_login'))
+            flash("Invalid admin credentials", "danger")
 
     return render_template('auth/admin_login.html', form=form)
 
 
 
 #--------------------------------------------------------------ADMIN ROUTES START-----------------------------------------------
-#Admin Routes 
+@app.before_request
+def update_user_last_active():
+    if current_user.is_authenticated:
+        now = datetime.utcnow()
+        conn = sqlite3.connect(DB_NAME)
+        cursor = conn.cursor()
+        cursor.execute(
+            "UPDATE users SET last_active = ? WHERE id = ?", 
+            (now, current_user.id)
+        )
+        conn.commit()
+        conn.close()
+
+#Admin dashboard Routes 
+from datetime import datetime, timedelta
+
 @app.route('/admin_dashboard')
 @login_required
 def admin_dashboard():
@@ -976,18 +1019,42 @@ def admin_dashboard():
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
 
+    # Total users count
     cursor.execute("SELECT COUNT(*) FROM users")
     total_users = cursor.fetchone()[0]
 
-    # Similarly you can get counts for other tables:
+    # Active users: last_active within last 10 minutes
+    ten_minutes_ago = datetime.utcnow() - timedelta(minutes=10)
+    cursor.execute(
+        "SELECT COUNT(*) FROM users WHERE last_active >= ?", 
+        (ten_minutes_ago,)
+    )
+    active_users = cursor.fetchone()[0]
+
+    # Active sessions: count distinct session ids (assuming you have session table)
+    # If you track sessions in DB, query accordingly. 
+    # Here, we fake active_sessions = active_users for demonstration:
+    active_sessions = active_users  
+
+    # Offline users = total - active
+    offline_users = total_users - active_users
+
+    # You can also count job_roles if needed
     cursor.execute("SELECT COUNT(*) FROM job_roles")
     total_job_roles = cursor.fetchone()[0]
 
-    # Close connection
     conn.close()
 
-    return render_template('admin/admin_dashboard.html', total_users=total_users, total_job_roles=total_job_roles, user=current_user)
-
+    return render_template(
+        'admin/admin_dashboard.html',
+        total_users=total_users,
+        active_users=active_users,
+        active_sessions=active_sessions,
+        offline_users=offline_users,
+        total_job_roles=total_job_roles,
+        user=current_user
+    )
+    
 
 #Manage Users Routes
 @app.route('/admin/manage_users')
@@ -1641,10 +1708,25 @@ def delete_notice(notice_id):
 
 
 # User: View Notices
+@app.template_filter('format_datetime')
+def format_datetime(value, format='%b %d, %Y'):
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        try:
+            dt = datetime.strptime(value, '%Y-%m-%d %H:%M:%S')  # adjust format to your DB string format
+            return dt.strftime(format)
+        except Exception:
+            return value  # fallback if parsing fails
+    elif hasattr(value, 'strftime'):
+        return value.strftime(format)
+    return value
+
+
 @app.route('/notice')
 @login_required
 def notice():
-    db = get_db()
+    db = get_db()  # your method to get DB connection
     notices = db.execute("SELECT * FROM notice ORDER BY created_at DESC").fetchall()
     return render_template('user/notice.html', notices=notices)
 

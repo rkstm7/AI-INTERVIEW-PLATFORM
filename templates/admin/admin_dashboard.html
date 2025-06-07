@@ -8,7 +8,7 @@
   </p>
 
   <!-- Summary Cards -->
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-4 mb-5">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 g-4 mt-4 mb-5">
     <div class="col">
       <div
         class="card shadow h-100 border-start border-primary border-4 animated-card"
@@ -23,6 +23,20 @@
 
     <div class="col">
       <div
+        class="card shadow h-100 border-start border-warning border-4 animated-card"
+      >
+        <div class="card-body text-center">
+          <i
+            class="bi bi-briefcase-fill display-5 text-warning animated-icon"
+          ></i>
+          <h6 class="mt-3 fw-bold">Total Job Roles</h6>
+          <p class="display-6 fw-bold text-dark">{{ total_job_roles }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div
         class="card shadow h-100 border-start border-success border-4 animated-card"
       >
         <div class="card-body text-center">
@@ -30,7 +44,7 @@
             class="bi bi-clock-history display-5 text-success animated-icon"
           ></i>
           <h6 class="mt-3 fw-bold">Active Sessions</h6>
-          <p class="display-6 fw-bold text-dark">{{ active_sessions }}</p>
+          <p class="display-6 fw-bold text-dark">{{ active_sessions or 0 }}</p>
         </div>
       </div>
     </div>
@@ -66,7 +80,7 @@
 
   <!-- Quick Admin Links -->
   <div class="col-12">
-    <div class="card shadow animated-card ">
+    <div class="card shadow animated-card">
       <div class="card-header bg-primary text-light fw-semibold p-3 rounded">
         Quick Admin Links
       </div>

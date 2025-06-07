@@ -80,19 +80,46 @@
     resize: none;
   }
 
-  .submit-btn {
-    background: linear-gradient(to right, #667eea, #764ba2);
+  .submit-btn,
+  .clear-btn,
+  .back-btn {
     border: none;
-    color: #fff;
     padding: 12px 30px;
     font-size: 17px;
     border-radius: 30px;
-    margin-top: 30px;
+    margin-top: 20px;
     transition: background 0.3s ease;
+  }
+
+  .submit-btn {
+    background: linear-gradient(to right, #667eea, #764ba2);
+    color: #fff;
+    margin-right: 10px;
   }
 
   .submit-btn:hover {
     background: linear-gradient(to right, #5a67d8, #6b46c1);
+  }
+
+  .clear-btn {
+    background-color: #dee2e6;
+    color: #333;
+    margin-right: 10px;
+  }
+
+  .clear-btn:hover {
+    background-color: #ced4da;
+  }
+
+  .back-btn {
+    background-color: #6c757d;
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .back-btn:hover {
+    background-color: #5a6268;
   }
 
   .question-block {
@@ -107,7 +134,7 @@
 <div class="container">
   <div class="feedback-form">
     <h2 class="form-title">Feedback Section</h2>
-    <form method="POST" action="/send_feedback">
+    <form method="POST" action="/send_feedback" id="feedbackForm">
       <!-- Name and Email -->
       <div class="mb-4">
         <label for="name" class="form-label text-black">Your Name</label>
@@ -170,9 +197,11 @@
         ></textarea>
       </div>
 
-      <!-- Submit Button -->
+      <!-- Submit, Clear, and Back Buttons -->
       <div class="text-center">
         <button type="submit" class="submit-btn">Send Feedback</button>
+        <button type="reset" class="clear-btn">Clear</button>
+        <a href="{{ url_for('dashboard') }}" class="back-btn text-light">Back</a>
       </div>
     </form>
   </div>
