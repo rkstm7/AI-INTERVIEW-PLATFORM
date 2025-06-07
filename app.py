@@ -10,7 +10,6 @@ from datetime import datetime
 import openai
 import os, g
 openai.api_key = os.getenv("OPENAI_API_KEY")
-FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "default_fallback_key")
 
 from flask import Flask , session
 from flask_session import Session      # Session flask_session से
@@ -449,6 +448,7 @@ def dashboard():
         upload_success=upload_success,
         upload_error=upload_error
     )
+
 
     
 # ---- DB Connection ----
@@ -950,7 +950,6 @@ import os
 import bcrypt
 
 from forms import SimpleLoginForm
-from models import User
 
 # Load .env
 load_dotenv()
@@ -960,12 +959,30 @@ ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH").encode()
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-# Dummy loader for Flask-Login
+# User class for Flask-Login
+class User(UserMixin):
+    def __init__(self, id_, name, email, role):
+        self.id = id_
+        self.name = name
+        self.email = email
+        self.role = role
+
+    @staticmethod
+    def get(user_id):
+        # For admin user with id=0 (hardcoded), return User directly
+        if user_id == '0':
+            return User(0, "Admin", ADMIN_EMAIL, "Admin")
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
+        user = cursor.fetchone()
+        if user:
+            return User(user[0], user[1], user[2], user[4])
+        return None
+
 @login_manager.user_loader
 def load_user(user_id):
-    if user_id == "0":  # Admin user
-        return User(id_="0", name="Admin", email=ADMIN_EMAIL, role="Admin")
-    return None
+    return User.get(user_id)
 
 @app.route('/admin_login', methods=['GET', 'POST'])
 def admin_login():
