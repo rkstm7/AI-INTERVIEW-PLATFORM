@@ -1,5 +1,3 @@
-import bcrypt
-
-password = "YSMinfo@123"
-hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
-print(hashed.decode())
+import os
+secret_key = os.urandom(24)  # 24 bytes ka random key generate karta hai
+print("Key:",secret_key)
