@@ -46,11 +46,3 @@ This project is developed as a **group effort** by 4 passionate interns under th
 - **Pradnya Narwade** – Testing & QA (Manual & Automated Testing)
 
 ---
-
-## 🛠️ Installation & Setup
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/ai-interview-platform.git
-   cd ai-interview-platform
-   ```
