@@ -1,6 +1,8 @@
 # 🚀 AI Interview Platform
 
-![Project Banner](https://user-images.githubusercontent.com/your-image-link/banner.png)  
+![Project Banner](https://github.com/rkstm7/images/blob/main/interview_dashboard1.png)
+![Project Banner](https://github.com/rkstm7/images/blob/main/interview_dashboard2.png)
+![Project Banner](https://github.com/rkstm7/images/blob/main/interview_dashboard3.png)
 _An Intelligent AI-powered Interview Preparation Platform_
 
 ---
