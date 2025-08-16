@@ -7,8 +7,6 @@ from models.model import User, Role
 from dotenv import load_dotenv
 from flask_login import LoginManager
 from datetime import datetime
-from werkzeug.security import generate_password_hash
-from configs.config import Config
 from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt()
@@ -77,7 +75,7 @@ def create_app():
                 last_active=datetime.utcnow(),
                 created_at=datetime.utcnow(),
                 deleted_at=None,
-                role_obj=admin_role,  # pass the Role object, will set role_id automatically
+                role_obj=admin_role,  # pass the Role object
             )
             db.session.add(new_admin)
             db.session.commit()
@@ -158,6 +156,8 @@ def create_app():
     return app
 
 
+# Expose app for Gunicorn
+app = create_app()
+
 if __name__ == "__main__":
-    app = create_app()
     app.run(debug=True)
