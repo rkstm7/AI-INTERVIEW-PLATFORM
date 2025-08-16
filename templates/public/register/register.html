@@ -1,0 +1,263 @@
+{% extends 'base.html' %} {% block title %}Register - My Flask App{% endblock %}
+{% block content %}
+<div class="container register-wrapper">
+  <div class="row g-4">
+    <!-- Left Instructions Panel -->
+    <div class="col-md-6 register-instructions fade-scroll-left">
+      <h2 class="text-left fw-bolder mb-3">Register Instructions</h2>
+      <ul>
+        <li>Fill out all fields with accurate information.</li>
+        <li>Use a valid email address for account verification.</li>
+        <li>Choose a strong password for account security.</li>
+        <li>
+          Use a uppercase, lowercase letters, numbers, and symbols in your
+          password.
+        </li>
+        <li>Keep your login credentials confidential.</li>
+        <li>Contact support if you face any issues during registration.</li>
+        <li>Review our privacy policy for data protection information.</li>
+        <li>After registration, you can log in to access your dashboard.</li>
+      </ul>
+    </div>
+
+    <!-- Right Form Panel -->
+    <div class="col-md-6 register-form fade-scroll-right">
+      <form
+        method="POST"
+        action="{{ url_for('register.register') }}"
+        novalidate
+      >
+        <h2 class="text-center mb-4">Create Your Account</h2>
+        {{ form.hidden_tag() }}
+
+        <!-- Name -->
+        <div class="mb-3">
+          {{ form.name.label(class="form-label") }} {{
+          form.name(class="form-control", placeholder="Enter your full name",
+          autocomplete="name") }}
+        </div>
+
+        <!-- Username -->
+        <div class="mb-3">
+          {{ form.username.label(class="form-label") }} {{
+          form.username(class="form-control", placeholder="Choose a username",
+          autocomplete="username") }}
+        </div>
+
+        <!-- Email with OTP -->
+        <div class="mb-3 position-relative">
+          {{ form.email.label(class="form-label") }} {{
+          form.email(class="form-control", placeholder="Enter your email
+          address", autocomplete="email", id="email-input") }}
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-primary mt-2"
+            id="send-otp-btn"
+          >
+            Send OTP
+          </button>
+          <small class="text-muted d-block mt-1" id="otp-status"></small>
+        </div>
+
+        <!-- OTP input (hidden initially) -->
+        <div class="mb-3 d-none" id="otp-verification">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter OTP"
+            maxlength="6"
+            id="otp-input"
+          />
+          <button
+            type="button"
+            class="btn btn-sm btn-success mt-2"
+            id="verify-otp-btn"
+          >
+            Verify OTP
+          </button>
+          <small class="text-muted d-block mt-1" id="otp-verify-status"></small>
+          <small class="text-info d-block mt-1" id="otp-timer"></small>
+        </div>
+
+        <!-- Phone -->
+        <div class="mb-3">
+          {{ form.phone.label(class="form-label") }} {{
+          form.phone(class="form-control", placeholder="Enter your phone
+          number", autocomplete="tel") }}
+        </div>
+
+        <!-- Address -->
+        <div class="mb-3">
+          {{ form.address.label(class="form-label") }} {{
+          form.address(class="form-control", placeholder="Enter your address",
+          autocomplete="street-address") }}
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          {{ form.password.label(class="form-label") }} {{
+          form.password(class="form-control", placeholder="Choose a strong
+          password", autocomplete="new-password") }}
+        </div>
+
+        <!-- Verify Password -->
+        <div class="mb-3">
+          {{ form.verify_password.label(class="form-label") }} {{
+          form.verify_password(class="form-control", placeholder="Re-enter your
+          password", autocomplete="new-password") }}
+        </div>
+
+        <div class="d-grid mt-3">
+          {{ form.submit(class="btn btn-primary btn-block", id="submit-btn",
+          disabled=true) }}
+        </div>
+
+        <div class="mt-3 text-center">
+          Already have an account?
+          <a href="{{ url_for('user_login.login') }}">Login here</a>.
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const emailInput = document.getElementById("email-input");
+    const sendBtn = document.getElementById("send-otp-btn");
+    const otpStatus = document.getElementById("otp-status");
+    const verifyBtn = document.getElementById("verify-otp-btn");
+    const otpInputDiv = document.getElementById("otp-verification");
+    const otpVerifyStatus = document.getElementById("otp-verify-status");
+    const otpTimerEl = document.getElementById("otp-timer");
+    const submitBtn = document.getElementById("submit-btn");
+
+    let countdownInterval = null;
+
+    // Email validation function
+    function validateEmail(email) {
+      const basicRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!basicRegex.test(email)) return false;
+
+      const parts = email.split("@");
+      if (parts.length !== 2) return false;
+      const local = parts[0];
+      const domain = parts[1];
+
+      if (local.includes("..") || domain.includes("..")) return false;
+      if (domain.startsWith(".") || domain.endsWith(".")) return false;
+
+      const domainParts = domain.split(".");
+      if (domainParts.length < 2) return false;
+      const tld = domainParts[domainParts.length - 1];
+      const prevTld = domainParts[domainParts.length - 2];
+      if (tld === prevTld) return false;
+
+      if (!/^[a-zA-Z0-9.-]+$/.test(domain)) return false;
+      if (tld.length < 2) return false;
+
+      return true;
+    }
+
+    // Send OTP
+    sendBtn.addEventListener("click", () => {
+      const email = emailInput.value.trim();
+
+      // Validate email first
+      if (!validateEmail(email)) {
+        otpStatus.textContent = "Please enter a valid email address.";
+        otpStatus.className = "text-danger";
+        return; // Stop execution if invalid
+      }
+
+      // If valid, send OTP
+      fetch("{{ url_for('register.send_otp') }}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ form.csrf_token._value() }}",
+        },
+        body: JSON.stringify({ email }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            otpStatus.textContent = "OTP sent to your email.";
+            otpStatus.className = "text-success";
+            otpInputDiv.classList.remove("d-none");
+            startOtpCountdown(data.expiry || 300);
+          } else {
+            otpStatus.textContent = data.message;
+            otpStatus.className = "text-danger";
+          }
+        })
+        .catch(() => {
+          otpStatus.textContent = "Error sending OTP. Try again.";
+          otpStatus.className = "text-danger";
+        });
+    });
+
+    // Verify OTP
+    verifyBtn.addEventListener("click", () => {
+      const otpValue = document.getElementById("otp-input").value.trim();
+      if (!otpValue) {
+        otpVerifyStatus.textContent = "Enter OTP to verify.";
+        otpVerifyStatus.className = "text-danger";
+        return;
+      }
+
+      fetch("{{ url_for('register.verify_otp') }}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ form.csrf_token._value() }}",
+        },
+        body: JSON.stringify({ otp: otpValue }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            otpVerifyStatus.textContent = "Verified ✅";
+            otpVerifyStatus.className = "text-success";
+            submitBtn.disabled = false;
+            clearInterval(countdownInterval);
+            otpTimerEl.textContent = "";
+          } else {
+            otpVerifyStatus.textContent = data.message;
+            otpVerifyStatus.className = "text-danger";
+            submitBtn.disabled = true;
+          }
+        })
+        .catch(() => {
+          otpVerifyStatus.textContent = "Error verifying OTP.";
+          otpVerifyStatus.className = "text-danger";
+        });
+    });
+
+    // OTP Countdown Timer
+    function startOtpCountdown(seconds) {
+      clearInterval(countdownInterval);
+      let remaining = seconds;
+
+      countdownInterval = setInterval(() => {
+        if (remaining <= 0) {
+          clearInterval(countdownInterval);
+          otpTimerEl.textContent = "OTP expired. Please request again.";
+          otpTimerEl.className = "text-danger d-block mt-1";
+          submitBtn.disabled = true;
+          otpInputDiv.classList.add("d-none");
+        } else {
+          const min = Math.floor(remaining / 60);
+          const sec = remaining % 60;
+          otpTimerEl.textContent = `OTP expires in ${min}:${
+            sec < 10 ? "0" : ""
+          }${sec}`;
+          otpTimerEl.className = "text-info d-block mt-1";
+          remaining--;
+        }
+      }, 1000);
+    }
+  });
+</script>
+
+{% endblock %}

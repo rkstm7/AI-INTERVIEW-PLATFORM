@@ -1,0 +1,272 @@
+/* Navbar base */
+.custom-navbar {
+  position        : fixed;
+  top             : 0;
+  left            : 0;
+  width           : 100%;
+  height          : 80px;
+  background-color: #111;
+  backdrop-filter : blur(8px);
+  box-shadow      : 0 4px 30px rgba(0, 0, 0, 0.1);
+  padding         : 0 40px;
+  display         : flex;
+  align-items     : center;
+  justify-content : center;
+  z-index         : 999;
+  transition      : all 0.4s ease-in-out;
+}
+
+/* Navbar when scrolled (centered pill style) */
+.navbar-centered {
+  top          : 20px;
+  left         : 50%;
+  transform    : translateX(-50%);
+  width        : auto;
+  padding      : 10px 25px;
+  border-radius: 50px;
+  background   : rgba(0, 0, 0, 0.95);
+  box-shadow   : 0 5px 25px rgba(0, 0, 0, 0.3);
+  display      : inline-flex;
+  align-items  : center;
+  transition   : all 0.4s ease-in-out;
+}
+
+/* Navbar container */
+.navbar-container {
+  max-width      : 1200px;
+  width          : 100%;
+  display        : flex;
+  align-items    : center;
+  justify-content: space-between;
+  gap            : 200px;
+}
+
+/* Left: Brand */
+.navbar-left .brand {
+  display        : flex;
+  align-items    : center;
+  gap            : 10px;
+  font-size      : 1.3rem;
+  font-weight    : bold;
+  color          : #ffffff;
+  text-decoration: none;
+  white-space    : nowrap;
+}
+
+.logo-img {
+  height    : 40px;
+  width     : 40px;
+  object-fit: contain;
+}
+
+/* Right: Nav links */
+.navbar-right {
+  display    : flex;
+  align-items: center;
+  gap        : 25px;
+}
+
+/* Nav links */
+.nav-links {
+  list-style : none;
+  display    : flex;
+  align-items: center;
+  gap        : 25px;
+  margin     : 0;
+  padding    : 0;
+}
+
+.nav-links li a {
+  color          : #fff;
+  text-decoration: none;
+  font-size      : 1rem;
+  position       : relative;
+  transition     : color 0.3s ease;
+  white-space    : nowrap;
+}
+
+.nav-links li a::after {
+  content   : '';
+  position  : absolute;
+  bottom    : -4px;
+  left      : 0;
+  width     : 0;
+  height    : 2px;
+  background: #ff9800;
+  transition: width 0.3s ease;
+}
+
+.nav-links li a:hover {
+  color: #ff9800;
+}
+
+.nav-links li a:hover::after {
+  width: 100%;
+}
+
+/* Dropdown */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position       : absolute;
+  top            : 130%;
+  left           : 0;
+  background     : #111 !important;
+  backdrop-filter: blur(8px);
+  border-radius  : 6px;
+  list-style     : none;
+  padding        : 8px 0;
+  min-width      : 160px;
+
+  opacity       : 0;
+  transform     : translateY(-15px);
+  pointer-events: none;
+
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.dropdown-menu li a {
+  display        : block;
+  color          : #fff;
+  text-decoration: none;
+  padding        : 8px 16px;
+  font-size      : 0.95rem;
+  transition     : background 0.3s ease;
+}
+
+.dropdown-menu li a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown.show .dropdown-menu {
+  opacity       : 1;
+  transform     : translateY(0);
+  pointer-events: auto;
+}
+
+/* Register button */
+.register-btn {
+  background   : linear-gradient(45deg, #ff9800, #ff5722);
+  padding      : 8px 16px;
+  border-radius: 25px;
+  color        : white;
+  transition   : transform 0.3s ease, box-shadow 0.3s ease;
+  white-space  : nowrap;
+}
+
+.register-btn:hover {
+  color     : rgb(0, 0, 0) !important;
+  transform : translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);
+}
+
+/* Mobile menu */
+.menu-icon {
+  display  : none;
+  font-size: 1.8rem;
+  color    : #fff;
+  cursor   : pointer;
+}
+
+#menu-toggle {
+  display: none;
+}
+
+/* ============================= */
+/* RESPONSIVE BREAKPOINTS        */
+/* ============================= */
+
+/* Tablet & below */
+@media (max-width: 992px) {
+  .navbar-container {
+    gap: 20px;
+  }
+
+  .nav-links {
+    gap: 15px;
+  }
+
+  .register-btn {
+    padding  : 7px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .custom-navbar {
+    padding: 0 20px;
+    height : 65px;
+  }
+
+  .navbar-centered {
+    width        : 90%;
+    top          : 10px;
+    left         : 50%;
+    transform    : translateX(-50%);
+    border-radius: 20px;
+    padding      : 8px 15px;
+  }
+
+  .menu-icon {
+    display: block;
+  }
+
+  .nav-links {
+    position      : absolute;
+    top           : 65px;
+    right         : 0;
+    width         : 100%;
+    flex-direction: column;
+    align-items   : flex-start;
+    padding       : 1rem 2rem;
+    gap           : 15px;
+    background    : rgba(0, 0, 0, 0.95);
+    transform     : translateY(-200%);
+    transition    : transform 0.3s ease;
+    border-radius : 0 0 15px 15px;
+  }
+
+  #menu-toggle:checked~.nav-links {
+    transform: translateY(0);
+  }
+
+  .dropdown-menu {
+    position       : static;
+    opacity        : 1;
+    transform      : translateY(0);
+    pointer-events : auto;
+    background     : transparent;
+    backdrop-filter: none;
+    padding-left   : 1rem;
+  }
+
+  .navbar-right {
+    gap: 15px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .brand {
+    font-size: 1rem;
+  }
+
+  .logo-img {
+    height: 30px;
+    width : 30px;
+  }
+
+  .register-btn {
+    padding  : 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .navbar-centered {
+    width  : 95%;
+    top    : 8px;
+    padding: 6px 10px;
+  }
+}

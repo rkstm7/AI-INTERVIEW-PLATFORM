@@ -1,0 +1,175 @@
+{% extends 'base.html' %} {% block content %}
+
+<style>
+  .card {
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    padding: 20px;
+  }
+  .btn-danger {
+    border-radius: 50px;
+    font-weight: bold;
+  }
+  .btn-info,
+  .btn-warning {
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  table th {
+    background-color: #f1f1f1;
+  }
+  .form-control {
+    border-radius: 10px;
+  }
+  .badge {
+    font-size: 0.9rem;
+    padding: 0.5em 1em;
+    border-radius: 50px;
+  }
+  /* Toggle Switch like Screenshot */
+  .form-switch .form-check-input {
+    width: 3em;
+    height: 1.5em;
+  }
+</style>
+
+<div
+  class="container my-4"
+  style="margin-top: 140px !important; margin-bottom: 100px !important"
+>
+  <div class="card shadow-sm">
+    <h2 class="fw-bolder mb-3" style="color: #dd3d15ff">Users Management</h2>
+
+    <!-- Filter Form -->
+    <form
+      method="GET"
+      action="{{ url_for('manage_role.users') }}"
+      class="row g-3 align-items-end"
+    >
+      <div class="col-md-2">
+        <a
+          href="{{ url_for('manage_role.add_user') }}"
+          class="btn btn-danger w-100"
+          >Add</a
+        >
+      </div>
+      <div class="col-md-3">
+        <input
+          type="text"
+          name="name"
+          class="form-control"
+          placeholder="Enter Name"
+        />
+      </div>
+      <div class="col-md-3">
+        <input
+          type="email"
+          name="email"
+          class="form-control"
+          placeholder="Enter Email"
+        />
+      </div>
+      <div class="col-md-3">
+        <input
+          type="text"
+          name="contact"
+          class="form-control"
+          placeholder="Enter Contact No"
+        />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Start Date</label>
+        <input type="date" name="start_date" class="form-control" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">End Date</label>
+        <input type="date" name="end_date" class="form-control" />
+      </div>
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-info w-100">Search</button>
+      </div>
+      <div class="col-md-3">
+        <a
+          href="{{ url_for('manage_role.users') }}"
+          class="btn btn-danger w-100"
+          >Reset</a
+        >
+      </div>
+    </form>
+
+    <!-- Users Table -->
+    <div class="table-responsive mt-4">
+      <table class="table table-bordered align-middle text-center">
+        <thead>
+          <tr>
+            <th>Sr. No</th>
+            <th>Role Name</th>
+            <th>Name</th>
+            <th>Contact No</th>
+            <th>Email</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if users %} {% for user in users %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ user.role_obj.role_name }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.phone }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              {{ user.created_at.strftime('%Y-%m-%d') if user.created_at else ''
+              }}
+            </td>
+            <td>
+              <form
+                method="POST"
+                action="{{ url_for('manage_role.toggle_status', user_id=user.id) }}"
+              >
+                <input
+                  type="hidden"
+                  name="status"
+                  value="{{ 'Inactive' if user.status == 'Active' else 'Active' }}"
+                />
+                <div
+                  class="form-check form-switch d-flex justify-content-center"
+                >
+                  <input class="form-check-input" type="checkbox"
+                  onChange="this.form.submit()" {% if user.status == 'Active'
+                  %}checked{% endif %}>
+                </div>
+              </form>
+            </td>
+            <td>
+              <a
+                href="{{ url_for('manage_role.edit_user', user_id=user.id) }}"
+                class="btn btn-warning btn-sm"
+                >Edit</a
+              >
+              <form
+                method="POST"
+                action="{{ url_for('manage_role.delete_user', user_id=user.id) }}"
+                class="d-inline"
+                onsubmit="return confirm('Delete this user?');"
+              >
+                <button type="submit" class="btn btn-info btn-sm">
+                  Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %} {% else %}
+          <tr>
+            <td colspan="8" class="text-muted">No users found</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

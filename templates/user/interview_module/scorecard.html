@@ -1,0 +1,177 @@
+{% extends "base.html" %} {% block content %}
+
+<div
+  class="container my-5"
+  style="margin-top: 140px !important; margin-bottom: 100px !important"
+>
+  <h2 class="text-center fs-1 fw-bolder mb-4" style="color: #dd3d15ff">
+    📊 Your Interview Scorecard
+  </h2>
+
+  {% if sessions %}
+  <!-- PDF Download All Button -->
+  <div class="text-center mb-4">
+    <a
+      href="{{ url_for('scorecard.scorecard_pdf') }}"
+      target="_blank"
+      class="btn btn-danger btn-lg"
+    >
+      📄 Download All Sessions PDF
+    </a>
+  </div>
+
+  <div class="table-responsive mb-5">
+    <table
+      class="table table-striped table-hover table-bordered align-middle shadow-sm"
+    >
+      <thead class="table-dark text-center">
+        <tr>
+          <th>S.No</th>
+          <th>Job Role</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Total Questions</th>
+          <th>Total Score</th>
+          <th>Percentage</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+        {% for session in sessions %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ session.job_role }}</td>
+          <td>
+            {{ session.start_time.strftime('%Y-%m-%d %H:%M') if
+            session.start_time else 'N/A' }}
+          </td>
+          <td>
+            {{ session.end_time.strftime('%Y-%m-%d %H:%M') if session.end_time
+            else 'N/A' }}
+          </td>
+          <td>{{ session.total_questions }}</td>
+          <td>{{ session.total_score }}</td>
+          <td>
+            {% if session.total_questions %} {{
+            "%.2f"|format((session.total_score / (session.total_questions * 2))
+            * 100) }}% {% else %} 0% {% endif %}
+          </td>
+          <td>
+            <a
+              href="{{ url_for('scorecard.scorecard_pdf_single', session_id=session.session_id) }}"
+              target="_blank"
+              class="btn btn-sm btn-outline-danger"
+              title="Download PDF for this session"
+            >
+              <i class="bi bi-file-earmark-pdf-fill"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card shadow-sm p-4 mb-5">
+    <canvas
+      id="scoreChart"
+      aria-label="Interview scores bar chart"
+      role="img"
+    ></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const labels = [
+      {% for session in sessions %}
+        "Session {{ session.session_id }} ({{ session.job_role }})"{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    ];
+
+    const percentages = [
+      {% for session in sessions %}
+        {% if session.total_questions %}
+          {{ ((session.total_score / (session.total_questions * 2)) * 100) | round(2) }}
+        {% else %} 0 {% endif %}
+        {% if not loop.last %}, {% endif %}
+      {% endfor %}
+    ];
+
+    const ctx = document.getElementById('scoreChart').getContext('2d');
+    const scoreChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Score Percentage (%)',
+          data: percentages,
+          backgroundColor: 'rgba(13, 110, 253, 0.7)',
+          borderColor: 'rgba(13, 110, 253, 1)',
+          borderWidth: 1,
+          borderRadius: 8,
+          maxBarThickness: 60
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: value => value + '%',
+              font: { size: 13, weight: '500' }
+            },
+            title: {
+              display: true,
+              text: 'Percentage Score',
+              font: { size: 14, weight: '600' }
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Interview Sessions',
+              font: { size: 14, weight: '600' }
+            }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: context => context.parsed.y + '%'
+            }
+          }
+        }
+      }
+    });
+  </script>
+
+  {% else %}
+  <div class="alert alert-info text-center my-5">
+    <h5>No interview sessions found.</h5>
+    <p>Start a new interview to see your scorecard.</p>
+  </div>
+  {% endif %}
+</div>
+
+<style>
+  #scoreChart {
+    width: 100%;
+    height: 400px;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.1);
+  }
+
+  @media (max-width: 576px) {
+    #scoreChart {
+      height: 300px;
+    }
+  }
+</style>
+
+{% endblock %}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ user.name }} - Interview Scorecard</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 40px;
+        color: #2c3e50;
+        background-color: #f9f9f9;
+      }
+      h1 {
+        text-align: center;
+        color: #1a5276;
+        font-size: 28px;
+        margin-bottom: 10px;
+      }
+      .subtitle {
+        text-align: center;
+        font-size: 14px;
+        color: #7f8c8d;
+        margin-bottom: 30px;
+      }
+      .user-info {
+        background: #ffffff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        text-align: center;
+        margin-bottom: 25px;
+      }
+      .user-info p {
+        margin: 6px 0;
+        font-size: 15px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+      th {
+        background-color: #1a5276;
+        color: white;
+        padding: 12px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      td {
+        padding: 10px;
+        font-size: 14px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+      }
+      tr:nth-child(even) {
+        background-color: #f4f6f7;
+      }
+      .footer {
+        margin-top: 40px;
+        text-align: center;
+        font-size: 12px;
+        color: #7f8c8d;
+      }
+      .signature {
+        margin-top: 30px;
+        text-align: right;
+        font-style: italic;
+        font-weight: bold;
+        color: #1a5276;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Interview Scorecard</h1>
+    <div class="subtitle">Detailed performance summary of the interview</div>
+
+    <div class="user-info">
+      <p><strong>Name:</strong> {{ user.name }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Job Role</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Total Questions</th>
+          <th>Total Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for session in sessions %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ session.job_role }}</td>
+          <td>
+            {{ session.start_time.strftime('%Y-%m-%d %H:%M') if
+            session.start_time else '' }}
+          </td>
+          <td>
+            {{ session.end_time.strftime('%Y-%m-%d %H:%M') if session.end_time
+            else '' }}
+          </td>
+          <td>{{ session.total_questions }}</td>
+          <td>{{ session.total_score }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="footer">
+      Generated on {{ generated_on.strftime('%Y-%m-%d %H:%M:%S') }}
+    </div>
+
+    <div class="signature">RoTech by Rohit Singh Raajput</div>
+    <p class="text-center" style="font-size: 12px; color: #7f8c8d">
+      This is computer generated content, do not require any signature or stamp.
+    </p>
+  </body>
+</html>

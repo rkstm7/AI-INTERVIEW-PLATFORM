@@ -1,0 +1,49 @@
+{% extends 'base.html' %} {% block title %}Admin Login{% endblock %} {% block
+content %}
+<div class="container">
+  <div class="row g-4">
+    <!-- Left Instructions -->
+    <div
+      class="col-md-6 instructions fade-scroll-left d-flex flex-column justify-content-center"
+    >
+      <h4>Admin Login Instructions</h4>
+      <ul class="mb-0">
+        <li>Use your registered admin email address.</li>
+        <li>Passwords are case sensitive.</li>
+        <li>Ensure you keep your credentials secure.</li>
+        <li>If you forget your password, contact support.</li>
+      </ul>
+    </div>
+
+    <!-- Right Form -->
+    <div class="col-md-6 fade-scroll-right login-wrapper">
+      <form method="POST" novalidate>
+        <h2 class="text-center">Admin Login</h2>
+        {{ form.hidden_tag() }}
+
+        <!-- Email Field -->
+        <div class="mb-4">
+          {{ form.email.label(class="form-label") }} {{
+          form.email(class="form-control", placeholder="Enter email",
+          autocomplete="username") }} {% if form.email.errors %}
+          <div class="text-danger">{{ form.email.errors[0] }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Password Field -->
+        <div class="mb-4">
+          {{ form.password.label(class="form-label") }} {{
+          form.password(class="form-control", placeholder="Enter password",
+          autocomplete="current-password") }} {% if form.password.errors %}
+          <div class="text-danger">{{ form.password.errors[0] }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Submit Button -->
+        {{ form.submit(class="btn btn-primary w-100") }}
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

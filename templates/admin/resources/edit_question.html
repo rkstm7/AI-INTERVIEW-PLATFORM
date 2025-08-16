@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Edit Question{% endblock %}
+{% block content %}
+
+<div class="container my-5" style="margin-top: 140px !important; margin-bottom: 100px !important">
+  
+  <div class="card shadow rounded p-4">
+    <h2 class="mb-4 fw-bolder fs-1 text-center" style="color: #dd3d15ff">Edit Question #{{ question['id'] }}</h2>
+
+    <!-- Back Button -->
+    <div class="mb-3">
+      <a href="javascript:history.back()" class="btn btn-outline-primary float-start">← Back</a>
+    </div>
+
+    <!-- Form Starts -->
+    <form method="POST" action="{{ url_for('manage_questions.edit_question', id=question['id']) }}">
+      
+      <!-- Job Role -->
+      <div class="mb-3">
+        <label for="job_role_id" class="form-label fw-semibold float-start">Job Role</label>
+        <select class="form-select" id="job_role_id" name="job_role_id" required>
+          <option value="">Select Job Role</option>
+          {% for role in job_roles %}
+            <option value="{{ role.id }}" {% if role.id == question['job_role_id'] %}selected{% endif %}>{{ role.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Question Content -->
+      <div class="mb-3">
+        <label for="content" class="form-label fw-semibold float-start">Question Content</label>
+        <textarea class="form-control" id="content" name="content" rows="4" required>{{ question['content'] }}</textarea>
+      </div>
+
+      <!-- Options -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold float-start">Options</label>
+        <div class="row g-2">
+          <div class="col-12 col-md-6">
+            <input type="text" class="form-control" name="option_a" value="{{ question['option_a'] }}" placeholder="Option A" required>
+          </div>
+          <div class="col-12 col-md-6">
+            <input type="text" class="form-control" name="option_b" value="{{ question['option_b'] }}" placeholder="Option B" required>
+          </div>
+          <div class="col-12 col-md-6">
+            <input type="text" class="form-control" name="option_c" value="{{ question['option_c'] }}" placeholder="Option C" required>
+          </div>
+          <div class="col-12 col-md-6">
+            <input type="text" class="form-control" name="option_d" value="{{ question['option_d'] }}" placeholder="Option D" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Correct Option -->
+      <div class="mb-4">
+        <label for="correct_option" class="form-label fw-semibold float-start">Correct Option</label>
+        <select class="form-select" id="correct_option" name="correct_option" required>
+          <option value="A" {% if question['correct_option'] == 'A' %}selected{% endif %}>A</option>
+          <option value="B" {% if question['correct_option'] == 'B' %}selected{% endif %}>B</option>
+          <option value="C" {% if question['correct_option'] == 'C' %}selected{% endif %}>C</option>
+          <option value="D" {% if question['correct_option'] == 'D' %}selected{% endif %}>D</option>
+        </select>
+      </div>
+
+      <!-- Buttons -->
+      <div class="d-flex flex-column flex-sm-row gap-2">
+        <button type="submit" class="btn btn-primary">Update Question</button>
+        <a href="{{ url_for('manage_questions.questions') }}" class="btn btn-secondary">Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+{% endblock %}

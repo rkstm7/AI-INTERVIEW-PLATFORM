@@ -1,0 +1,179 @@
+{% extends "base.html" %} {% block title %}Contact Us{% endblock %} {% block
+content %}
+
+<!-- Full-width Map Section with Floating Cards -->
+<div
+  class="position-relative w-100"
+  style="
+    height: 100vh;
+    margin-top: 80px !important;
+    margin-bottom: 100px !important;
+  "
+>
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.019932073055!2d-122.41941508468136!3d37.77492927975906!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085818a0dbe00d1%3A0x7c8f3f0d32825b25!2s123%20AI%20Interview%20St%2C%20San%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1685165422556!5m2!1sen!2sus"
+    width="100%"
+    height="100%"
+    style="border: 0; display: block"
+    allowfullscreen=""
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+  ></iframe>
+
+  <!-- Floating Contact Cards -->
+  <div
+    class="position-absolute top-0 end-0 p-3 d-flex flex-column gap-3 floating-boxes"
+  >
+    <!-- Call Us -->
+    <div class="card shadow-lg border-0 rounded-3 hover-scale">
+      <div class="card-body p-3">
+        <h6 class="fw-bolder fs-3 mb-2" style="color: #dd3d15ff">
+          <i class="bi bi-telephone-fill me-2"></i>Call Us
+        </h6>
+        <p class="mb-0">+91 9113134541</p>
+        <p class="mb-0">+91 6201071747</p>
+      </div>
+    </div>
+
+    <!-- Follow Us -->
+    <div class="card shadow-lg border-0 rounded-3 hover-scale">
+      <div class="card-body p-3">
+        <h6 class="fw-bolder fs-3 mb-2" style="color: #dd3d15ff">
+          <i class="bi bi-share-fill me-2"></i>Follow Us
+        </h6>
+        <div class="d-flex gap-3 justify-content-around text-align-center">
+          <a href="#" class="text-dark"><i class="bi bi-facebook fs-5"></i></a>
+          <a href="#" class="text-dark"><i class="bi bi-twitter fs-5"></i></a>
+          <a href="#" class="text-dark"><i class="bi bi-instagram fs-5"></i></a>
+          <a href="#" class="text-dark"><i class="bi bi-linkedin fs-5"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contact Section -->
+<div class="container py-5">
+  <div class="row g-5">
+    <!-- Email Us Form -->
+    <div class="col-lg-6">
+      <form
+        action="{{ url_for('contact.user_contact') }}"
+        method="post"
+        class="bg-white p-4 rounded shadow-sm"
+      >
+        <h2 class="mb-4 fs-3 fw-bolder text-center" style="color: #dd3d15ff">
+          Email Us
+        </h2>
+        <div class="mb-3">
+          <label for="name" class="form-label fw-semibold">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            placeholder="Your full name"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label fw-semibold"
+            >Email address</label
+          >
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            placeholder="name@example.com"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="phone" class="form-label fw-semibold">Phone Number</label>
+          <input
+            type="tel"
+            class="form-control"
+            id="phone"
+            name="phone"
+            placeholder="+1 234 567 890"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="message" class="form-label fw-semibold">Message</label>
+          <textarea
+            class="form-control"
+            id="message"
+            name="message"
+            rows="5"
+            placeholder="Write your message here..."
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+          <i class="bi bi-send-fill me-2"></i>Send Message
+        </button>
+      </form>
+    </div>
+
+    <!-- Contact Details -->
+    <div class="col-lg-6">
+      <div class="bg-white p-4 rounded shadow-sm">
+        <ul class="list-unstyled">
+          <h2 class="mb-4 fw-bolder fs-3 text-center" style="color: #dd3d15ff">
+            Contact Details
+          </h2>
+          <li class="mb-3">
+            <i class="bi bi-person-circle me-2 text-primary"></i>
+            <strong>Name:</strong> Rohit Kumar Singh
+          </li>
+          <li class="mb-3">
+            <i class="bi bi-envelope me-2 text-primary"></i>
+            <strong>Email:</strong> rkstm9@example.com
+          </li>
+          <li class="mb-3">
+            <i class="bi bi-telephone me-2 text-primary"></i>
+            <strong>Phone:</strong> +91 9113134541
+          </li>
+          <li class="mb-3">
+            <i class="bi bi-geo-alt-fill me-2 text-primary"></i>
+            <strong>Address:</strong> Pune, Maharashtra, India
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Icons -->
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+  rel="stylesheet"
+/>
+
+<!-- Minimal CSS -->
+<style>
+  .hover-scale {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hover-scale:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+  }
+  @media (max-width: 768px) {
+    .floating-boxes {
+      flex-direction: row !important;
+      bottom: 0;
+      top: auto !important;
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "base.html" %} {% block content %}
+
+<!-- Container -->
+<div
+  class="d-flex flex-column justify-content-center align-items-center vh-100 text-center bg-light position-relative overflow-hidden"
+>
+  <h2 class="display-4 text-primary mb-3 animate__animated animate__fadeInDown">
+    🎉 Thank You!
+  </h2>
+  <p class="lead mb-4 animate__animated animate__fadeInUp">
+    Your feedback has been submitted successfully.
+  </p>
+  <a
+    href="/"
+    class="btn btn-outline-primary btn-lg animate__animated animate__zoomIn"
+    >🏠 Back to Home</a
+  >
+</div>
+
+<!-- Confetti Animation -->
+<canvas
+  id="confettiCanvas"
+  class="position-absolute top-0 start-0 w-100 h-100"
+  style="pointer-events: none"
+></canvas>
+
+<style>
+  /* Basic canvas styling */
+  #confettiCanvas {
+    z-index: 1000;
+  }
+
+  /* Responsive text adjustments */
+  @media (max-width: 576px) {
+    h2.display-4 {
+      font-size: 2rem;
+    }
+    p.lead {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<script>
+  // Confetti effect
+  const canvas = document.getElementById("confettiCanvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const confettiCount = 150;
+  const confetti = [];
+
+  class Confetto {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * -canvas.height;
+      this.radius = Math.random() * 6 + 4;
+      this.color = `hsl(${Math.random() * 360}, 70%, 50%)`;
+      this.speed = Math.random() * 3 + 2;
+      this.angle = Math.random() * 360;
+      this.spin = Math.random() * 0.1 + 0.05;
+    }
+    update() {
+      this.y += this.speed;
+      this.angle += this.spin;
+      if (this.y > canvas.height) {
+        this.y = -this.radius;
+        this.x = Math.random() * canvas.width;
+      }
+    }
+    draw() {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angle);
+      ctx.fillStyle = this.color;
+      ctx.fillRect(
+        -this.radius / 2,
+        -this.radius / 2,
+        this.radius,
+        this.radius
+      );
+      ctx.restore();
+    }
+  }
+
+  for (let i = 0; i < confettiCount; i++) confetti.push(new Confetto());
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    confetti.forEach((c) => {
+      c.update();
+      c.draw();
+    });
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+</script>
+
+<!-- Optional: Animate.css CDN for text animations -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+/>
+
+{% endblock %}

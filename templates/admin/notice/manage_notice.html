@@ -1,0 +1,190 @@
+{% extends 'base.html' %} {% block title %}Manage Notices{% endblock %} {% block
+content %}
+
+<div
+  class="container my-5"
+  style="margin-top: 140px !important; margin-bottom: 100px !important"
+>
+  <!-- Heading -->
+  <h2 class="text-center fs-1 fw-bolder mb-4" style="color: #dd3d15ff">
+    Manage Notices
+  </h2>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <button onclick="window.history.back()" class="btn btn-outline-secondary">
+      &larr; Back
+    </button>
+    <button id="addNoticeBtn" class="btn btn-success">Add Notice</button>
+  </div>
+
+  <!-- Existing Notices -->
+  <div class="table-responsive mb-5">
+    <table class="table table-hover table-bordered align-middle text-center">
+      <thead class="table-dark text-uppercase">
+        <tr>
+          <th>S. N.</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>URL</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for notice in notices %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td class="text-start">{{ notice.title }}</td>
+          <td class="text-start">{{ notice.description }}</td>
+          <td>
+            {% if notice.url %}
+            <a
+              href="{{ notice.url }}"
+              target="_blank"
+              class="text-decoration-underline"
+              >Link</a
+            >
+            {% else %}-{% endif %}
+          </td>
+          <td>{{ notice.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td class="d-flex gap-1 justify-content-center flex-wrap">
+            <button
+              class="btn btn-sm btn-info editBtn"
+              data-id="{{ notice.id }}"
+              data-title="{{ notice.title }}"
+              data-description="{{ notice.description }}"
+              data-url="{{ notice.url or '' }}"
+              title="Edit Notice"
+            >
+              Edit
+            </button>
+
+            <form
+              method="POST"
+              action="{{ url_for('manage_notice.delete_notice', notice_id=notice.id) }}"
+              onsubmit="return confirm('Are you sure you want to delete this notice?');"
+            >
+              <button
+                type="submit"
+                class="btn btn-sm btn-danger"
+                title="Delete Notice"
+              >
+                Delete
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="text-center fst-italic">No notices found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Notice Form (hidden initially) -->
+  <div
+    class="card shadow-sm mb-5"
+    id="noticeFormContainer"
+    style="display: none"
+  >
+    <div class="card-header bg-primary text-white fw-bold">
+      <span id="formTitle">Add / Edit Notice</span>
+    </div>
+    <div class="card-body">
+      <form method="POST" id="noticeForm" novalidate>
+        <input type="hidden" name="notice_id" id="notice_id" />
+
+        <div class="mb-3 row align-items-center">
+          <label
+            for="title"
+            class="col-sm-2 col-form-label fw-semibold text-end"
+            >Title</label
+          >
+          <div class="col-sm-10">
+            <input
+              type="text"
+              class="form-control"
+              name="title"
+              id="title"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="mb-3 row align-items-center">
+          <label
+            for="description"
+            class="col-sm-2 col-form-label fw-semibold text-end"
+            >Description</label
+          >
+          <div class="col-sm-10">
+            <textarea
+              class="form-control"
+              name="description"
+              id="description"
+              rows="3"
+              required
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="mb-3 row align-items-center">
+          <label for="url" class="col-sm-2 col-form-label fw-semibold text-end"
+            >URL (optional)</label
+          >
+          <div class="col-sm-10">
+            <input type="url" class="form-control" name="url" id="url" />
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap justify-content-end">
+          <button type="submit" class="btn btn-primary">Save Notice</button>
+          <button type="button" class="btn btn-warning" id="clearBtn">
+            Clear
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const noticeFormContainer = document.getElementById("noticeFormContainer");
+  const addNoticeBtn = document.getElementById("addNoticeBtn");
+  const noticeForm = document.getElementById("noticeForm");
+  const clearBtn = document.getElementById("clearBtn");
+  const formTitle = document.getElementById("formTitle");
+
+  // Show form on Add Notice click
+  addNoticeBtn.addEventListener("click", () => {
+    noticeForm.reset();
+    document.getElementById("notice_id").value = "";
+    formTitle.innerText = "Add Notice";
+    noticeFormContainer.style.display = "block";
+    noticeForm.scrollIntoView({ behavior: "smooth" });
+  });
+
+  // Edit button click handler
+  document.querySelectorAll(".editBtn").forEach((button) => {
+    button.addEventListener("click", () => {
+      noticeFormContainer.style.display = "block";
+      document.getElementById("notice_id").value = button.dataset.id;
+      document.getElementById("title").value = button.dataset.title;
+      document.getElementById("description").value = button.dataset.description;
+      document.getElementById("url").value = button.dataset.url;
+      formTitle.innerText = "Edit Notice";
+      noticeForm.scrollIntoView({ behavior: "smooth" });
+    });
+  });
+
+  // Clear button resets the form and hides it
+  clearBtn.addEventListener("click", () => {
+    noticeForm.reset();
+    document.getElementById("notice_id").value = "";
+    noticeFormContainer.style.display = "none";
+  });
+</script>
+
+{% endblock %}

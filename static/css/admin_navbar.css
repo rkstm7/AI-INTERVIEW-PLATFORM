@@ -1,0 +1,272 @@
+/* ===========================
+   Navbar Base
+   =========================== */
+.custom-navbar {
+    position        : fixed;
+    top             : 0;
+    left            : 0;
+    width           : 100%;
+    height          : 80px;
+    background-color: #111827;
+    backdrop-filter : blur(8px);
+    box-shadow      : 0 4px 30px rgba(0, 0, 0, 0.1);
+    padding         : 0 40px;
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    z-index         : 999;
+    transition      : all 0.4s ease-in-out;
+}
+
+/* Shrinked / Centered Navbar on scroll */
+.custom-navbar.navbar-centered {
+    top          : 20px;
+    left         : 50%;
+    transform    : translateX(-50%);
+    width        : auto;
+    padding      : 10px 25px;
+    border-radius: 50px;
+    background   : rgba(0, 0, 0, 0.95);
+    box-shadow   : 0 5px 25px rgba(0, 0, 0, 0.3);
+    display      : inline-flex;
+    align-items  : center;
+    transition   : all 0.4s ease-in-out;
+}
+
+/* ===========================
+   Navbar Container
+   =========================== */
+.navbar-container {
+    max-width      : 1200px;
+    width          : 100%;
+    display        : flex;
+    align-items    : center;
+    justify-content: space-between;
+    gap            : 50px;
+}
+
+/* ===========================
+   Brand
+   =========================== */
+.navbar-left .brand {
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+
+    gap            : 10px;
+    font-size      : 1.3rem;
+    font-weight    : bold;
+    color          : #fff;
+    text-decoration: none;
+    white-space    : nowrap;
+    transition     : all 0.3s ease;
+}
+
+.navbar-left .brand .logo-img {
+    height    : 40px;
+    width     : 40px;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+/* ===========================
+   Navbar Right
+   =========================== */
+.navbar-right {
+    display        : flex;
+    margin-top     : 15px;
+    align-items    : center;
+    justify-content: center;
+    gap            : 20px;
+    position       : relative;
+}
+
+/* ===========================
+   Nav Links
+   =========================== */
+.nav-links {
+    list-style : none;
+    display    : flex;
+    align-items: center;
+    gap        : 25px;
+    transition : all 0.3s ease;
+}
+
+.nav-links li a {
+    color          : #fff;
+    text-decoration: none;
+    font-size      : 1rem;
+    display        : flex;
+    align-items    : center;
+    gap            : 5px;
+    position       : relative;
+    transition     : color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-links li a:hover {
+    color    : #ff9800;
+    transform: translateY(-2px);
+}
+
+/* ===========================
+   Dropdown
+   =========================== */
+.dropdown {
+    position: relative;
+
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    position      : absolute;
+    top           : 100%;
+    left          : 0;
+    background    : #1f2937;
+    border-radius : 6px;
+    list-style    : none;
+    padding       : 0;
+    /* Remove extra padding to control spacing via li */
+    min-width     : 180px;
+    opacity       : 0;
+    transform     : translateY(-15px);
+    pointer-events: none;
+    transition    : opacity 0.3s ease, transform 0.3s ease;
+    z-index       : 999;
+    flex-direction: column;
+}
+
+/* Dropdown Links */
+.dropdown-menu li {
+    padding      : 0;
+    /* Remove default padding from li */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    /* separator line */
+}
+
+.dropdown-menu li:last-child {
+    border-bottom: none;
+    /* Remove line after last item */
+}
+
+.dropdown-menu li a {
+    display        : block;
+    color          : #fff;
+    text-decoration: none;
+    padding        : 10px 16px;
+    /* space around links */
+    font-size      : 0.95rem;
+    transition     : background 0.3s ease;
+}
+
+.dropdown-menu li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+
+/* Show dropdown on hover for desktop */
+.dropdown:hover>.dropdown-menu {
+    opacity       : 1;
+    transform     : translateY(0);
+    pointer-events: auto;
+}
+
+/* Show dropdown when parent has "show" class (for click) */
+.dropdown.show>.dropdown-menu {
+    opacity       : 1;
+    transform     : translateY(0);
+    pointer-events: auto;
+}
+
+/* ===========================
+   Mobile Toggle
+   =========================== */
+.menu-icon {
+    display  : none;
+    font-size: 1.8rem;
+    color    : #fff;
+    cursor   : pointer;
+}
+
+#menu-toggle {
+    display: none;
+}
+
+/* ===========================
+   Responsive Styles
+   =========================== */
+@media (max-width: 992px) {
+    .nav-links {
+        position      : absolute;
+        top           : 80px;
+        right         : 0;
+        width         : 100%;
+        flex-direction: column;
+        align-items   : flex-start;
+        padding       : 1rem 2rem;
+        gap           : 15px;
+        background    : #111827;
+        transform     : translateY(-200%);
+        transition    : transform 0.3s ease;
+        z-index       : 998;
+    }
+
+    #menu-toggle:checked~.nav-links {
+        transform: translateY(0);
+    }
+
+    .menu-icon {
+        display: block;
+    }
+
+    .dropdown-menu {
+        position      : static;
+        opacity       : 1;
+        transform     : translateY(0);
+        pointer-events: auto;
+        background    : transparent;
+        padding-left  : 1rem;
+        border-radius : 0;
+    }
+
+    .nav-links li a {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-left .brand {
+        font-size: 1.1rem;
+    }
+
+    .navbar-left .brand .logo-img {
+        height: 35px;
+        width : 35px;
+    }
+
+    .nav-links {
+        padding: 1rem 1.5rem;
+    }
+
+    .nav-links li a {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-left .brand {
+        font-size: 1rem;
+    }
+
+    .navbar-left .brand .logo-img {
+        height: 30px;
+        width : 30px;
+    }
+
+    .nav-links {
+        padding: 0.8rem 1rem;
+    }
+
+    .nav-links li a {
+        font-size: 0.9rem;
+    }
+}

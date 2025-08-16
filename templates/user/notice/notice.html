@@ -1,0 +1,54 @@
+{% extends 'base.html' %} {% block title %}Notices{% endblock %} {% block
+content %}
+
+<div
+  class="container py-5"
+  style="margin-top: 120px !important; margin-bottom: 100px !important"
+>
+  <h2 class="fw-bolder fs-2 mb-5 text-center" style="color: #dd3d15ff">
+    Notices
+  </h2>
+
+  {% if notices %}
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for notice in notices %}
+    <div class="col">
+      <div class="card h-100 border-0 shadow-sm hover-card">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">{{ notice.title }}</h5>
+          <p class="card-text text-muted">{{ notice.description }}</p>
+          {% if notice.url %}
+          <a
+            href="{{ notice.url }}"
+            target="_blank"
+            class="stretched-link text-decoration-none text-primary fw-semibold"
+          >
+            More Info →
+          </a>
+          {% endif %}
+        </div>
+        <div class="card-footer bg-transparent border-0 text-muted small">
+          Posted on: {{ notice.created_at | format_datetime }}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-5">
+    <p class="text-muted fs-5">No notices to display.</p>
+  </div>
+  {% endif %}
+</div>
+
+<style>
+  .hover-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .hover-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+</style>
+
+{% endblock %}

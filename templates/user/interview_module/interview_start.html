@@ -1,0 +1,171 @@
+{% extends 'base.html' %} {% block title %}Start Interview{% endblock %} {%
+block content %}
+<div
+  class="container my-5"
+  style="margin-top: 120px !important; margin-bottom: 100px !important"
+>
+  <div class="row g-4">
+    <!-- Image + Instructions Card -->
+    <div class="col-12 col-md-6">
+      <div class="card shadow-sm border-0">
+        <img
+          src="{{ url_for('static', filename='images/image6.webp') }}"
+          alt="Interview Visual"
+          class="img-fluid rounded-top"
+        />
+        <div class="card-body text-start">
+          <h5 class="card-title text-primary mb-3">
+            📋 Interview Instructions
+          </h5>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Please sit in a quiet environment before starting.
+            </li>
+            <li class="list-group-item">
+              Choose your desired job role from the dropdown.
+            </li>
+            <li class="list-group-item">
+              Select the source of questions: AI or Manual.
+            </li>
+            <li class="list-group-item">
+              Click "Start" to begin your mock interview.
+            </li>
+            <li class="list-group-item">
+              Your responses will be recorded and evaluated.
+            </li>
+            <li class="list-group-item">
+              Ensure microphone access is granted for voice input (if required).
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interview Form Card -->
+    <div class="col-12 col-md-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-start">
+          <h4 class="card-title mb-4 text-primary">Start Interview</h4>
+          <form id="start_interview_form" method="POST" action="/user/start">
+            <!-- Job Role Dropdown -->
+            <div class="mb-4">
+              <label for="job_role" class="form-label fw-semibold"
+                >Select Job Role</label
+              >
+              <select
+                class="form-select"
+                id="job_role"
+                name="job_role"
+                required
+              >
+                <option value="" selected disabled>Select a job role</option>
+                {% for role in roles %}
+                <option value="{{ role.id }}">{{ role.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Question Source -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold"
+                >Select Question Source</label
+              >
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="mode"
+                  id="mode_ai"
+                  value="ai"
+                  checked
+                />
+                <label class="form-check-label" for="mode_ai"
+                  >AI Generated Questions</label
+                >
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="mode"
+                  id="mode_manual"
+                  value="manual"
+                />
+                <label class="form-check-label" for="mode_manual"
+                  >Manual Questions</label
+                >
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex flex-wrap gap-2">
+              <button
+                type="button"
+                id="startInterviewBtn"
+                class="btn btn-primary px-4"
+              >
+                Start Interview
+              </button>
+              <a
+                href="{{ url_for('user_dashboard.dashboard') }}"
+                class="btn btn-outline-primary px-4"
+                style="height: 40px; line-height: 26px; font-size: 1rem"
+                >Back to Home</a
+              >
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let fullscreenWarningTimer;
+  const warningTime = 30; // 30 seconds
+  const redirectURL = "{{ url_for('user_dashboard.dashboard') }}";
+
+  function startFullscreenInterview() {
+    const form = document.getElementById("start_interview_form");
+
+    // Request fullscreen
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen().catch((err) => {
+        alert("Please allow fullscreen to start the interview.");
+      });
+    }
+
+    // Start the form submission (replace this with actual interview page)
+    form.submit();
+  }
+
+  function handleFullscreenChange() {
+    if (!document.fullscreenElement) {
+      // User exited fullscreen
+      let timeLeft = warningTime;
+      alert(
+        "⚠️ You exited fullscreen! Please return to fullscreen within 30 seconds or you will be redirected to the dashboard."
+      );
+      fullscreenWarningTimer = setInterval(() => {
+        timeLeft--;
+        if (timeLeft <= 0) {
+          clearInterval(fullscreenWarningTimer);
+          alert(
+            "⏰ You did not return to fullscreen. Redirecting to dashboard."
+          );
+          window.location.href = redirectURL;
+        }
+      }, 1000);
+    } else {
+      // User returned to fullscreen
+      clearInterval(fullscreenWarningTimer);
+    }
+  }
+
+  document
+    .getElementById("startInterviewBtn")
+    .addEventListener("click", startFullscreenInterview);
+  document.addEventListener("fullscreenchange", handleFullscreenChange);
+</script>
+{% endblock %}

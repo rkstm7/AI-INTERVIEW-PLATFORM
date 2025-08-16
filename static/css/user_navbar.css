@@ -1,0 +1,290 @@
+/* ------------------ Navbar Base ------------------ */
+.custom-navbar {
+    position        : fixed;
+    top             : 0;
+    left            : 0;
+    width           : 100%;
+    height          : 80px;
+    background-color: #111;
+    backdrop-filter : blur(8px);
+    box-shadow      : 0 4px 30px rgba(0, 0, 0, 0.1);
+    padding         : 0 40px;
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    z-index         : 999;
+    transition      : all 0.4s ease-in-out;
+}
+
+/* Navbar when scrolled */
+.navbar-centered {
+    top          : 20px;
+    left         : 50%;
+    transform    : translateX(-50%);
+    width        : auto;
+    padding      : 10px 25px;
+    border-radius: 50px;
+    background   : rgba(0, 0, 0, 0.95);
+    box-shadow   : 0 5px 25px rgba(0, 0, 0, 0.3);
+    display      : inline-flex;
+    align-items  : center;
+    transition   : all 0.4s ease-in-out;
+}
+
+/* Navbar container */
+.navbar-container {
+    max-width      : 1200px;
+    width          : 100%;
+    display        : flex;
+    align-items    : center;
+    justify-content: space-between;
+    gap            : 50px;
+}
+
+/* Brand */
+.navbar-brand {
+    display        : flex;
+    align-items    : center;
+    gap            : 10px;
+    font-size      : 1.3rem;
+    font-weight    : bold;
+    color          : #fff;
+    text-decoration: none;
+}
+
+.logo-img {
+    height    : 40px;
+    width     : 40px;
+    object-fit: contain;
+}
+
+/* Nav links */
+.nav-links {
+    display    : flex;
+    align-items: center;
+    gap        : 25px;
+}
+
+.nav-links a {
+    color          : #fff;
+    text-decoration: none;
+    font-size      : 1rem;
+    position       : relative;
+    transition     : color 0.3s ease;
+}
+
+.nav-links a::after {
+    content   : '';
+    position  : absolute;
+    bottom    : -4px;
+    left      : 0;
+    width     : 0;
+    height    : 2px;
+    background: #ff9800;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #ff9800;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Dropdown */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    position       : absolute;
+    top            : 130%;
+    left           : 0;
+    background     : #1a1a2e;
+    backdrop-filter: blur(8px);
+    border-radius  : 6px;
+    list-style     : none;
+    padding        : 8px 0;
+    min-width      : 160px;
+    opacity        : 0;
+    transform      : translateY(-15px);
+    pointer-events : none;
+    transition     : opacity 0.4s ease, transform 0.4s ease;
+    z-index        : 999;
+}
+
+.dropdown-menu li a {
+    display        : block;
+    color          : #fff;
+    text-decoration: none;
+    padding        : 8px 16px;
+    font-size      : 0.95rem;
+    transition     : background 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-menu li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform : translateX(5px);
+}
+
+.dropdown.show .dropdown-menu {
+    opacity       : 1;
+    transform     : translateY(0);
+    pointer-events: auto;
+}
+
+/* ------------------ Mobile Menu ------------------ */
+.menu-toggle {
+    display  : none;
+    font-size: 1.8rem;
+    color    : #fff;
+    cursor   : pointer;
+}
+
+#mobileMenu {
+    display       : none;
+    flex-direction: column;
+    gap           : 15px;
+    transition    : transform 0.3s ease, opacity 0.3s ease;
+}
+
+#mobileMenu.show {
+    display      : flex;
+    transform    : translateY(0);
+    opacity      : 1;
+    background   : rgba(0, 0, 0, 0.95);
+    padding      : 1rem 2rem;
+    border-radius: 0 0 15px 15px;
+    z-index      : 998;
+}
+
+#mobileMenu a {
+    color          : #fff;
+    text-decoration: none;
+    font-size      : 1rem;
+    transition     : color 0.3s ease;
+}
+
+#mobileMenu a:hover {
+    color: #ff9800;
+}
+
+/* Mobile dropdown menu for Profile */
+.dropdown-menu-mobile {
+    display       : none;
+    flex-direction: column;
+    margin-left   : 1rem;
+    padding-left  : 0.5rem;
+}
+
+.dropdown-toggle-mobile {
+    cursor         : pointer;
+    color          : #fff;
+    text-decoration: none;
+    font-size      : 1rem;
+    transition     : color 0.3s ease;
+}
+
+.dropdown-toggle-mobile:hover {
+    color: #ff9800;
+}
+
+.dropdown-toggle-mobile.active+.dropdown-menu-mobile,
+.dropdown-menu-mobile.show {
+    display       : flex;
+    flex-direction: column;
+    gap           : 10px;
+    animation     : slideDown 0.3s ease forwards;
+}
+
+/* ------------------ Animations ------------------ */
+@keyframes slideDown {
+    0% {
+        opacity  : 0;
+        transform: translateY(-10px);
+    }
+
+    100% {
+        opacity  : 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        opacity  : 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity  : 0;
+        transform: translateY(-10px);
+    }
+}
+
+/* ------------------ Responsive ------------------ */
+@media (max-width: 992px) {
+    .navbar-container {
+        gap: 30px;
+    }
+
+    .nav-links {
+        position      : absolute;
+        top           : 100%;
+        right         : 0;
+        width         : 100%;
+        flex-direction: column;
+        align-items   : flex-start;
+        padding       : 1rem 2rem;
+        gap           : 15px;
+        background    : rgba(0, 0, 0, 0.95);
+        transform     : translateY(-200%);
+        transition    : transform 0.3s ease, opacity 0.3s ease;
+        border-radius : 0 0 15px 15px;
+        z-index       : 998;
+    }
+
+    .nav-links a {
+        padding: 8px 0;
+    }
+
+    .dropdown-menu {
+        position       : static;
+        opacity        : 1;
+        transform      : translateY(0);
+        pointer-events : auto;
+        background     : transparent;
+        backdrop-filter: none;
+        padding-left   : 1rem;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-container {
+        gap            : 15px;
+        justify-content: space-between;
+    }
+
+    .nav-links {
+        padding: 1rem 1.5rem;
+        gap    : 12px;
+    }
+
+    .dropdown-menu li a {
+        padding  : 6px 12px;
+        font-size: 0.9rem;
+    }
+
+    .menu-toggle {
+        font-size: 1.6rem;
+    }
+}

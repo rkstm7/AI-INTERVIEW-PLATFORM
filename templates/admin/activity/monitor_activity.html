@@ -1,0 +1,121 @@
+{% extends 'base.html' %} {% block title %}User Activity Monitor{% endblock %}
+{% block content %}
+<div
+  class="container mt-5 mb-5"
+  style="margin-top: 140px !important; margin-bottom: 100px !important"
+>
+  <div class="card">
+    <h2 class="fw-bolder mb-3" style="color: #dd3d15ff">
+      User Activity Monitor
+    </h2>
+
+    <div class="card-body">
+      <!-- Search & Reset Form -->
+      <form method="get" class="row g-3 mb-4">
+        <div class="col-md-3">
+          <input
+            type="text"
+            name="user_id"
+            class="form-control"
+            placeholder="Search by User ID"
+            value="{{ request.args.get('user_id', '') }}"
+          />
+        </div>
+        <div class="col-md-4">
+          <input
+            type="text"
+            name="name"
+            class="form-control"
+            placeholder="Search by Name"
+            value="{{ request.args.get('name', '') }}"
+          />
+        </div>
+        <div class="col-md-5 d-flex gap-2">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-search"></i> Search
+          </button>
+          <a
+            href="{{ url_for('monitor_activity.activity') }}"
+            class="btn btn-secondary text-white text-decoration-none"
+            style="display: flex; align-items: center; justify-content: center"
+          >
+            <i
+              class="bi bi-arrow-clockwise btn-sm text-white"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            ></i>
+            Reset
+          </a>
+          <a
+            href="javascript:history.back()"
+            class="btn btn-primary btn-sm text-white fw-bold text-decoration-none"
+            >Back</a
+          >
+        </div>
+      </form>
+
+      {% if activities %}
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle">
+          <thead class="table-primary text-center">
+            <tr>
+              <th scope="col">S.No</th>
+              <th scope="col">User ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Activity</th>
+              <th scope="col">Timestamp</th>
+              <th scope="col">IP Address</th>
+              <th scope="col">User Agent</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for activity in activities %}
+            <tr class="text-center">
+              <td class="fw-bold text-primary">{{ loop.index }}</td>
+              <td class="fw-bold text-primary">{{ activity[0] }}</td>
+              <td>{{ activity[1] }}</td>
+              <td class="text-capitalize">{{ activity[2] }}</td>
+              <td>{{ activity[3] }}</td>
+              <td>{{ activity[4] }}</td>
+              <td>{{ activity[5] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="alert alert-warning text-center fw-semibold fs-5 mt-4 mb-0">
+        No activity records found.
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+<style>
+  .card {
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    padding: 20px;
+  }
+  .btn-danger {
+    border-radius: 50px;
+    font-weight: bold;
+  }
+  .btn-warning,
+  .btn-success,
+  .btn-secondary {
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  table th {
+    background-color: #f1f1f1;
+  }
+  .form-control {
+    border-radius: 10px;
+  }
+</style>

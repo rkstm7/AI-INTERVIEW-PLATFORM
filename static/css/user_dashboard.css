@@ -1,0 +1,257 @@
+/* ------------------ Profile Container ------------------ */
+.profile-container {
+    position       : relative;
+    top            : 117px;
+    left           : 48px;
+    padding        : 20px 25px;
+    border-radius  : 12px;
+    color          : #000000 !important;
+    font-size      : 0.95rem;
+    z-index        : 10;
+    width          : max-content;
+    transition     : all 0.3s ease;
+    justify-content: center;
+    align-items    : center;
+    text-align     : center;
+}
+
+.profile-container .logout a {
+    display        : inline-block;
+    margin-top     : 12px;
+    padding        : 6px 12px;
+    border-radius  : 8px;
+    background     : linear-gradient(135deg, #ff416c, #ff4b2b);
+    color          : #fff;
+    text-decoration: none;
+    transition     : transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-container .logout a:hover {
+    transform : translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 65, 108, 0.4);
+}
+
+/* ------------------ Dashboard Wrapper ------------------ */
+.dashboard-wrapper {
+    margin        : 160px 20px;
+    display       : flex;
+    flex-direction: column;
+    gap           : 30px;
+}
+
+/* ---------- Profile Header ---------- */
+.profile-header {
+    display        : inline-block;
+    font-size      : 2.5rem;
+    font-weight    : 800;
+    text-align     : center;
+    text-transform : uppercase;
+    padding        : 20px 40px;
+    border-radius  : 15px;
+    transition     : all 0.5s ease;
+    animation      : gradientBG 8s ease infinite;
+    margin         : 0 auto 20px auto;
+    background     : linear-gradient(270deg, #00f2fe, #0072ff, #00c6ff);
+    background-size: 600% 600%;
+    color          : #000000;
+}
+
+.profile-header:hover {
+    background-position: 100% 0%;
+    transform          : scale(1.05);
+    box-shadow         : 0 12px 48px rgba(0, 0, 0, 0.35);
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* ---------- Profile Description ---------- */
+.profile-desc {
+    display        : block;
+    width          : fit-content;
+    max-width      : 70%;
+    font-size      : 1rem;
+    text-align     : center;
+    color          : #e0e0e0;
+    line-height    : 1.6;
+    padding        : 10px 20px;
+    margin         : 0 auto 30px auto;
+    border-radius  : 12px;
+    background     : rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    box-shadow     : 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition     : all 0.3s ease;
+    word-wrap      : break-word;
+}
+
+.profile-desc:hover {
+    transform : translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 198, 255, 0.2);
+}
+
+/* ------------------ Explore Now Section ------------------ */
+.explore-now {
+    padding        : 25px;
+    border-radius  : 20px;
+    background     : rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    box-shadow     : 0 4px 25px rgba(0, 0, 0, 0.15);
+    transition     : all 0.3s ease;
+}
+
+.explore-now h3 {
+    font-size    : 1.8rem;
+    margin-bottom: 20px;
+    font-weight  : 700;
+    color        : #ff4b2b;
+    text-align   : center;
+}
+
+.explore-now:hover {
+    transform: translateY(-2px);
+}
+
+/* ------------------ Dashboard Cards ------------------ */
+.dashboard-cards {
+    display  : flex;
+    gap      : 20px;
+    flex-wrap: wrap;
+}
+
+.left-card,
+.right-card {
+    flex           : 1;
+    min-width      : 280px;
+    padding        : 20px;
+    border-radius  : 20px;
+    background     : rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    box-shadow     : 0 4px 25px rgba(0, 0, 0, 0.15);
+    transition     : all 0.3s ease;
+}
+
+.left-card:hover,
+.right-card:hover {
+    transform: translateY(-2px);
+}
+
+.left-card h5,
+.right-card h5 {
+    font-size    : 1.4rem;
+    font-weight  : 700;
+    margin-bottom: 15px;
+    color        : #ff4b2b;
+}
+
+/* ------------------ Notifications Section ------------------ */
+.notifications-section {
+    padding        : 20px;
+    border-radius  : 20px;
+    background     : rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    box-shadow     : 0 4px 25px rgba(0, 0, 0, 0.15);
+}
+
+.notifications-section h5 {
+    font-size    : 1.5rem;
+    font-weight  : 700;
+    margin-bottom: 15px;
+    color        : #ff4b2b;
+}
+
+/* ------------------ Fully Responsive ------------------ */
+@media (max-width: 1200px) {
+    .dashboard-wrapper {
+        margin: 140px 15px;
+    }
+
+    .profile-container {
+        top : 100px;
+        left: 20px;
+    }
+}
+
+@media (max-width: 992px) {
+    .dashboard-cards {
+        flex-direction: column;
+    }
+
+    .left-card,
+    .right-card {
+        width: 100%;
+    }
+
+    .profile-header {
+        font-size: 2rem;
+        padding  : 15px 25px;
+    }
+
+    .profile-desc {
+        max-width: 90%;
+        font-size: 0.95rem;
+        padding  : 8px 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-wrapper {
+        margin: 120px 10px;
+    }
+
+    .profile-container {
+        top    : 90px;
+        left   : 15px;
+        width  : auto;
+        padding: 15px;
+    }
+
+    .profile-header {
+        font-size: 1.8rem;
+        padding  : 12px 15px;
+    }
+
+    .profile-desc {
+        max-width: 95%;
+        font-size: 0.9rem;
+        padding  : 8px 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .profile-container {
+        position     : relative;
+        width        : 100%;
+        margin-bottom: 20px;
+        text-align   : center;
+    }
+
+    .dashboard-wrapper {
+        margin: 20px 5px;
+    }
+
+    .explore-now {
+        padding: 20px 15px;
+    }
+
+    .profile-header {
+        font-size: 1.6rem;
+        padding  : 10px 12px;
+    }
+
+    .profile-desc {
+        max-width: 100%;
+        font-size: 0.85rem;
+        padding  : 6px 10px;
+    }
+}

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Interview Session</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background: #f5f7fa;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .interview-container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      #timer {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #0d6efd;
+        margin-bottom: 25px;
+        text-align: right;
+      }
+
+      .question-card {
+        padding: 20px;
+        margin-bottom: 20px;
+        border-left: 5px solid #0d6efd;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .question-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-submit {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 10px;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 576px) {
+        #timer {
+          text-align: center;
+        }
+      }
+    </style>
+
+    <script>
+      // Timer for 30 minutes countdown
+      let totalSeconds = 1800;
+      function startTimer() {
+        const timerEl = document.getElementById("timer");
+        const interval = setInterval(() => {
+          let minutes = Math.floor(totalSeconds / 60);
+          let seconds = totalSeconds % 60;
+          timerEl.textContent = `⏰ Time Left: ${minutes}m ${seconds}s`;
+          totalSeconds--;
+          if (totalSeconds < 0) {
+            clearInterval(interval);
+            alert("⏰ Time is up! Submitting your interview.");
+            document.getElementById("interview_form").submit();
+          }
+        }, 1000);
+      }
+      window.onload = startTimer;
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="interview-container">
+        <h2 class="text-center mb-4">🧠 AI Interview Session</h2>
+        <div id="timer"></div>
+
+        <form id="interview_form" method="POST" action="/user/session">
+          {% for q in questions %}
+          <div class="question-card">
+            <label class="form-label fw-bold mb-3">
+              Q{{ loop.index }}. {{ q.content }}
+            </label>
+
+            <div class="form-check mt-2">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="answers{{ loop.index }}"
+                id="q{{ loop.index }}a"
+                value="A"
+                required
+              />
+              <label class="form-check-label" for="q{{ loop.index }}a"
+                >{{ q.option_a }}</label
+              >
+            </div>
+
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="answers{{ loop.index }}"
+                id="q{{ loop.index }}b"
+                value="B"
+              />
+              <label class="form-check-label" for="q{{ loop.index }}b"
+                >{{ q.option_b }}</label
+              >
+            </div>
+
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="answers{{ loop.index }}"
+                id="q{{ loop.index }}c"
+                value="C"
+              />
+              <label class="form-check-label" for="q{{ loop.index }}c"
+                >{{ q.option_c }}</label
+              >
+            </div>
+
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="answers{{ loop.index }}"
+                id="q{{ loop.index }}d"
+                value="D"
+              />
+              <label class="form-check-label" for="q{{ loop.index }}d"
+                >{{ q.option_d }}</label
+              >
+            </div>
+          </div>
+          {% endfor %}
+
+          <button type="submit" class="btn btn-primary btn-submit mt-3">
+            ✅ Submit Interview
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

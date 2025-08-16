@@ -1,0 +1,176 @@
+{% extends 'base.html' %} {% block content %}
+
+<style>
+  .card {
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    padding: 20px;
+  }
+  .btn-danger {
+    border-radius: 50px;
+    font-weight: bold;
+  }
+  .btn-warning,
+  .btn-success,
+  .btn-secondary {
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  table th {
+    background-color: #f1f1f1;
+  }
+  .form-control {
+    border-radius: 10px;
+  }
+</style>
+
+<div
+  class="container my-4"
+  style="margin-top: 140px !important; margin-bottom: 100px !important"
+>
+  <div class="card shadow-sm">
+    <h2 class="fw-bolder mb-3" style="color: #dd3d15ff">Roles Management</h2>
+
+    <!-- Top controls -->
+    <div class="d-flex mb-3 gap-2">
+      <button id="btn-add-role" class="btn btn-danger">Add Role</button>
+      <button onclick="location.reload()" class="btn btn-success">Reset</button>
+    </div>
+
+    <!-- Add Role Form -->
+    <div id="add-role-form" class="mb-3" style="display: none">
+      <form
+        method="POST"
+        action="{{ url_for('roles.add_role') }}"
+        class="row g-2 align-items-center"
+      >
+        <div class="col-auto flex-grow-1">
+          <input
+            type="text"
+            name="name"
+            class="form-control"
+            placeholder="Enter Name"
+            required
+          />
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-danger">Submit</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Roles Table -->
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle text-center">
+        <thead class="table-light">
+          <tr>
+            <th>Sr. No</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for role in roles %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>
+              <span class="role-name">{{ role.role_name }}</span>
+              <form
+                method="POST"
+                action="{{ url_for('roles.edit_role', role_id=role.id) }}"
+                class="row g-2 align-items-center edit-form mt-2"
+                style="display: none"
+              >
+                <div class="col-auto flex-grow-1">
+                  <input
+                    type="text"
+                    name="name"
+                    value="{{ role.role_name }}"
+                    class="form-control form-control-sm"
+                    required
+                  />
+                </div>
+                <input type="hidden" name="status" value="{{ role.status }}" />
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-warning btn-sm">
+                    Save
+                  </button>
+                </div>
+                <div class="col-auto">
+                  <button
+                    type="button"
+                    class="btn btn-secondary btn-sm btn-cancel"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </td>
+            <td>
+              <form
+                method="POST"
+                action="{{ url_for('roles.edit_role', role_id=role.id) }}"
+              >
+                <input type="hidden" name="name" value="{{ role.role_name }}" />
+                {% if role.status == 'Active' %}
+                <input type="hidden" name="status" value="Inactive" />
+                <button type="submit" class="btn btn-success btn-sm">
+                  Active
+                </button>
+                {% else %}
+                <input type="hidden" name="status" value="Active" />
+                <button type="submit" class="btn btn-secondary btn-sm">
+                  Inactive
+                </button>
+                {% endif %}
+              </form>
+            </td>
+            <td>
+              <button class="btn btn-warning btn-sm btn-edit-row">Edit</button>
+              <form
+                method="POST"
+                action="{{ url_for('roles.delete_role', role_id=role.id) }}"
+                class="d-inline"
+                onsubmit="return confirm('Delete this role?');"
+              >
+                <button type="submit" class="btn btn-danger btn-sm">
+                  Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+  document
+    .getElementById("btn-add-role")
+    .addEventListener("click", function () {
+      const form = document.getElementById("add-role-form");
+      form.style.display = form.style.display === "none" ? "block" : "none";
+    });
+
+  document.querySelectorAll(".btn-edit-row").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const row = btn.closest("tr");
+      row.querySelector(".role-name").classList.add("d-none");
+      row.querySelector(".edit-form").style.display = "flex";
+    });
+  });
+
+  document.querySelectorAll(".btn-cancel").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const form = btn.closest(".edit-form");
+      form.style.display = "none";
+      form.closest("tr").querySelector(".role-name").classList.remove("d-none");
+    });
+  });
+</script>
+
+{% endblock %}

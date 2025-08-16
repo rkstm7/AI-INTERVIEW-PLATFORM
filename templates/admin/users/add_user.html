@@ -1,0 +1,146 @@
+{% extends 'base.html' %} {% block content %}
+
+<style>
+  .card {
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    padding: 20px;
+  }
+  .form-control,
+  .form-select {
+    border-radius: 10px;
+  }
+  .btn-danger {
+    border-radius: 50px;
+    font-weight: bold;
+  }
+  .btn-info,
+  .btn-primary {
+    border-radius: 20px;
+    font-weight: 500;
+  }
+</style>
+
+<div
+  class="container my-5"
+  style="margin-top: 140px !important; margin-bottom: 100px !important"
+>
+  <div class="card shadow-lg border-0">
+    <div class="card-header rounded-top-4 py-3 text-start">
+      <h4 class="mb-0 fw-bold text-center" style="color: #dd3d15ff">
+        <i class="bi bi-person-plus me-2"></i> Add New User
+      </h4>
+    </div>
+    <div class="card-body p-4 text-start">
+      <form method="POST" action="{{ url_for('manage_role.add_user') }}">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold text-start">
+              Full Name <span class="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              name="full_name"
+              class="form-control form-control-lg"
+              placeholder="Enter full name"
+              required
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold text-start">
+              Username <span class="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              name="username"
+              class="form-control form-control-lg"
+              placeholder="Enter username"
+              required
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold text-start">
+              Email <span class="text-danger">*</span>
+            </label>
+            <input
+              type="email"
+              name="email"
+              class="form-control form-control-lg"
+              placeholder="Enter email"
+              required
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold text-start">Contact No</label>
+            <input
+              type="text"
+              name="phone"
+              class="form-control form-control-lg"
+              placeholder="Enter phone number"
+            />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-semibold text-start">Address</label>
+            <textarea
+              name="address"
+              class="form-control form-control-lg"
+              placeholder="Enter address"
+              rows="2"
+            ></textarea>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold text-start">
+              Password <span class="text-danger">*</span>
+            </label>
+            <input
+              type="password"
+              name="password"
+              class="form-control form-control-lg"
+              placeholder="Enter password"
+              required
+            />
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label fw-semibold text-start">
+              Role <span class="text-danger">*</span>
+            </label>
+            <select name="role_id" class="form-select form-select-lg" required>
+              <option value="">Select Role</option>
+              {% for role in roles %}
+              <option value="{{ role.id }}">{{ role.role_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label fw-semibold text-start">Status</label>
+            <select name="status" class="form-select form-select-lg">
+              <option value="Active" selected>Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+          <a
+            href="{{ url_for('manage_role.users') }}"
+            class="btn btn-danger btn-lg px-4"
+          >
+            <i class="bi bi-arrow-left-circle me-2"></i> Back
+          </a>
+          <button type="submit" class="btn btn-info btn-lg px-4">
+            <i class="bi bi-save me-2"></i> Save User
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

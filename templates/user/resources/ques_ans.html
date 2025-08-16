@@ -1,0 +1,59 @@
+{% extends 'base.html' %} {% block content %}
+
+<div
+  class="container my-5"
+  style="margin-top: 140px !important; margin-bottom: 100px !important"
+>
+  <!-- Page Title -->
+  <h3 class="text-center mb-5 fw-bolder fs-2" style="color: #dd3d15ff">
+    Learning Resources for "{{ selected_role_name }}"
+  </h3>
+
+  {% if resources %}
+  <div class="row g-4">
+    {% for r in resources %}
+    <div class="col-12">
+      <div class="card shadow-sm h-100">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title fw-bold">{{ r['title'] }}</h5>
+          <p
+            class="card-text fs-5"
+            style="text-align: justify; font-weight: 500 !important"
+          >
+            {{ r['description']|truncate(500) }} {{ r['description'] }}
+          </p>
+          <div
+            class="mt-auto d-flex flex-wrap justify-content-between align-items-center"
+          >
+            <a
+              href="{{ r['url'] }}"
+              class="btn btn-outline-primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Visit
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="alert alert-info mt-4 text-center">
+    No resources found for this role.
+  </div>
+  {% endif %}
+
+  <!-- Back Button -->
+  <div class="d-flex justify-content-center mt-5">
+    <a
+      href="{{ url_for('user_dashboard.dashboard') }}"
+      class="btn btn-outline-primary px-4"
+    >
+      &larr; Back to Dashboard
+    </a>
+  </div>
+</div>
+
+{% endblock %}

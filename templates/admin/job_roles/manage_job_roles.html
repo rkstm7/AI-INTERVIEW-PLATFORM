@@ -1,0 +1,202 @@
+{% extends 'base.html' %} {% block content %}
+<div
+  class="container my-5"
+  style="margin-top: 160px !important; margin-bottom: 100px !important"
+>
+  <div class="card shadow border-0 p-4">
+    <h2
+      class="fw-bolder mb-4 text-center"
+      style="font-size: 2.4rem; color: #dd3d15ff"
+    >
+      Manage Job Roles
+    </h2>
+
+    <!-- Back & Search -->
+    <div class="row mb-3">
+      <div class="col-md-9">
+        <form method="GET" class="row g-2">
+          <div class="col-md-4">
+            <input
+              type="text"
+              name="search_name"
+              value="{{ request.args.get('search_name', '') }}"
+              class="form-control"
+              placeholder="Search by name"
+            />
+          </div>
+          <div class="col-md-4">
+            <input
+              type="date"
+              name="search_date"
+              value="{{ request.args.get('search_date', '') }}"
+              class="form-control"
+            />
+          </div>
+          <div class="col-md-4 d-flex">
+            <button type="submit" class="btn btn-primary me-2 flex-fill">
+              Search
+            </button>
+            <a
+              href="{{ url_for('manage_job_roles.job_roles') }}"
+              class="btn btn-warning flex-fill text-center justify-content-center align-content-center me-2"
+              >Reset</a
+            >
+            <a
+              href="{{ url_for('admin_dashboard.dashboard') }}"
+              class="btn btn-primary flex-fill text-center justify-content-center align-content-center py-2"
+              >Back</a
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Add Button -->
+    <div class="mb-3">
+      <form method="GET">
+        <button
+          type="submit"
+          name="show_add_form"
+          value="1"
+          class="btn btn-success btn-start text-start"
+          style="display: block; margin-left: 0"
+        >
+          Add Role
+        </button>
+      </form>
+    </div>
+
+    <!-- Add Form -->
+    {% if show_add_form %}
+    <form method="POST" class="mb-4">
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control"
+          name="role_name"
+          placeholder="Enter new job role"
+          required
+        />
+        <button type="submit" name="add_role" class="btn btn-dark">Save</button>
+      </div>
+    </form>
+    {% endif %}
+
+    <!-- Table -->
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered align-middle mb-0">
+        <thead class="table-light text-center">
+          <tr>
+            <th style="width: 5%">Sr No.</th>
+            <th style="width: 30%">Role Name</th>
+            <th style="width: 20%">Created At</th>
+            <th style="width: 15%">Status</th>
+            <th style="width: 30%">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for role in job_roles %}
+          <tr class="text-center">
+            <td class="fw-bold">{{ loop.index }}</td>
+            <td>
+              {% if edit_role_id == role.id %}
+              <form method="POST" class="d-flex">
+                <input type="hidden" name="role_id" value="{{ role.id }}" />
+                <input
+                  type="text"
+                  name="updated_name"
+                  value="{{ role.name }}"
+                  required
+                  class="form-control me-2"
+                />
+                <button
+                  type="submit"
+                  name="save_edit"
+                  class="btn btn-success btn-sm"
+                >
+                  Save
+                </button>
+              </form>
+              {% else %} {{ role.name }} {% endif %}
+            </td>
+            <td>
+              {{ role.created_at.strftime('%d-%m-%Y %I:%M %p') if
+              role.created_at else 'N/A' }}
+            </td>
+            <td>
+              <span
+                class="badge {{ 'bg-success' if role.status == 'Active' else 'bg-secondary' }}"
+              >
+                {{ role.status }}
+              </span>
+            </td>
+            <td>
+              {% if edit_role_id != role.id %}
+              <form method="GET" class="d-inline">
+                <input
+                  type="hidden"
+                  name="edit_role_id"
+                  value="{{ role.id }}"
+                />
+                <button type="submit" class="btn btn-info btn-sm">Edit</button>
+              </form>
+              {% endif %}
+              <form method="POST" class="d-inline ms-2">
+                <input type="hidden" name="role_id" value="{{ role.id }}" />
+                <button
+                  type="submit"
+                  name="delete_role"
+                  class="btn btn-danger btn-sm"
+                  onclick="return confirm('Are you sure you want to delete this role?');"
+                >
+                  Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="5" class="text-center text-muted">
+              No job roles found.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+  .card {
+    border-radius: 10px !important;
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef) !important;
+    padding: 20px;
+  }
+  .btn-danger {
+    border-radius: 50px !important;
+    font-weight: bold;
+  }
+  .btn-info,
+  .btn-warning {
+    border-radius: 20px !important;
+    font-weight: 500;
+  }
+  table th {
+    background-color: #f1f1f1 !important;
+  }
+  .form-control {
+    border-radius: 10px;
+  }
+  .badge {
+    font-size: 0.9rem;
+    padding: 0.5em 1em;
+    border-radius: 50px;
+  }
+  .form-switch .form-check-input {
+    width: 3em;
+    height: 1.5em;
+  }
+</style>
+{% endblock %}

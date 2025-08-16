@@ -1,0 +1,159 @@
+{% extends 'base.html' %} {% block title %}Interview Summary & Feedback{%
+endblock %} {% block content %}
+
+<div
+  class="container my-5"
+  style="margin-top: 140px !important; margin-bottom: 100px !important"
+>
+  <!-- Performance Summary -->
+  <div class="card shadow-sm mb-5">
+    <div class="card-body">
+      <h3 class="card-title mb-4 fs-1 fw-bolder" style="color: #dd3d15ff">
+        🎯 Your Performance Summary
+      </h3>
+      <div class="row text-center">
+        <div class="col-md-6 mb-3">
+          <div class="p-3 border rounded bg-light">
+            <h5>Score</h5>
+            <p class="fs-4 fw-bold">{{ score }} / {{ questions|length * 2 }}</p>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="p-3 border rounded bg-light">
+            <h5>Accuracy</h5>
+            <p class="fs-4 fw-bold">{{ accuracy }}%</p>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-info mt-4 text-center">
+        <strong>{{ message }}</strong>
+      </div>
+      <div class="d-flex justify-content-center mt-3 gap-3">
+        {% if retake %}
+        <a href="/user/start" class="btn btn-warning btn-lg"
+          >🔁 Retake Interview</a
+        >
+        {% else %}
+        <a href="/" class="btn btn-success btn-lg">🏠 Go to Dashboard</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback Form -->
+  <div class="card shadow-sm">
+    <div class="card-body text-start">
+      <h3
+        class="card-title mb-4 text-center fw-bolder fs-1"
+        style="color: #dd3d15ff"
+      >
+        Interview Feedback
+      </h3>
+      <form method="POST" action="/user/send_feedback">
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label for="name" class="form-label">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="name"
+              placeholder="Enter your name"
+              value="{{ name or '' }}"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              value="{{ email or '' }}"
+              required
+            />
+          </div>
+        </div>
+
+        {% set extra_questions = [ "Was the AI's introduction and guidance
+        clear?", "How relevant were the questions to the selected job role?",
+        "Was the voice recognition (Whisper) accurate and smooth?", "Were the
+        AI-generated questions challenging enough?", "Did the AI provide helpful
+        follow-up questions?", "Was the scoring and feedback accurate and
+        understandable?", "Did the platform simulate a real interview
+        experience?", "Was the overall interface user-friendly?", "Would you
+        recommend this AI Interview platform to others?", "How satisfied are you
+        with the overall experience?" ] %} {% for i in
+        range(extra_questions|length) %}
+        <div
+          class="mb-4 question-block {% if missing and (i+1) in missing %}highlight-error{% endif %}"
+          id="question-{{ i+1 }}"
+        >
+          <label class="form-label fw-semibold"
+            >Q{{ i+1 }}. {{ extra_questions[i] }}</label
+          >
+          <div class="d-flex align-items-center stars">
+            {% for star in range(5, 0, -1) %}
+            <div class="form-check form-check-inline">
+              <input type="radio" class="form-check-input" id="q{{ i+1 }}-star{{
+              star }}" name="q{{ i+1 }}" value="{{ star }}" {% if ratings and
+              ratings['q' ~ (i+1)] == star %}checked{% endif %} />
+              <label class="form-check-label" for="q{{ i+1 }}-star{{ star }}"
+                >★</label
+              >
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+
+        <div class="mb-4">
+          <label for="message" class="form-label"
+            >Any suggestions or comments?</label
+          >
+          <textarea
+            class="form-control"
+            id="message"
+            name="message"
+            rows="4"
+            placeholder="Your feedback..."
+            required
+          >
+{{ message_text or '' }}</textarea
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg w-100">
+          Submit Feedback
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  .stars input[type="radio"] {
+    display: none;
+  }
+  .stars label {
+    font-size: 1.5rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .stars input[type="radio"]:checked ~ label,
+  .stars label:hover,
+  .stars label:hover ~ label {
+    color: #ffc107;
+  }
+  .highlight-error {
+    border: 2px solid red;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #fff3f3;
+  }
+</style>
+
+{% endblock %}

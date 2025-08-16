@@ -1,0 +1,100 @@
+<!-- Admin Navbar CSS -->
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/admin_navbar.css') }}"
+/>
+
+<nav class="custom-navbar admin-navbar">
+  <div class="navbar-container">
+    <!-- Left: Brand -->
+    <div class="navbar-left">
+      <a href="{{ url_for('admin_dashboard.dashboard') }}" class="brand">
+        <img
+          src="{{ url_for('static', filename='images/rotech_logo.png') }}"
+          alt="Logo"
+          class="logo-img"
+        />
+        <span class="brand-text">Super Admin Panel</span>
+      </a>
+    </div>
+
+    <!-- Right: Links -->
+    <div class="navbar-right">
+      <!-- Mobile Toggle -->
+      <input type="checkbox" id="menu-toggle" />
+      <label for="menu-toggle" class="menu-icon">&#9776;</label>
+
+      <!-- Navbar Links -->
+      <ul class="nav-links">
+        <li>
+          <a href="{{ url_for('admin_dashboard.dashboard') }}"> Dashboard </a>
+        </li>
+
+        <!-- Users Management Dropdown -->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle"> Users Management</a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="{{ url_for('roles.roles') }}">Roles</a>
+            </li>
+            <li>
+              <a href="{{ url_for('manage_role.users') }}">Users</a>
+            </li>
+            <li>
+              <a href="{{ url_for('manage_job_roles.job_roles') }}"
+                >Job Roles</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('monitor_activity.activity') }}"
+                >User Activity</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('manual_feedback.manual_feedback') }}"
+                >Manual Feedback</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('ai_feedback.ai_feedback') }}"
+                >User Feedback</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('user_scorecard.scorecard') }}"
+                >View Scorecard</a
+              >
+            </li>
+          </ul>
+        </li>
+
+        <!-- User Services Dropdown -->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle"> User Services</a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="{{ url_for('manage_questions.questions') }}"
+                >Manage Questions</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('manage_resources.resources') }}"
+                >Learning Resources</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('manage_notice.notice') }}">Manage Notices</a>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <a href="{{ url_for('admin_logout.logout') }}">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- JS -->
+<script src="{{ url_for('static', filename='js/public_navbar.js') }}"></script>

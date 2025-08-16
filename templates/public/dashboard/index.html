@@ -1,0 +1,115 @@
+{% extends 'base.html' %} {% block content %}
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/public_dashboard.css') }}"
+/>
+
+<div class="main mt-5">
+  <!-- Top Section -->
+  <section class="top-section py-5">
+    <div class="container-lg">
+      <div class="row align-items-center" style="text-align: justify">
+        <div class="col-lg-7">
+          <h1
+            class="typewriter"
+            data-text="Welcome to the AI Interview Prep Platform"
+          ></h1>
+          <p class="lead mt-3">
+            Experience a new era of interview preparation designed to give you a
+            competitive edge in today’s fast-paced job market. Select from a
+            wide range of job roles that match your career aspirations, and
+            tackle dynamic multiple-choice questions tailored to each role.
+            Receive instant scoring for every attempt, allowing you to track
+            your progress and identify areas for improvement immediately.
+            Benefit from real-time, AI-powered feedback that not only highlights
+            mistakes but also provides actionable tips to enhance your
+            performance. With personalized insights, adaptive difficulty, and
+            comprehensive analytics, you can sharpen your skills efficiently and
+            approach interviews with confidence, fully prepared for any
+            challenge. This platform transforms traditional practice into an
+            interactive, intelligent learning experience, making your
+            preparation smarter, faster, and more effective.
+          </p>
+          <a
+            href="{{ url_for('register.register') }}"
+            class="btn btn-primary btn-lg mt-3"
+          >
+            Get Started
+          </a>
+        </div>
+        <div class="col-lg-5 text-center mt-4 mt-lg-0">
+          <img
+            src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3pxcDh3NHMxNDE4Y3ZiMWU0ajZyZjByMnZ4MHp1czFvZHltZjAyYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/5k5vZwRFZR5aZeniqb/giphy.gif"
+            alt="AI Illustration"
+            class="img-fluid rounded shadow"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards Section -->
+  <section class="cards-section py-5 bg-white">
+    <div class="container-lg">
+      <div class="row g-4 text-center">
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm border-0 p-4">
+            <h4 class="fw-bold">Multiple Choice Questions</h4>
+            <p>
+              Practice with intelligently generated MCQs tailored to your job
+              role.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm border-0 p-4">
+            <h4 class="fw-bold">Answer Selection & Scoring</h4>
+            <p>
+              Select the correct option, get evaluated instantly, and track your
+              performance.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm border-0 p-4">
+            <h4 class="fw-bold">Realtime Feedback</h4>
+            <p>
+              Understand your mistakes and strengths with dynamic scorecards and
+              AI insights.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Image Banner Section -->
+  <section class="image-banner py-5 bg-light">
+    <div class="container-lg">
+      <div class="row align-items-center">
+        <div class="col-lg-6 order-2 order-lg-1 mt-4 mt-lg-0">
+          <h2 class="fw-bold">Built for Your Success</h2>
+          <p>
+            Our platform is crafted to simulate real interview environments.
+            With a wide range of roles and AI-driven questions, we ensure you’re
+            always a step ahead. Prepare smarter, not harder, with detailed
+            analytics, personalized feedback, and a seamless user experience.
+          </p>
+        </div>
+        <div class="col-lg-6 order-1 order-lg-2 text-center">
+          <img
+            src="{{ url_for('static', filename='images/image4.jpg') }}"
+            alt="Interview Illustration"
+            class="img-fluid rounded shadow"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

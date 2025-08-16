@@ -1,0 +1,204 @@
+/* ===================== Typewriter Effect ===================== */
+.typewriter {
+  display      : inline-block !important;
+  overflow     : hidden !important;
+  border-right : 3px solid #0d6efd !important;
+  white-space  : nowrap !important;
+  padding-right: 2px !important;
+  font-weight  : 700 !important;
+  color        : #0e2542 !important;
+  font-size    : 3rem !important;
+  transition   : all 0.3s ease !important;
+}
+
+.typewriter:hover {
+  color    : #0d6efd !important;
+  transform: scale(1.05) !important;
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent !important;
+  }
+
+  0%,
+  100% {
+    border-color: #0d6efd !important;
+  }
+}
+
+/* ===================== Top Section ===================== */
+.top-section {
+  display        : flex !important;
+  flex-direction : column !important;
+  justify-content: flex-start !important;
+  width          : 100% !important;
+  padding        : 120px 50px !important;
+  position       : relative !important;
+}
+
+.top-section .lead {
+  font-size  : 1.2rem !important;
+  margin     : 25px 0 !important;
+  line-height: 1.6 !important;
+  color      : #333 !important;
+  text-align : justify !important;
+  transition : color 0.3s ease !important;
+}
+
+.top-section .lead:hover {
+  color: #0d6efd !important;
+}
+
+.btn-get-started {
+  display        : inline-block !important;
+  padding        : 12px 35px !important;
+  background     : linear-gradient(45deg, #0d6efd, #00bfff) !important;
+  color          : #fff !important;
+  border-radius  : 30px !important;
+  font-weight    : 600 !important;
+  text-decoration: none !important;
+  box-shadow     : 0 6px 20px rgba(0, 123, 255, 0.3) !important;
+  transition     : all 0.3s ease !important;
+}
+
+.btn-get-started:hover {
+  transform          : translateY(-3px) scale(1.05) !important;
+  box-shadow         : 0 12px 35px rgba(0, 123, 255, 0.5) !important;
+  background-position: right center !important;
+}
+
+/* ===================== Cards Section ===================== */
+.cards-section {
+  display  : flex !important;
+  gap      : 25px !important;
+  flex-wrap: wrap !important;
+  margin   : 80px 0 !important;
+}
+
+.cards-section .card {
+  flex         : 1 1 30% !important;
+  background   : #fff !important;
+  border-radius: 15px !important;
+  padding      : 25px 20px !important;
+  box-shadow   : 0 8px 30px rgba(0, 0, 0, 0.1) !important;
+  transition   : transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease !important;
+}
+
+.cards-section .card:hover {
+  transform : translateY(-8px) scale(1.03) !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2) !important;
+  background: #f0f8ff !important;
+}
+
+.cards-section .card h4 {
+  margin-bottom: 15px !important;
+  color        : #0d6efd !important;
+  transition   : color 0.3s ease, transform 0.3s ease !important;
+}
+
+.cards-section .card h4:hover {
+  color    : #00bfff !important;
+  transform: scale(1.05) !important;
+}
+
+.cards-section .card p {
+  color      : #555 !important;
+  line-height: 1.5 !important;
+}
+
+/* ===================== Image Banner ===================== */
+.image-banner {
+  display      : flex !important;
+  gap          : 50px !important;
+  flex-wrap    : wrap !important;
+  align-items  : center !important;
+  margin-bottom: 100px !important;
+}
+
+.image-banner .text-container h2 {
+  font-size    : 2.5rem !important;
+  margin-bottom: 15px !important;
+  color        : #0e2542 !important;
+  transition   : transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease !important;
+}
+
+.image-banner .text-container h2:hover {
+  color      : #0d6efd !important;
+  transform  : scale(1.05) !important;
+  text-shadow: 0 0 10px #0d6efd !important;
+}
+
+.image-banner .text-container p {
+  font-size  : 1.1rem !important;
+  color      : #333 !important;
+  line-height: 1.6 !important;
+  transition : color 0.3s ease !important;
+}
+
+.image-banner .text-container p:hover {
+  color: #0d6efd !important;
+}
+
+.image-banner .image-wrapper img {
+  width        : 100% !important;
+  border-radius: 20px !important;
+  box-shadow   : 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+  transition   : transform 0.6s ease, box-shadow 0.3s ease !important;
+}
+
+.image-banner .image-wrapper img:hover {
+  transform : scale(1.07) rotateZ(1deg) !important;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* ===================== Responsive ===================== */
+@media screen and (max-width: 1200px) {
+  .typewriter {
+    font-size: 2.5rem !important;
+  }
+
+  .image-banner .text-container h2 {
+    font-size: 2.2rem !important;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .cards-section {
+    flex-direction: column !important;
+    gap           : 20px !important;
+  }
+
+  .image-banner {
+    flex-direction: column-reverse !important;
+    gap           : 30px !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .typewriter {
+    font-size: 2rem !important;
+  }
+
+  .top-section {
+    padding: 120px 30px !important;
+  }
+
+  .image-banner .text-container h2 {
+    font-size: 1.8rem !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .typewriter {
+    font-size: 1.6rem !important;
+  }
+
+  .top-section .lead {
+    font-size: 1rem !important;
+  }
+
+  .image-banner .text-container p {
+    font-size: 0.95rem !important;
+  }
+}

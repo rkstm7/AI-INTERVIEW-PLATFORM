@@ -1,0 +1,274 @@
+/* ===================== Container ===================== */
+.login-wrapper {
+    margin-top   : 160px;
+    /* top margin */
+    margin-bottom: 160px;
+    padding      : 0 5%;
+}
+
+/* ===================== Fade Scroll Animations ===================== */
+.fade-scroll-left,
+.fade-scroll-right {
+    opacity   : 0;
+    transition: all 0.8s ease-out;
+}
+
+.fade-scroll-left {
+    transform: translateY(-5vh);
+}
+
+.fade-scroll-right {
+    transform: translateY(5vh);
+}
+
+.fade-scroll-left.visible,
+.fade-scroll-right.visible {
+    opacity  : 1;
+    transform: translateY(0);
+}
+
+/* ===================== Instructions Section ===================== */
+.instructions {
+    padding        : 2rem 1rem;
+    margin-top     : 8vh;
+    margin-bottom  : 8vh;
+    display        : flex;
+    flex-direction : column;
+    justify-content: flex-start;
+}
+
+.instructions h4 {
+    font-size    : clamp(1.3rem, 2vw, 2rem);
+    /* responsive font */
+    font-weight  : 700;
+    margin-bottom: 1rem;
+    color        : #1a1a2e !important;
+}
+
+.instructions ul {
+    list-style   : disc inside;
+    font-size    : clamp(0.9rem, 1.2vw, 1rem);
+    color        : #333;
+    padding-left : 0.5rem;
+    margin-bottom: 0;
+}
+
+.instructions li {
+    margin-bottom: 0.6rem;
+}
+
+/* ===================== Form Section ===================== */
+.col-md-6 form {
+    background     : rgba(255, 255, 255, 0.08);
+    padding        : clamp(20px, 4vw, 40px);
+    border-radius  : 15px;
+    backdrop-filter: blur(10px);
+    box-shadow     : 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.col-md-6 form h2 {
+    font-size    : clamp(1.5rem, 2.5vw, 2rem);
+    font-weight  : 700;
+    margin-bottom: 20px;
+    color        : #111;
+    text-align   : center;
+}
+
+.form-label {
+    font-weight: 600;
+    color      : #111;
+}
+
+.form-control {
+    padding      : 0.8rem 1rem;
+    border-radius: 8px;
+    border       : 1px solid #ccc;
+    font-size    : 1rem;
+    width        : 100%;
+    transition   : border 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #ff4d5a;
+    box-shadow  : 0 0 8px rgba(255, 77, 90, 0.3);
+    outline     : none;
+}
+
+.text-danger {
+    font-size : 0.9rem;
+    margin-top: 5px;
+}
+
+/* Submit button */
+.btn-primary {
+    background   : linear-gradient(45deg, #ff4d5a, #ff6b7b, #ff4d5a);
+    border       : none;
+    color        : #fff;
+    font-weight  : 600;
+    padding      : 0.8rem 2rem;
+    border-radius: 30px;
+    cursor       : pointer;
+    transition   : all 0.3s ease;
+    box-shadow   : 0 6px 20px rgba(255, 77, 90, 0.4);
+}
+
+.btn-primary:hover {
+    transform : translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(255, 77, 90, 0.6);
+}
+
+/* ===================== Footer / Login Link ===================== */
+.login-wrapper .text-center a {
+    color          : #ff4d5a;
+    text-decoration: none;
+    font-weight    : 600;
+    transition     : all 0.3s ease;
+}
+
+.login-wrapper .text-center a:hover {
+    text-decoration: underline;
+    color          : #ff6b7b;
+}
+
+.social-login p {
+    font-size: 0.95rem;
+    color    : #555;
+}
+
+.social-btn {
+    display      : flex;
+    align-items  : center;
+    gap          : 5px;
+    padding      : 6px 12px;
+    font-size    : 0.9rem;
+    border-radius: 25px;
+    font-weight  : 600;
+    transition   : all 0.3s ease;
+}
+
+.social-btn i {
+    font-size: 1.1rem;
+}
+
+/* Hover effects */
+.social-btn:hover {
+    transform      : translateY(-2px) scale(1.03);
+    text-decoration: none;
+}
+
+/* Specific hover colors */
+.btn-outline-danger:hover,
+.btn-outline-primary:hover,
+.btn-outline-dark:hover {
+    background-color: #db4437;
+    color           : #fff !important;
+    border-color    : #db4437;
+    text-decoration : none !important;
+}
+
+/* ===================== Responsive ===================== */
+
+/* Large tablets (≤ 992px) */
+@media screen and (max-width: 992px) {
+    .instructions {
+        margin-top   : 100px;
+        margin-bottom: 80px;
+    }
+
+    .col-md-6 form {
+        padding: 30px;
+    }
+
+    .instructions h4 {
+        font-size: 1.5rem;
+    }
+
+    .col-md-6 form h2 {
+        font-size: 1.6rem;
+    }
+
+    .fade-scroll-left {
+        transform: translateY(-60px);
+    }
+
+    .fade-scroll-right {
+        transform: translateY(60px);
+    }
+}
+
+/* Tablets & small devices (≤ 768px) */
+@media screen and (max-width: 768px) {
+    .login-wrapper {
+        margin-top   : 100px;
+        margin-bottom: 100px;
+    }
+
+    .instructions {
+        margin-top   : 60px;
+        margin-bottom: 60px;
+    }
+
+    .instructions h4 {
+        font-size    : 1.3rem;
+        margin-top   : 30px;
+        margin-bottom: 10px;
+    }
+
+    .col-md-6 form {
+        padding: 25px;
+    }
+
+    .col-md-6 form h2 {
+        font-size: 1.4rem;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+
+    .social-btn {
+        justify-content: center;
+        width          : 100%;
+    }
+}
+
+/* Extra small devices (≤ 576px) */
+@media screen and (max-width: 576px) {
+    .login-wrapper {
+        margin-top   : 60px;
+        margin-bottom: 60px;
+    }
+
+    .instructions {
+        margin-top   : 40px;
+        margin-bottom: 40px;
+    }
+
+    .instructions h4 {
+        font-size: 1.1rem;
+    }
+
+    .col-md-6 form {
+        padding: 20px;
+    }
+
+    .col-md-6 form h2 {
+        font-size: 1.2rem;
+    }
+
+    .form-control {
+        font-size: 0.9rem;
+        padding  : 8px 12px;
+    }
+
+    .btn-primary {
+        width    : 100%;
+        padding  : 10px 0;
+        font-size: 0.95rem;
+    }
+
+    .fade-scroll-left,
+    .fade-scroll-right {
+        transform: translateY(30px);
+    }
+}

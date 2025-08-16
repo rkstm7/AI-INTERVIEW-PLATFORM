@@ -1,0 +1,86 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container custom-main-content" style="margin-top: 140px">
+  <!-- Page Header -->
+  <h1 class="page-title">Admin Dashboard</h1>
+  <p class="page-subtitle">
+    Welcome, <span class="highlight">{{ user.name }}</span>! Manage and monitor
+    the platform efficiently.
+  </p>
+
+  <!-- Summary Cards (3 per row) -->
+  <div class="cards-grid">
+    <div class="card animated-card border-primary">
+      <div class="card-body">
+        <h6>Total Users</h6>
+        <p>{{ total_users }}</p>
+      </div>
+    </div>
+
+    <div class="card animated-card border-warning">
+      <div class="card-body">
+        <h6>Total Job Roles</h6>
+        <p>{{ total_job_roles }}</p>
+      </div>
+    </div>
+
+    <div class="card animated-card border-success">
+      <div class="card-body">
+        <h6>Active Sessions</h6>
+        <p>{{ active_sessions or 0 }}</p>
+      </div>
+    </div>
+
+    <div class="card animated-card border-info">
+      <div class="card-body">
+        <h6>Active Users</h6>
+        <p>{{ active_users }}</p>
+      </div>
+    </div>
+
+    <div class="card animated-card border-danger">
+      <div class="card-body">
+        <h6>Offline Users</h6>
+        <p>{{ offline_users }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Links Section -->
+  <section class="quick-links-section">
+    <h2 class="section-title">Quick Actions</h2>
+    <p class="section-subtitle">
+      Access frequently used sections quickly to manage the platform
+      efficiently.
+    </p>
+
+    <div class="cards-grid">
+      <div class="card border-primary">
+        <div class="card-body">
+          <h6>Manage Users</h6>
+          <p><a href="{{ url_for('manage_role.users') }}">Go to Users</a></p>
+        </div>
+      </div>
+
+      <div class="card border-warning">
+        <div class="card-body">
+          <h6>Job Roles</h6>
+          <p>
+            <a href="{{ url_for('manage_job_roles.job_roles') }}">View Roles</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="card border-success">
+        <div class="card-body">
+          <h6>Notices</h6>
+          <p>
+            <a href="{{ url_for('manage_notice.notice') }}">Manage Notices</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% endblock %}

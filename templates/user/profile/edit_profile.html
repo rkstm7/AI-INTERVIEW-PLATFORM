@@ -1,0 +1,120 @@
+{% extends "base.html" %} {% block title %}Edit Profile{% endblock %} {% block
+content %}
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-xl-5 col-lg-6 col-md-8">
+      <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4 p-lg-5">
+          <!-- Page Title -->
+          <h3 class="fw-bold text-center text-primary mb-4">
+            <i class="bi bi-person-lines-fill me-2"></i> Edit Profile
+          </h3>
+
+          <!-- Form -->
+          <form
+            action="{{ url_for('user_profile.update_profile') }}"
+            method="post"
+          >
+            <!-- Name -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold float-start"
+                >Full Name</label
+              >
+              <input
+                type="text"
+                name="name"
+                value="{{ user.name }}"
+                class="form-control form-control-lg rounded-3"
+                required
+              />
+            </div>
+
+            <!-- Email (Read Only) -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold float-start">Email</label>
+              <input
+                type="email"
+                value="{{ user.email }}"
+                class="form-control form-control-lg rounded-3"
+                readonly
+              />
+            </div>
+
+            <!-- Mobile -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold float-start"
+                >Mobile No</label
+              >
+              <input
+                type="text"
+                name="phone"
+                value="{{ user.phone or '' }}"
+                class="form-control form-control-lg rounded-3"
+                required
+              />
+            </div>
+
+            <!-- Address -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold float-start">Address</label>
+              <textarea
+                name="address"
+                rows="3"
+                class="form-control form-control-lg rounded-3"
+              >
+{{ user.address or '' }}</textarea
+              >
+            </div>
+
+            <!-- Password -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold float-start"
+                >New Password</label
+              >
+              <input
+                type="password"
+                name="password"
+                class="form-control form-control-lg rounded-3"
+                placeholder="Leave blank if unchanged"
+              />
+              <small class="text-muted float-start"
+                >Changing password will require you to log in again.</small
+              >
+            </div>
+
+            <!-- Save Button -->
+            <button
+              type="submit"
+              class="btn btn-primary btn-lg w-100 rounded-3"
+            >
+              <i class="bi bi-check-circle me-1"></i> Save Changes
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Icons -->
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+  rel="stylesheet"
+/>
+
+<!-- Extra Styling -->
+<style>
+  body {
+    background: #f8f9fa;
+  }
+  .card {
+    background: white;
+    transition: transform 0.2s ease-in-out;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+  }
+</style>
+
+{% endblock %}

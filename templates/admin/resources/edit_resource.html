@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Resource{% endblock %}
+
+{% block content %}
+<div class="container my-5" style="margin-top: 140px !important; margin-bottom: 100px !important">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title text-center fw-bolder fs-1" style="color: #dd3d15ff;">Edit Learning Resource</h2>
+
+          <form method="POST" action="{{ url_for('manage_resources.edit_resource', id=resource['id']) }}">
+            <div class="mb-3">
+              <label for="job_role" class="form-label fw-semibold float-start">Job Role</label>
+              <select class="form-select" id="job_role" name="job_role" required>
+                <option value="">Select Job Role</option>
+                {% for role in job_roles %}
+                  <option value="{{ role['id'] }}" {% if role['id'] == resource['job_role_id'] %}selected{% endif %}>
+                    {{ role['name'] }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="title" class="form-label fw-semibold float-start">Resource Title</label>
+              <input type="text" class="form-control" id="title" name="title" value="{{ resource['title'] }}" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label fw-semibold float-start">Description (Optional)</label>
+              <textarea class="form-control" id="description" name="description" rows="4">{{ resource['description'] }}</textarea>
+            </div>
+
+            <div class="mb-4">
+              <label for="url" class="form-label fw-semibold float-start">Resource URL</label>
+              <input type="url" class="form-control" id="url" name="url" value="{{ resource['url'] }}" required>
+            </div>
+
+            <div class="d-flex gap-2 flex-wrap">
+              <button type="submit" class="btn btn-success flex-fill">Update Resource</button>
+              <a href="{{ url_for('manage_resources.resources') }}" class="btn btn-outline-warning flex-fill text-decoration-none">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

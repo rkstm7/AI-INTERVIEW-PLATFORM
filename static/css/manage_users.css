@@ -1,0 +1,55 @@
+/* Gradient text for heading */
+.text-gradient {
+    background             : linear-gradient(90deg, #0f2027, #203a43, #2c5364, #4a90e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Button hover effect */
+.custom-btn-hover:hover {
+    background-color: rgb(243, 243, 243) !important;
+    color           : rgb(62, 74, 241) !important;
+    transform       : scale(1.05);
+    transition      : 0.3s ease-in-out;
+}
+
+/* Table hover row effect */
+.table-hover tbody tr:hover {
+    background-color: #dbe9ff;
+    transition      : background-color 0.25s ease;
+}
+
+/* User ID styling */
+.fw-bold.text-primary {
+    font-size     : 1.1rem;
+    letter-spacing: 0.03em;
+}
+
+/* Action buttons style */
+.action-btn {
+    width      : 70px;
+    font-weight: 600;
+    transition : background-color 0.3s ease, color 0.3s ease;
+}
+
+.action-btn:hover {
+    color: white !important;
+}
+
+.btn-outline-primary.action-btn:hover {
+    background-color: #0d6efd;
+    border-color    : #0d6efd;
+}
+
+.btn-outline-danger.action-btn:hover {
+    background-color: #dc3545;
+    border-color    : #dc3545;
+}
+
+/* Responsive tweaks */
+@media (max-width: 767.98px) {
+    .action-btn {
+        width    : 60px;
+        font-size: 0.8rem;
+    }
+}

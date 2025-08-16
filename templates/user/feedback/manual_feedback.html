@@ -1,0 +1,162 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-lg rounded-4">
+        <div class="card-body p-4 p-md-5">
+          <h2 class="fw-bolder fs-2 mb-4" style="color: #dd3d15ff">
+            Feedback Section
+          </h2>
+
+          <form method="POST" action="/user/manual_feedback" id="feedbackForm">
+            <!-- Name -->
+            <div class="mb-4">
+              <label for="name" class="form-label fw-semibold float-start"
+                >Your Name</label
+              >
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                id="name"
+                name="name"
+                required
+              />
+            </div>
+
+            <!-- Email -->
+            <div class="mb-4">
+              <label for="email" class="form-label fw-semibold float-start"
+                >Your Email</label
+              >
+              <input
+                type="email"
+                class="form-control form-control-lg"
+                id="email"
+                name="email"
+                required
+              />
+            </div>
+
+            <!-- AI Interview Questions -->
+            {% set questions = [ "Was the AI's introduction and guidance
+            clear?", "How relevant were the questions to the selected job
+            role?", "Was the voice recognition (Whisper) accurate and smooth?",
+            "Were the AI-generated questions challenging enough?", "Did the AI
+            provide helpful follow-up questions?", "Was the scoring and feedback
+            accurate and understandable?", "Did the platform simulate a real
+            interview experience?", "Was the overall interface user-friendly?",
+            "Would you recommend this AI Interview platform to others?", "How
+            satisfied are you with the overall experience?" ] %} {% for i in
+            range(questions|length) %}
+            <div class="mb-4">
+              <label class="form-label fw-semibold d-block float-start">
+                Q{{ i+1 }}. {{ questions[i] }}
+              </label>
+              <div class="rating-group mt-1" data-question="q{{ i+1 }}">
+                {% for star in range(5, 0, -1) %}
+                <input
+                  type="radio"
+                  id="q{{ i+1 }}-star{{ star }}"
+                  name="q{{ i+1 }}"
+                  value="{{ star }}"
+                />
+                <label for="q{{ i+1 }}-star{{ star }}">★</label>
+                {% endfor %}
+              </div>
+            </div>
+            {% endfor %}
+
+            <!-- Message -->
+            <div class="mb-4">
+              <label for="message" class="form-label fw-semibold float-start"
+                >Any suggestions or comments?</label
+              >
+              <textarea
+                class="form-control"
+                id="message"
+                name="message"
+                rows="4"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex gap-2 mt-4 flex-wrap">
+              <button type="submit" class="btn btn-primary btn-lg px-4">
+                Send Feedback
+              </button>
+              <button
+                type="reset"
+                class="btn btn-outline-secondary btn-lg px-4"
+              >
+                Clear
+              </button>
+              <button
+                onclick="location.href='{{ url_for('user_dashboard.dashboard') }}'"
+                class="btn btn-outline-secondary btn-lg px-4"
+              >
+                Back
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Star Rating Style */
+  .rating-group {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    gap: 4px;
+  }
+  .rating-group input {
+    display: none;
+  }
+  .rating-group label {
+    font-size: 1.6rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .rating-group input:checked ~ label,
+  .rating-group label:hover,
+  .rating-group label:hover ~ label {
+    color: #f8b400;
+  }
+
+  /* Card hover subtle effect */
+  .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+</style>
+
+<!-- Optional: Toggle Star Selection -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".rating-group").forEach((group) => {
+      const radios = group.querySelectorAll('input[type="radio"]');
+      radios.forEach((radio) => {
+        radio.addEventListener("click", function () {
+          if (this.checked && this.previousChecked) {
+            this.checked = false;
+            this.previousChecked = false;
+          } else {
+            radios.forEach((r) => (r.previousChecked = false));
+            this.previousChecked = true;
+          }
+        });
+      });
+    });
+  });
+</script>
+
+{% endblock %}

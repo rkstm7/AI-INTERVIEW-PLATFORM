@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Interview Certificate - {{ user.name }}</title>
+    <style>
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Georgia", serif;
+        background: #f9f7f1;
+      }
+
+      .certificate-container {
+        width: 100%;
+        height: 100%;
+        padding: 40px 60px;
+        box-sizing: border-box;
+        border: 20px solid #bfa14a;
+        position: relative;
+        background: white;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .certificate-header {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .certificate-title {
+        font-size: 40px;
+        font-weight: bold;
+        color: #bfa14a;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .company-name {
+        margin-top: 10px;
+        font-size: 26px;
+        font-weight: bold;
+        color: #333;
+        letter-spacing: 1px;
+        margin-bottom: 30px;
+      }
+
+      .certificate-body {
+        font-size: 20px;
+        text-align: center;
+        margin: 30px auto;
+        max-width: 90%;
+        line-height: 1.6;
+      }
+
+      .highlight {
+        font-weight: bold;
+        color: #000;
+        font-size: 22px;
+      }
+
+      .score-table {
+        margin: 30px auto;
+        border-collapse: collapse;
+        width: 85%;
+        font-size: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .score-table th,
+      .score-table td {
+        border: 1px solid #bfa14a;
+        padding: 10px 12px;
+        text-align: center;
+      }
+
+      .score-table th {
+        background-color: #bfa14a;
+        color: white;
+        font-size: 16px;
+      }
+
+      .signature-section {
+        margin-top: 60px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .sign-box {
+        text-align: center;
+        font-size: 14px;
+      }
+
+      .sign-line {
+        margin-top: 40px;
+        border-top: 2px solid #333;
+        width: 220px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .sign-name {
+        margin-top: 5px;
+        font-weight: bold;
+      }
+
+      .footer {
+        position: absolute;
+        bottom: 20px;
+        width: 100%;
+        text-align: left;
+        font-size: 14px;
+        color: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="certificate-container">
+      <div class="certificate-header">
+        <div class="certificate-title">Certificate of Achievement</div>
+        <div class="company-name">ROTECH GLOBAL SOLUTION</div>
+      </div>
+
+      <div class="certificate-body">
+        This is to proudly certify that
+        <span class="highlight">{{ user.name }}</span>
+        has successfully completed the interview for the position of
+        <span class="highlight">{{ session.job_role }}</span>
+        and has achieved the following score:
+      </div>
+
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th>Session ID</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Total Questions</th>
+            <th>Total Score</th>
+            <th>Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ session.session_id }}</td>
+            <td>
+              {{ session.start_time.strftime('%Y-%m-%d %H:%M') if
+              session.start_time else 'N/A' }}
+            </td>
+            <td>
+              {{ session.end_time.strftime('%Y-%m-%d %H:%M') if session.end_time
+              else 'N/A' }}
+            </td>
+            <td>{{ session.total_questions }}</td>
+            <td>{{ session.total_score }}</td>
+            <td>
+              {% if session.total_questions %} {{
+              "%.2f"|format((session.total_score / (session.total_questions *
+              2)) * 100) }}% {% else %} 0% {% endif %}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="signature-section">
+        <div class="sign-box">
+          <div class="sign-line"></div>
+          <div class="sign-name">
+            Rohit Singh Raajput<br />Authorized Signatory
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        Generated on {{ generated_on.strftime('%Y-%m-%d %H:%M:%S') }}
+      </div>
+    </div>
+  </body>
+</html>

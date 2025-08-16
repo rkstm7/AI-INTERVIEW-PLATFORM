@@ -1,0 +1,72 @@
+{% extends 'base.html' %} {% block title %}User Feedback{% endblock %} {% block
+content %}
+<div
+  class="container"
+  style="margin-top: 140px !important; margin-bottom: 100px !important"
+>
+  <div class="card shadow-lg border-0 p-4 rounded-4">
+    <h2 class="fw-bold text-center mb-4" style="color: #dd3d15ff">
+      User Experience Feedback
+    </h2>
+
+    <!-- Back Button -->
+    <div class="mb-3 text-start">
+      <a href="javascript:history.back()" class="btn btn-outline-primary">
+        ← Back
+      </a>
+    </div>
+
+    {% if feedbacks %}
+    <div class="table-responsive" style="max-height: 600px; overflow-y: auto">
+      <table class="table table-bordered table-hover align-middle text-center">
+        <thead class="table-primary text-uppercase fw-semibold">
+          <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Q1</th>
+            <th>Q2</th>
+            <th>Q3</th>
+            <th>Q4</th>
+            <th>Q5</th>
+            <th>Q6</th>
+            <th>Q7</th>
+            <th>Q8</th>
+            <th>Q9</th>
+            <th>Q10</th>
+            <th style="min-width: 200px">Message</th>
+            <th>Submitted At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for f in feedbacks %}
+          <tr>
+            <td class="fw-bold text-primary">{{ f.user_id }}</td>
+            <td>{{ f.name }}</td>
+            <td class="text-break">{{ f.email }}</td>
+            <td>{{ f.q1 }}</td>
+            <td>{{ f.q2 }}</td>
+            <td>{{ f.q3 }}</td>
+            <td>{{ f.q4 }}</td>
+            <td>{{ f.q5 }}</td>
+            <td>{{ f.q6 }}</td>
+            <td>{{ f.q7 }}</td>
+            <td>{{ f.q8 }}</td>
+            <td>{{ f.q9 }}</td>
+            <td>{{ f.q10 }}</td>
+            <td class="text-start text-break">{{ f.message }}</td>
+            <td class="text-muted">{{ f.submitted_at }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center fw-semibold fs-5 mt-4">
+      No feedback available.
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+<!-- Public Navbar CSS -->
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/public_navbar.css') }}"
+/>
+
+<nav class="custom-navbar">
+  <div class="navbar-container">
+    <!-- Left: Brand -->
+    <div class="navbar-left">
+      <a class="brand" href="/">
+        <img
+          src="{{ url_for('static', filename='images/rotech_logo.png') }}"
+          alt="Logo"
+          class="logo-img"
+        />
+        <span>AI Interview Platform</span>
+      </a>
+    </div>
+
+    <!-- Right: Links -->
+    <div class="navbar-right">
+      <!-- Mobile Toggle -->
+      <input type="checkbox" id="menu-toggle" />
+      <label for="menu-toggle" class="menu-icon">&#9776;</label>
+
+      <!-- Navbar Links -->
+      <ul class="nav-links">
+        <li><a href="{{ url_for('public_dashboard.dashboard') }}">Home</a></li>
+        <li><a href="#">About</a></li>
+
+        <!-- Dropdown -->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle">Login ▾</a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="{{ url_for('user_login.login') }}?role=User"
+                >User Login</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('admin_login.login') }}?role=Admin"
+                >Admin Login</a
+              >
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <a href="{{ url_for('register.register') }}" class="register-btn"
+            >Register</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Public Navbar JS -->
+<script src="{{ url_for('static', filename='js/public_navbar.js') }}"></script>

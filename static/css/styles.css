@@ -1,0 +1,28 @@
+* {
+    margin : 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Wrapper for all page content */
+.page-wrapper {
+    opacity   : 0;
+    transform : translateY(50px);
+    /* page slides from bottom */
+    transition: all 0.6s ease-out;
+}
+
+.page-wrapper.visible {
+    opacity  : 1;
+    transform: translateY(0);
+}
+
+/* Optional: slide up on page leave (fade-out) */
+.page-wrapper.fade-out {
+    opacity   : 0;
+    transform : translateY(-50px);
+    transition: all 0.4s ease-in;
+}

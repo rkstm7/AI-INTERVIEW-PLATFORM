@@ -1,0 +1,162 @@
+{% extends 'base.html' %} {% block content %}
+<div
+  class="container"
+  style="margin-top: 140px !important; margin-bottom: 100px !important"
+>
+  <!-- Page Title -->
+  <h2 class="text-center fw-bolder fs-1" style="color: #dd3d15ff">
+    Manage Resources
+  </h2>
+  <!-- Back Button -->
+  <div class="mb-3">
+    <a
+      href="{{ url_for('admin_dashboard.dashboard') }}"
+      class="btn btn-outline-secondary"
+    >
+      Back
+    </a>
+  </div>
+  <!-- Add Resource Form -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-4">Add New Resource</h5>
+      <form method="POST">
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label for="job_role" class="form-label">Job Role</label>
+            <select name="job_role" id="job_role" class="form-select" required>
+              <option value="">Select Job Role</option>
+              {% for role in job_roles %}
+              <option value="{{ role.id }}">{{ role.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="title" class="form-label">Concept / Topic</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              class="form-control"
+              placeholder="Enter concept/topic title"
+              required
+            />
+          </div>
+          <div class="col-md-4">
+            <label for="description" class="form-label">Description</label>
+            <input
+              type="text"
+              id="description"
+              name="description"
+              class="form-control"
+              placeholder="Brief explanation..."
+            />
+          </div>
+          <div class="col-md-2">
+            <label for="url" class="form-label">URL</label>
+            <input
+              type="url"
+              id="url"
+              name="url"
+              class="form-control"
+              placeholder="https://..."
+              required
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success mt-3 w-100">
+          Add Resource
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- All Resources Table -->
+  <h4 class="fw-bold mb-3">All Resources</h4>
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>S.No.</th>
+          <th>Concept / Topic</th>
+          <th>Description</th>
+          <th>Job Role</th>
+          <th>URL</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for res in resources %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>
+            <div class="concept-text" style="display: none">
+              {{ res['title'] }}
+            </div>
+            <button class="btn btn-sm btn-info toggle-btn">View Concept</button>
+          </td>
+          <td>
+            <div class="concept-text" style="display: none">
+              {{ res['title'] }}
+            </div>
+            <button class="btn btn-sm btn-info toggle-btn">
+              View Description
+            </button>
+          </td>
+          <td class="description-cell" style="display: none">
+            {{ res['description'] }}
+          </td>
+          <td>{{ res['job_role_name'] }}</td>
+          <td>
+            <a href="{{ res['url'] }}" target="_blank">{{ res['url'] }}</a>
+          </td>
+          <td>{{ res['created_at'] }}</td>
+          <td class="d-flex gap-1 flex-wrap">
+            <a
+              href="{{ url_for('manage_resources.edit_resource', id=res['id']) }}"
+              class="btn btn-warning btn-sm"
+              >Edit</a
+            >
+            <form
+              method="POST"
+              action="{{ url_for('manage_resources.delete_resource', id=res['id']) }}"
+            >
+              <button type="submit" class="btn btn-danger btn-sm">
+                Delete
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="text-center text-muted">
+            No resources found.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // Toggle Concept / Description
+  document.querySelectorAll(".toggle-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const tr = button.closest("tr");
+      const concept = tr.querySelector(".concept-text");
+      const description = tr.querySelector(".description-cell");
+
+      const isHidden = concept.style.display === "none";
+
+      concept.style.display = isHidden ? "block" : "none";
+      description.style.display = isHidden ? "block" : "none";
+
+      button.textContent = isHidden
+        ? "Hide Concept / Description"
+        : "View Concept / Description";
+    });
+  });
+</script>
+{% endblock %}

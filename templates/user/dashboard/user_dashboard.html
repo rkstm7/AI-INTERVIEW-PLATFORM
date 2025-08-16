@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Hamburger Menu for Mobile -->
+<input type="checkbox" id="menu-toggle" />
+<label for="menu-toggle" class="hamburger">&#9776;</label>
+
+<!-- Profile Info Sidebar -->
+<div class="profile-container">
+  <h5 class="mb-3 text-dark fs-3 fw-bolder">Welcome {{ user.name | upper }}!</h5>
+  <p class="profile-desc text-dark">
+    This is your profile dashboard where you can manage your account and access various features. Also explore AI resources, Interview Preparation, and more.
+  </p>
+</div>
+
+<div class="dashboard-wrapper fade-slide-up">
+
+  <!-- Explore Now Section -->
+  <div class="explore-now glass-box">
+    <h3>Explore Now</h3>
+    <form method="GET" action="{{ url_for('user_resources.ques_ans') }}">
+      <select name="role_id" class="form-select mb-3" required>
+        <option value="" disabled selected>Select a job role</option>
+        {% for role in job_roles %}
+          <option value="{{ role.id }}" {% if role.id == selected_role_id %}selected{% endif %}>
+            {{ role.name }}
+          </option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-primary w-100">Start Preparation</button>
+    </form>
+    <a href="{{ url_for('user_resources.resources', role_id=user.role_id) }}" class="btn btn-outline-primary mt-3 w-100">ALL Learning Resources</a>
+    <a href="{{ url_for('interview.start_interview', role_id=user.role_id, action='qa') }}" class="btn btn-outline-primary mt-2 w-100">Interview Preparation</a>
+  </div>
+
+  <!-- Progress & Resume Section -->
+  <div class="dashboard-cards">
+    <div class="left-card glass-box">
+      <h5>Progress & Feedback</h5>
+      <a href="{{ url_for('scorecard.scorecard') }}" class="btn btn-outline-primary mb-3 w-100">Scorecard</a>
+      <a href="{{ url_for('feedback.manual_feedback') }}" class="btn btn-outline-primary w-100">Feedback</a>
+    </div>
+
+    <div class="right-card glass-box">
+      <h5>Resume & Support</h5>
+      <form method="POST" action="{{ url_for('upload_resume.resume') }}" enctype="multipart/form-data">
+        <input type="file" name="resume_pdf" class="form-control" accept="application/pdf" required />
+        <button type="submit" class="btn btn-outline-primary mt-3 mb-3 w-100">Upload Resume</button>
+      </form>
+      {% if upload_success %}
+        <div class="alert alert-success">{{ upload_success }}</div>
+      {% elif upload_error %}
+        <div class="alert alert-danger">{{ upload_error }}</div>
+      {% endif %}
+      <a href="{{ url_for('upload_resume.resume') }}" class="btn btn-outline-primary w-100">Support</a>
+    </div>
+  </div>
+
+  <!-- Notifications Section -->
+  <div class="notifications-section glass-box">
+    <h5>📢 Notices</h5>
+    <div class="notice-list mt-2">
+      {% if notices and notices|length > 0 %}
+        <div class="scroll-container">
+          {% for notice in notices %}
+            <p class="notice-item">🚨 {{ notice.title }}</p>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p>No new notices at this time.</p>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

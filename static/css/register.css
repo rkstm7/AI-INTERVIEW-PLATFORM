@@ -1,0 +1,156 @@
+/* ===================== Wrapper ===================== */
+.register-wrapper {
+    margin-top   : 120px !important;
+    margin-bottom: 120px !important;
+    padding      : 0 15px;
+}
+
+/* ===================== Left Panel ===================== */
+.register-instructions {
+    padding      : 35px 25px;
+    border-radius: 15px;
+}
+
+.register-instructions h4 {
+    font-weight  : 600;
+    margin-bottom: 20px;
+    color        : #333;
+}
+
+.register-instructions ul {
+    list-style-type: disc;
+    padding-left   : 20px;
+}
+
+.register-instructions ul li {
+    margin-bottom: 12px;
+    font-size    : 0.95rem;
+    color        : #555;
+}
+
+/* ===================== Right Panel ===================== */
+.register-form {
+    padding      : 35px 25px;
+    border-radius: 15px;
+}
+
+.register-form h2 {
+    font-weight  : 700;
+    color        : #222;
+    margin-bottom: 25px;
+}
+
+.form-label {
+    font-weight: 500;
+    color      : #444;
+}
+
+.form-control {
+    border-radius: 8px;
+    padding      : 10px 12px;
+    font-size    : 0.95rem;
+    border       : 1px solid #ccc;
+    transition   : border 0.3s, box-shadow 0.3s;
+}
+
+.form-control:focus {
+    border-color: #4a90e2;
+    box-shadow  : 0 0 0 2px rgba(74, 144, 226, 0.2);
+    outline     : none;
+}
+
+/* ===================== Buttons ===================== */
+.btn {
+    border-radius: 8px;
+    font-weight  : 500;
+    transition   : all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #4a90e2;
+    border-color    : #4a90e2;
+}
+
+.btn-primary:hover {
+    background-color: #357ab8;
+    border-color    : #357ab8;
+}
+
+.btn-outline-primary {
+    color       : #4a90e2;
+    border-color: #4a90e2;
+}
+
+.btn-outline-primary:hover {
+    background-color: #4a90e2;
+    color           : #fff;
+}
+
+/* ===================== OTP Section ===================== */
+#otp-verification input {
+    border-radius : 8px;
+    text-align    : center;
+    font-size     : 1rem;
+    letter-spacing: 3px;
+}
+
+#otp-verification button {
+    width: 100%;
+}
+
+#otp-timer,
+#otp-status,
+#otp-verify-status {
+    font-size : 0.9rem;
+    margin-top: 4px;
+}
+
+/* ===================== Links ===================== */
+.register-form .text-center a {
+    color          : #4a90e2;
+    text-decoration: none;
+}
+
+.register-form .text-center a:hover {
+    text-decoration: underline;
+}
+
+/* ===================== Fade Scroll Animations ===================== */
+.fade-scroll-left,
+.fade-scroll-right {
+    opacity   : 0;
+    transform : translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.fade-scroll-left.visible,
+.fade-scroll-right.visible {
+    opacity  : 1;
+    transform: translateY(0);
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 991px) {
+    .register-wrapper {
+        margin-top   : 80px;
+        margin-bottom: 80px;
+    }
+
+    .register-instructions,
+    .register-form {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 767px) {
+    .register-wrapper {
+        margin-top   : 60px;
+        margin-bottom: 60px;
+    }
+
+    .register-instructions,
+    .register-form {
+        width  : 100%;
+        padding: 25px 15px;
+    }
+}
